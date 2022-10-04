@@ -1,0 +1,18 @@
+manifest:
+  defaults:
+    remote: szkudlik-homeAutomation
+
+  remotes:
+    - name: szkudlik-homeAutomation
+      url-base: https://github.com/szkudlik-homeAutomation
+
+  projects:
+    - name: Common_code
+      path: src/Common_code
+      repo-path: Common_code.git
+      import: 
+        path-prefix: HeatingControl
+      revision: 8d76a5882ff09049b252a16582284925324f48b9
+
+  self:
+      path: HeatingControl
