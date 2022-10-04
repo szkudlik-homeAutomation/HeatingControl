@@ -10,9 +10,12 @@
 #include "src/lib/TCP_Communication_lib/HttpServer.h"
 #include "src/TelnetServer.h"
 #include "src/WatchdogProcess.h"
+#include "src/OutputProcess.h"
+
 Scheduler sched;
 //tSensorProcess SensorProcess(sched); 
 //WorkerProcess Worker(sched);
+tOutputProcess OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
 tNetwork Network;
@@ -50,11 +53,14 @@ void setup() {
 
 //  SensorProcess.add(true);
 //  Worker.add();
+  OutputProcess.add(true);
   WatchdogProcess.add(true);
 
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.println("SYSTEM INITIALIZED");
 #endif
+  
+
 }
 
 

@@ -1,12 +1,17 @@
 #include "OutputProcess.h"
 #include "Eeprom.h"
 
+#define DEBUG_2
 
 void tOutputProcess::setup()
 {
     Output[OUT_ID_FLOOR_HEAT_VALVE_OPEN].SetPin(OUT_PIN_FLOOR_HEAT_VALVE_OPEN,0);
     Output[OUT_ID_FLOOR_HEAT_VALVE_CLOSE].SetPin(OUT_PIN_FLOOR_HEAT_VALVE_CLOSE,0);
     Output[OUT_ID_FLOOR_HEAT_PUMP].SetPin(OUT_PIN_FLOOR_HEAT_PUMP,0);
+
+    SetOutput(OUT_ID_FLOOR_HEAT_VALVE_OPEN,1,5);
+    SetOutput(OUT_ID_FLOOR_HEAT_VALVE_CLOSE,1,10);
+    SetOutput(OUT_ID_FLOOR_HEAT_PUMP,1,15);
 }
 
 void tOutputProcess::service()
