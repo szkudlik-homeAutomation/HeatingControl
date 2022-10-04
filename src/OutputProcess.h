@@ -55,6 +55,17 @@ class tOutputProcess : public  Process
   static const bool TimerLongerOnly = true;
   static const bool ForceTimer = false;
 
+
+  void SetOutput(uint8_t outputId, uint8_t State)
+  {
+     SetOutput(outputId, State, 0, false);
+  }
+
+  void SetOutput(uint8_t outputId, uint8_t State, uint16_t timer)
+  {
+     SetOutput(outputId, State, timer, false);
+  }
+
   void SetOutput(uint8_t outputId, uint8_t State, uint16_t timer, bool timerLongerOnly)
   {
     if (outputId < NUM_OF_OUTPUTS) Output[outputId].Set(State,timer,timerLongerOnly);
