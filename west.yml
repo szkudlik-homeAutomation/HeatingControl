@@ -7,17 +7,17 @@ manifest:
       url-base: https://github.com/szkudlik-homeAutomation
 
   projects:
-    - name: TCP_Communication_lib
+    - name: HeatingControl_TCP_Communication_lib
       path: HeatingControl/src/lib/TCP_Communication_lib
       repo-path: TCP_Communication_lib
       revision: daf52078f34ade577214d2c8e1659dbe6781c6ae
 
-    - name: Sensors_lib
+    - name: HeatingControl_Sensors_lib
       path: HeatingControl/src/lib/Sensors_lib
       repo-path: Sensors_lib
       revision: 8d9cccff53d1e1556368e4b9b8e3d6b26066636a
     
-    - name: ds1820
+    - name: HeatingControl_ds1820
       path: HeatingControl/src/lib/external/ds1820
       repo-path: Arduino-Temperature-Control-Library
       revision: a03035a85f730a6835019b1bc740caddf285b302
