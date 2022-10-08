@@ -12,7 +12,10 @@ manifest:
       repo-path: Common_code.git
       import: 
         path-prefix: HeatingControl
-      revision: 8d76a5882ff09049b252a16582284925324f48b9
+        name-allowlist: 
+           - TCP_Communication_lib
+           - ds1820
+      revision: f717ae4088aa80624f603c76005288753990298c
 
   self:
       path: HeatingControl
