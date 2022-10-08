@@ -4,7 +4,7 @@
 #include <EEPROM.h>
 
 
-#define EEPROM_CANNARY 0xAA     // change if update changes EEPROM structure
+#define EEPROM_CANNARY 0xA0     // change if update changes EEPROM structure
 
 typedef struct __tEeprom
 {
