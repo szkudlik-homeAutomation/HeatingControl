@@ -11,6 +11,9 @@
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/tOutputProcessheatingControl.h"
+#include "src/servlets.h"
+#include "src/tOutputProcessheatingControl.h"
+
 
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 
@@ -25,6 +28,10 @@ extern tTelnetServer TelnetServer;
 
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
+   if (pRequestBuffer->startsWith("/1.js")) return new tjavaScriptServlet();
+   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
+   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
+
    return NULL;
 }
 
