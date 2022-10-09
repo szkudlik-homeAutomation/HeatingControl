@@ -10,12 +10,12 @@
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
-//#include "src/Common_code/OutputProcess.h"
+#include "tOutputProcessheatingControl.h"
 
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 
 //WorkerProcess Worker(sched);
-//tOutputProcess OutputProcess(sched);
+tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
 tNetwork Network;
@@ -47,7 +47,7 @@ void DS1820SensorCallback(tSensor *pSensor, tSensor::tEventType EventType)
          }
          DEBUG_SERIAL.println();
          break;
-         
+
       case tSensor::EV_TYPE_MEASUREMENT_ERROR:
          DEBUG_SERIAL.print("Measurement completed. ERROR");
          DEBUG_SERIAL.println();
@@ -74,7 +74,7 @@ void setup() {
 
   SensorProcess.add(true);
 //  Worker.add();
-//  OutputProcess.add(true);
+  OutputProcess.add(true);
   WatchdogProcess.add(true);
 
 #ifdef DEBUG_SERIAL
