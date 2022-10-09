@@ -15,7 +15,7 @@ manifest:
         name-allowlist: 
            - TCP_Communication_lib
            - ds1820
-      revision: ba36ce0e8bd7d7f5ebb933186ae35966514e6a06
+      revision: 069941853d976edf5796ec53f39fb2d0463593db
 
   self:
       path: HeatingControl
