@@ -8,8 +8,8 @@
 #ifndef TOUTPUTPROCESSHEATINGCONTROL_H_
 #define TOUTPUTPROCESSHEATINGCONTROL_H_
 
-#include "global.h"
-#include "src/Common_code/OutputProcess.h"
+#include "../global.h"
+#include "Common_code/OutputProcess.h"
 
 class tOutputProcess_heatingControl : public tOutputProcess {
 public:

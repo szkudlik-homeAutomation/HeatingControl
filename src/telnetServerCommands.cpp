@@ -5,10 +5,9 @@
  *      Author: szkud
  */
 
-#include "global.h"
+#include "../global.h"
 #include <Commander.h>
-//#include "WorkerProcess.h"
-#include "src/Common_code/telnetServer.h"
+#include "Common_code/telnetServer.h"
 
 
 bool enableLogs(Commander &Cmdr);

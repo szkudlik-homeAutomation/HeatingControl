@@ -10,7 +10,7 @@
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
-#include "tOutputProcessheatingControl.h"
+#include "src/tOutputProcessheatingControl.h"
 
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 

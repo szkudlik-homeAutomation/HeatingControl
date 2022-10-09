@@ -1,4 +1,6 @@
 /.cproject
 /.project
 /*.hex
-/src
+/src/Common_code
+/src/lib
+
