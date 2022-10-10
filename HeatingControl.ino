@@ -35,6 +35,17 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
    return NULL;
 }
 
+int16_t Target = 300;   // 30 degr
+
+// valve servo at full speed 
+int16_t Delta1 = 15;   // +- 1.5 degr
+
+// valve at half speed till delta 2
+
+// no correction
+int16_t Delta2 = 10;   // +- 1.0 degr
+
+
 void DS1820SensorCallback(tSensor *pSensor, tSensor::tEventType EventType)
 {
    tDS1820Sensor::tDS1820Result *pDS1820Result =(tDS1820Sensor::tDS1820Result *) pSensor->getMeasurementBlob();
@@ -43,22 +54,66 @@ void DS1820SensorCallback(tSensor *pSensor, tSensor::tEventType EventType)
    switch (EventType)
    {
       case tSensor::EV_TYPE_MEASUREMENT_COMPLETED: 
-         DEBUG_SERIAL.print("Measurement completed. devs: ");
-         DEBUG_SERIAL.print(NumOfItems);
-         for (int i = 0; i < NumOfItems; i++)
-         {
-            DEBUG_SERIAL.print(" dev: ");
-            DEBUG_SERIAL.print(i);
-            DEBUG_SERIAL.print(" temp: ");
-            DEBUG_SERIAL.print(((float)(pDS1820Result+i)->Temp) / 10);
-         }
-         DEBUG_SERIAL.println();
+//         DEBUG_SERIAL.print("Measurement completed. devs: ");
+//         DEBUG_SERIAL.print(NumOfItems);
+//         for (int i = 0; i < NumOfItems; i++)
+//         {
+//            DEBUG_SERIAL.print(" dev: ");
+//            DEBUG_SERIAL.print(i);
+//            DEBUG_SERIAL.print(" temp: ");
+//            DEBUG_SERIAL.print(((float)(pDS1820Result+i)->Temp) / 10);
+//         }
+//         DEBUG_SERIAL.println();
          break;
 
       case tSensor::EV_TYPE_MEASUREMENT_ERROR:
          DEBUG_SERIAL.print("Measurement completed. ERROR");
          DEBUG_SERIAL.println();
+         return;
          break;
+   }
+   
+   int16_t Temp = (pDS1820Result+2)->Temp;
+   
+   uint16_t Delta = abs(Temp - Target);
+   uint8_t Output = 255;
+
+   DEBUG_SERIAL.print("-->Temp: ");
+   DEBUG_SERIAL.print((float)(Temp) / 10);
+   DEBUG_SERIAL.print(" Target: ");
+   DEBUG_SERIAL.print((float)(Target) / 10);
+   DEBUG_SERIAL.print(" Delta1: ");
+   DEBUG_SERIAL.print((float)(Delta1) / 10);
+   DEBUG_SERIAL.print(" Delta2: ");
+   DEBUG_SERIAL.println((float)(Delta2) / 10);
+   
+   if (Temp > Target)
+   {
+      Output = OUT_ID_FLOOR_HEAT_VALVE_CLOSE;
+      OutputProcess.SetOutput(OUT_ID_FLOOR_HEAT_VALVE_OPEN,0);
+      DEBUG_SERIAL.print("====> DOWN ");
+   }
+   else
+   {
+      Output = OUT_ID_FLOOR_HEAT_VALVE_OPEN;
+      OutputProcess.SetOutput(OUT_ID_FLOOR_HEAT_VALVE_CLOSE,0);
+      DEBUG_SERIAL.print("====>   UP ");
+   }
+   
+   if (Delta > Delta1)
+   {
+      OutputProcess.SetOutput(Output,1);
+      DEBUG_SERIAL.println("FAST");
+   }
+   else if (Delta > Delta2)
+   {
+      OutputProcess.SetOutput(Output,1,2);
+      DEBUG_SERIAL.println("SLOW");
+   }
+   else
+   {
+      OutputProcess.SetOutput(Output,0);
+      DEBUG_SERIAL.println("STOP");
    }
 }
 
@@ -98,7 +153,7 @@ void setup() {
   tSensor *pSensor = tSensor::getSensor(1);
   
   pSensor->SetCalback(DS1820SensorCallback);
-  pSensor->SetMeasurementPeriod(10);
+  pSensor->SetMeasurementPeriod(30);   //3 sec
   pSensor->SetSpecificConfig(&Config);
 }
 
