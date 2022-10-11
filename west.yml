@@ -15,7 +15,8 @@ manifest:
         name-allowlist: 
            - TCP_Communication_lib
            - ds1820
-      revision: ec6ca989b013d49a41f75f469bca0a0e5af31344
+           - ArduinoProcessScheduler
+      revision: 1b99340aba5149a83b3f852ea48e49109da06ac5
 
   self:
       path: HeatingControl
