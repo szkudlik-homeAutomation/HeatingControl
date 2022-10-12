@@ -3,7 +3,7 @@
  *
  * a common file that MUST be included in every .h and .c**
  *
- *  Created on: 6 paŸ 2022
+ *  Created on: 6 paï¿½ 2022
  *      Author: szkud
  */
 
