@@ -13,7 +13,7 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/servlets.h"
 #include "src/tOutputProcessheatingControl.h"
-
+#include "src/tTemperatureValveControl.h"
 
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 
@@ -70,6 +70,7 @@ public:
 };
 
 tDS1820SensorCallback DS1820SensorCallback;
+tTemperatureValveControl FloorTemperatureValveControl(2,OUT_ID_FLOOR_HEAT_VALVE_OPEN,OUT_ID_FLOOR_HEAT_VALVE_CLOSE,2); 
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -106,9 +107,16 @@ void setup() {
   
   tSensor *pSensor = tSensor::getSensor(1);
   
-  pSensor->SetEventCalback(&DS1820SensorCallback);
-  pSensor->SetMeasurementPeriod(10);
+//  pSensor->SetEventCalback(&DS1820SensorCallback);
+  pSensor->SetMeasurementPeriod(50);   //5 sec
   pSensor->SetSpecificConfig(&Config);
+
+  FloorTemperatureValveControl.setTargetTemp(29);
+  FloorTemperatureValveControl.setTolerance(0.3);
+  FloorTemperatureValveControl.setHisteresis(0.7);
+  FloorTemperatureValveControl.setFastThold(0.7);  
+  pSensor->SetEventCalback(&FloorTemperatureValveControl);
+  FloorTemperatureValveControl.Enable();
 }
 
 
