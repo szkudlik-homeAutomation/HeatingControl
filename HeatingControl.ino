@@ -70,7 +70,7 @@ public:
 };
 
 tDS1820SensorCallback DS1820SensorCallback;
-tHeatingCircleControl FloorTemperatureValveControl(2,OUT_ID_FLOOR_HEAT_VALVE_OPEN,OUT_ID_FLOOR_HEAT_VALVE_CLOSE,2); 
+tHeatingCircleControl FloorTemperatureValveControl(2,OUT_ID_FLOOR_HEAT_VALVE_OPEN,OUT_ID_FLOOR_HEAT_VALVE_CLOSE,OUT_ID_FLOOR_HEAT_PUMP,2); 
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -116,7 +116,7 @@ void setup() {
   FloorTemperatureValveControl.setHisteresis(0.7);
   FloorTemperatureValveControl.setFastThold(0.7);  
   pSensor->SetEventCalback(&FloorTemperatureValveControl);
-  FloorTemperatureValveControl.Enable();
+  FloorTemperatureValveControl.Start();
 }
 
 

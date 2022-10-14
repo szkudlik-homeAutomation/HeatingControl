@@ -31,7 +31,8 @@ void tHeatingCircleControl::onEvent(tSensor *pSensor, tEventType EventType)
 
 	/*
 	 * steps
-	 *  - if state is STATE_FORCE_CLOSE - set valve to closing. STOP
+	 *  - if disabled - do nothing
+	 *  - if state is STATE_OFF - set valve to closing. STOP
 	 *  - if Delta is bigger than mFastValveMoveThold - set the valve to opening/closing and set proper state (OPENING/CLOSING). STOP.
 	 *  - if delta is smaller than mSlowValveTime:
 	 *  	- if state is CLOSING and Temp is bigger than target ==> Set valve to close slow. STOP
@@ -56,17 +57,24 @@ void tHeatingCircleControl::onEvent(tSensor *pSensor, tEventType EventType)
       DEBUG_SERIAL.println(getHisteresis());
 #endif
 
-	if (mState == STATE_FORCE_CLOSE)
+	if (mState == STATE_OFF)
 	{
+		// pump is off, valve is closed
 		CloseValve();
+		PumpOff();
 		return;
 	}
 
 	if (mState == STATE_DISABLED)
 	{
+		// do nothing
 		StopValve();
+		PumpOff();
 		return;
 	}
+
+
+	PumpOn();
 
 	if ( (Delta > mFastValveMoveThold) ||
 		((mState == STATE_IDLE) && (Delta > mHisteresis)) )
