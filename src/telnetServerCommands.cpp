@@ -8,7 +8,7 @@
 #include "../global.h"
 #include <Commander.h>
 #include "Common_code/telnetServer.h"
-#include "tTemperatureValveControl.h"
+#include "tHeatingCircleControl.h"
 
 bool enableLogs(Commander &Cmdr);
 bool disableLogs(Commander &Cmdr);
@@ -39,7 +39,7 @@ bool flush(Commander &Cmdr)
    return true;
 }
 
-extern tTemperatureValveControl FloorTemperatureValveControl;
+extern tHeatingCircleControl FloorTemperatureValveControl;
 
 bool set_Params(Commander &Cmdr)
 {

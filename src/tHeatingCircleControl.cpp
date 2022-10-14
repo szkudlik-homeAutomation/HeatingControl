@@ -1,18 +1,18 @@
 /*
- * tTemperatureValveControl.cpp
+ * tHeatingCircleControl.cpp
  *
  *  Created on: 11 pa� 2022
  *      Author: szkud
  */
 
 #include "../global.h"
-#include "tTemperatureValveControl.h"
+#include "tHeatingCircleControl.h"
 #include "Common_code/sensors/tDS1820Sensor.h"
 
 #define LOCAL_DEBUG
 
 
-void tTemperatureValveControl::onEvent(tSensor *pSensor, tEventType EventType)
+void tHeatingCircleControl::onEvent(tSensor *pSensor, tEventType EventType)
 {
 	if (EventType == EV_TYPE_MEASUREMENT_ERROR)
 	{

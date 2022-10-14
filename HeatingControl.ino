@@ -13,7 +13,7 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/servlets.h"
 #include "src/tOutputProcessheatingControl.h"
-#include "src/tTemperatureValveControl.h"
+#include "src/tHeatingCircleControl.h"
 
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 
@@ -70,7 +70,7 @@ public:
 };
 
 tDS1820SensorCallback DS1820SensorCallback;
-tTemperatureValveControl FloorTemperatureValveControl(2,OUT_ID_FLOOR_HEAT_VALVE_OPEN,OUT_ID_FLOOR_HEAT_VALVE_CLOSE,2); 
+tHeatingCircleControl FloorTemperatureValveControl(2,OUT_ID_FLOOR_HEAT_VALVE_OPEN,OUT_ID_FLOOR_HEAT_VALVE_CLOSE,2); 
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)

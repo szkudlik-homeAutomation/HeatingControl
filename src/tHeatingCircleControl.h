@@ -1,12 +1,12 @@
 /*
- * tTemperatureValveControl.h
+ * tHeatingCircleControl.h
  *
  *  Created on: 11 pa� 2022
  *      Author: szkud
  */
 
-#ifndef SRC_TTEMPERATUREVALVECONTROL_H_
-#define SRC_TTEMPERATUREVALVECONTROL_H_
+#ifndef SRC_THEATINGCIRCLECONTROL_H_
+#define SRC_THEATINGCIRCLECONTROL_H_
 
 #include "../global.h"
 #include "tOutputProcessheatingControl.h"
@@ -15,11 +15,11 @@
 // note that the events are triggered by a sensor thold
 // set sensor to proper time
 // than set the object as a callback to the se
-class tTemperatureValveControl : public tSensorEvent {
+class tHeatingCircleControl : public tSensorEvent {
 public:
 	static const uint16_t MAX_VALVE_TIME = 100;
 
-   tTemperatureValveControl(uint8_t SensorDevID, uint8_t ValveOpenOutId, uint8_t ValveCloseOutId, uint16_t SlowValveTime)
+   tHeatingCircleControl(uint8_t SensorDevID, uint8_t ValveOpenOutId, uint8_t ValveCloseOutId, uint16_t SlowValveTime)
       : mTargetTemp(0),
         mSensorDevID(SensorDevID),
 		mTolerance(0),
@@ -77,4 +77,4 @@ private:
       OutputProcess.SetOutput(mValveOpenOutId, 0);  OutputProcess.SetOutput(mValveCloseOutId, 1,mSlowValveTime); }
 };
 
-#endif /* SRC_TTEMPERATUREVALVECONTROL_H_ */
+#endif /* SRC_THEATINGCIRCLECONTROL_H_ */
