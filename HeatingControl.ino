@@ -70,7 +70,7 @@ public:
 };
 
 tDS1820SensorCallback DS1820SensorCallback;
-tHeatingCircleControl FloorTemperatureValveControl(2,OUT_ID_FLOOR_HEAT_VALVE_OPEN,OUT_ID_FLOOR_HEAT_VALVE_CLOSE,OUT_ID_FLOOR_HEAT_PUMP,2); 
+tHeatingCircleControl FloorTemperatureValveControl(1,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -102,12 +102,12 @@ void setup() {
   tSensor::Create(SENSOR_TYPE_DS1820,1);
   tDS1820Sensor::tDS1820SensorConfig Config;
   Config.Pin = 2;
-  Config.NumOfDevices = 3;
+  Config.NumOfDevices = 2;
   Config.Avg = 0;
   
   tSensor *pSensor = tSensor::getSensor(1);
   
-//  pSensor->SetEventCalback(&DS1820SensorCallback);
+  pSensor->SetEventCalback(&DS1820SensorCallback);
   pSensor->SetMeasurementPeriod(50);   //5 sec
   pSensor->SetSpecificConfig(&Config);
 
