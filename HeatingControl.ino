@@ -107,15 +107,15 @@ void setup() {
   
   tSensor *pSensor = tSensor::getSensor(1);
   
-  pSensor->SetEventCalback(&DS1820SensorCallback);
   pSensor->SetMeasurementPeriod(50);   //5 sec
   pSensor->SetSpecificConfig(&Config);
 
   FloorTemperatureValveControl.setTargetTemp(29);
-  FloorTemperatureValveControl.setTolerance(0.3);
+  FloorTemperatureValveControl.setTolerance(0.5);
   FloorTemperatureValveControl.setHisteresis(0.7);
-  FloorTemperatureValveControl.setFastThold(0.7);  
+  FloorTemperatureValveControl.setFastThold(1); 
   pSensor->SetEventCalback(&FloorTemperatureValveControl);
+  pSensor->SetEventCalback(&DS1820SensorCallback);
   FloorTemperatureValveControl.Start();
 }
 
