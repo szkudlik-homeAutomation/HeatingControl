@@ -1,7 +1,7 @@
 /*
  * tOutputProcessheatingControl.h
  *
- *  Created on: 9 paŸ 2022
+ *  Created on: 9 paï¿½ 2022
  *      Author: szkud
  */
 
@@ -18,9 +18,9 @@ public:
 
    virtual void setup()
    {
-      Output[OUT_ID_FLOOR_HEAT_VALVE_OPEN].SetPin(OUT_PIN_FLOOR_HEAT_VALVE_OPEN,0);
-      Output[OUT_ID_FLOOR_HEAT_VALVE_CLOSE].SetPin(OUT_PIN_FLOOR_HEAT_VALVE_CLOSE,0);
-      Output[OUT_ID_FLOOR_HEAT_PUMP].SetPin(OUT_PIN_FLOOR_HEAT_PUMP,0);
+      Output[OUT_ID_TEST1].SetPin(OUT_PIN_TEST1,0);
+      Output[OUT_ID_TEST2].SetPin(OUT_PIN_TEST2,0);
+      Output[OUT_ID_TEST3].SetPin(OUT_PIN_TEST3,0);
    }
 };
 
