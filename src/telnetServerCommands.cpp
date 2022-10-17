@@ -1,19 +1,20 @@
 /*
  * telnetServerCommands.cpp
  *
- *  Created on: 6 paŸ 2022
+ *  Created on: 6 paï¿½ 2022
  *      Author: szkud
  */
 
 #include "../global.h"
 #include <Commander.h>
 #include "Common_code/telnetServer.h"
-
+#include "tHeatingCircleControl.h"
 
 bool enableLogs(Commander &Cmdr);
 bool disableLogs(Commander &Cmdr);
 bool send_GetVersion(Commander &Cmdr);
 bool send_Reset(Commander &Cmdr);
+
 
 const commandList_t TelnetCommands[] = {
   {"enableLogs",      enableLogs,                   "enable logs on telnet console"},
@@ -23,6 +24,10 @@ const commandList_t TelnetCommands[] = {
 };
 
 tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
+
+
+extern tHeatingCircleControl FloorTemperatureValveControl;
+
 
 bool enableLogs(Commander &Cmdr)
 {

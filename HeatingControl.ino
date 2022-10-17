@@ -13,7 +13,7 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/servlets.h"
 #include "src/tOutputProcessheatingControl.h"
-
+#include "src/tHeatingCircleControl.h"
 
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 
@@ -34,8 +34,6 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 
    return NULL;
 }
-
-tDS1820SensorCallback DS1820SensorCallback;
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
