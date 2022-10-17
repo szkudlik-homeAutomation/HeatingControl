@@ -68,6 +68,8 @@ public:
    }
 };
 tDS1820SensorCallback DS1820SensorCallback;
+tHeatingCircleControl FloorTemperatureValveControl(1,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
+
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
     SetDefaultEEPromValues();
@@ -105,7 +107,16 @@ void setup() {
   
   pSensor->SetMeasurementPeriod(50);   //5 sec
   pSensor->SetSpecificConfig(&Config);
+
+  FloorTemperatureValveControl.setTargetTemp(29);
+  FloorTemperatureValveControl.setTolerance(0.5);
+  FloorTemperatureValveControl.setHisteresis(0.7);
+  FloorTemperatureValveControl.setFastThold(1); 
+  pSensor->SetEventCalback(&FloorTemperatureValveControl);
+  FloorTemperatureValveControl.Start();
+  
   pSensor->SetEventCalback(&DS1820SensorCallback);
+
 }
 
 
