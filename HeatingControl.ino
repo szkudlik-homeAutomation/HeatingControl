@@ -69,6 +69,7 @@ public:
 };
 tDS1820SensorCallback DS1820SensorCallback;
 tHeatingCircleControl FloorTemperatureValveControl(1,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
+tHeatingCircleControl RadiatorsTemperatureValveControl(0,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -112,11 +113,21 @@ void setup() {
   FloorTemperatureValveControl.setTolerance(0.5);
   FloorTemperatureValveControl.setHisteresis(0.7);
   FloorTemperatureValveControl.setFastThold(1); 
+
+  RadiatorsTemperatureValveControl.setTargetTemp(32);
+  RadiatorsTemperatureValveControl.setTolerance(0.7);
+  RadiatorsTemperatureValveControl.setHisteresis(1);
+  RadiatorsTemperatureValveControl.setFastThold(2); 
+
+  
   pSensor->SetEventCalback(&FloorTemperatureValveControl);
-  FloorTemperatureValveControl.Start();
+  pSensor->SetEventCalback(&RadiatorsTemperatureValveControl);
   
   pSensor->SetEventCalback(&DS1820SensorCallback);
-
+  FloorTemperatureValveControl.Start();
+  RadiatorsTemperatureValveControl.Start();
+//  FloorTemperatureValveControl.Stop();
+//  RadiatorsTemperatureValveControl.Stop();
 }
 
 
