@@ -10,6 +10,7 @@
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
+#include "src/Common_code/sensors/tImpulseSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/servlets.h"
 #include "src/tOutputProcessheatingControl.h"
@@ -67,7 +68,25 @@ public:
       }
    }
 };
+
+class tImpulseSensorCallback : public tSensorEvent
+{
+public:
+   tImpulseSensorCallback() {};
+   virtual void onEvent(tSensor *pSensor, tEventType EventType)
+   {
+      if (tSensorEvent::EV_TYPE_MEASUREMENT_COMPLETED == EventType)
+      {
+         tImpulseSensor::tResult *pResult =(tImpulseSensor::tResult *) pSensor->getMeasurementBlob();
+         DEBUG_SERIAL.print("Impulse count: "); 
+         DEBUG_SERIAL.println(pResult->Count);
+      }
+   }
+};
+
 tDS1820SensorCallback DS1820SensorCallback;
+tImpulseSensorCallback tImpulseSensorCallback;
+
 tHeatingCircleControl FloorTemperatureValveControl(1,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
 tHeatingCircleControl RadiatorsTemperatureValveControl(0,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
 
@@ -128,6 +147,17 @@ void setup() {
   RadiatorsTemperatureValveControl.Start();
 //  FloorTemperatureValveControl.Stop();
 //  RadiatorsTemperatureValveControl.Stop();
+  
+  tSensor::Create(SENSOR_TYPE_IMPULSE,2);
+  tImpulseSensor::tConfig Config2;
+  Config2.Pin = 52;
+  Config2.mode = FALLING;
+  Config2.ContinousCnt = false;
+  pSensor = tSensor::getSensor(2);
+  
+  pSensor->SetMeasurementPeriod(20);   //2 sec
+  pSensor->SetSpecificConfig(&Config2);
+  pSensor->SetEventCalback(&tImpulseSensorCallback);
 }
 
 

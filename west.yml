@@ -16,7 +16,7 @@ manifest:
            - TCP_Communication_lib
            - ds1820
            - YetAnotherArduinoPcIntLibrary
-      revision: d537d42d069efd97651103c02832fbad9bc7476f
+      revision: ac9d929b2c0fb53f4f27a57cf55cfd555fdcbf3e
 
     - name: ArduinoProcessScheduler    
       path: HeatingControl/src/lib/external/ArduinoProcessScheduler
