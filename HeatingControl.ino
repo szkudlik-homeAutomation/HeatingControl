@@ -58,6 +58,8 @@ void setup() {
   WatchdogProcess.add(true);
 
 #ifdef DEBUG_SERIAL
+  DEBUG_SERIAL.print("Free RAM: ");
+  DEBUG_SERIAL.println(getFreeRam());
   DEBUG_SERIAL.println("SYSTEM INITIALIZED");
 #endif
   
