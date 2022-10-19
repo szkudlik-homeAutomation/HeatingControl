@@ -26,7 +26,7 @@
 #include "GlobalDefs/Eeprom.h"
 #include "GlobalDefs/outputPins.h"
 #include "src/Common_code/debug.h"
-
+#include "src/Common_code/helpers.h"
 
 
 #endif /* GLOBAL_H_ */
