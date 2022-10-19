@@ -89,12 +89,19 @@ public:
 tDS1820SensorCallback DS1820SensorCallback;
 
 tImpulseSensor *pImpulseSensor = NULL;
-void Interrupt()
+tImpulseSensor *pImpulseSensor1 = NULL;
+
+void Interrupt(void)
 {
-	if (pImpulseSensor) pImpulseSensor->Impulse();
+   if(pImpulseSensor) pImpulseSensor->Impulse();
 }
 
-tImpulseSensorCallback tImpulseSensorCallback;
+void Interrupt1(void)
+{
+   if(pImpulseSensor1) pImpulseSensor1->Impulse();
+}
+
+tImpulseSensorCallback ImpulseSensorCallback;
 
 tHeatingCircleControl FloorTemperatureValveControl(1,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
 tHeatingCircleControl RadiatorsTemperatureValveControl(0,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
@@ -156,7 +163,22 @@ void setup() {
 
    tSensor::Create(SENSOR_TYPE_IMPULSE,2);
    pImpulseSensor = tSensor::getSensor(2);
-   attachInterrupt(digitalPinToInterrupt(2), Interrupt, FALLING);
+
+   tSensor::Create(SENSOR_TYPE_IMPULSE,3);
+   pImpulseSensor1 = tSensor::getSensor(3);
+
+   pImpulseSensor->SetMeasurementPeriod(20);   //2 sec
+   pImpulseSensor->SetEventCalback(&ImpulseSensorCallback);
+
+   pImpulseSensor1->SetMeasurementPeriod(20);   //2 sec
+   pImpulseSensor1->SetEventCalback(&ImpulseSensorCallback);
+
+   pinMode(20, INPUT_PULLUP);
+   attachInterrupt(digitalPinToInterrupt(20), Interrupt, FALLING);
+   pinMode(21, INPUT_PULLUP);
+   attachInterrupt(digitalPinToInterrupt(21), Interrupt1, FALLING);
+   
+   
 
 
 #ifdef DEBUG_SERIAL
