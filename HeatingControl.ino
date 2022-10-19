@@ -42,8 +42,8 @@ public:
    
    virtual void onEvent(tSensor *pSensor, tEventType EventType)
    {
-      tDS1820Sensor::tDS1820Result *pDS1820Result =(tDS1820Sensor::tDS1820Result *) pSensor->getMeasurementBlob();
-      uint8_t NumOfItems = pSensor->getMeasurementBlobSize() / sizeof(tDS1820Sensor::tDS1820Result); 
+      tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pSensor->getMeasurementBlob();
+      uint8_t NumOfItems = pSensor->getMeasurementBlobSize() / sizeof(tDS1820Sensor::tResult); 
       
       switch (EventType)
       {
@@ -92,16 +92,10 @@ void setup() {
 //  Worker.add();
   OutputProcess.add(true);
   WatchdogProcess.add(true);
-
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.print("Free RAM: ");
-  DEBUG_SERIAL.println(getFreeRam());
-  DEBUG_SERIAL.println("SYSTEM INITIALIZED");
-#endif
   
 
   tSensor::Create(SENSOR_TYPE_DS1820,1);
-  tDS1820Sensor::tDS1820SensorConfig Config;
+  tDS1820Sensor::tConfig Config;
   Config.Pin = 2;
   Config.NumOfDevices = 2;
   Config.Avg = 0;
@@ -130,6 +124,13 @@ void setup() {
   RadiatorsTemperatureValveControl.Start();
 //  FloorTemperatureValveControl.Stop();
 //  RadiatorsTemperatureValveControl.Stop();
+
+
+#ifdef DEBUG_SERIAL
+  DEBUG_SERIAL.print("Free RAM: ");
+  DEBUG_SERIAL.println(getFreeRam());
+  DEBUG_SERIAL.println("SYSTEM INITIALIZED");
+#endif
 }
 
 
