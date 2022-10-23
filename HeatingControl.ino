@@ -11,6 +11,7 @@
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/Common_code/sensors/tImpulseSensor.h"
+#include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/servlets.h"
 #include "src/tOutputProcessheatingControl.h"
@@ -86,6 +87,22 @@ public:
    }
 };
 
+class tPt100SensorCallback : public tSensorEvent
+{
+public:
+   tPt100SensorCallback() {};
+   virtual void onEvent(tSensor *pSensor, tEventType EventType)
+   {
+      if (tSensorEvent::EV_TYPE_MEASUREMENT_COMPLETED == EventType)
+      {
+         tPt100AnalogSensor::tResult *pResult =(tPt100AnalogSensor::tResult *) pSensor->getMeasurementBlob();
+         DEBUG_SERIAL.print("Temp: "); 
+         DEBUG_SERIAL.println(pResult->Temperature);
+      }
+   }
+};
+
+tPt100SensorCallback Pt100SensorCallback;
 tDS1820SensorCallback DS1820SensorCallback;
 
 tImpulseSensor *pImpulseSensor = NULL;
@@ -140,7 +157,7 @@ void setup() {
   pSensor->SetMeasurementPeriod(50);   //5 sec
   pSensor->SetSpecificConfig(&Config);
 
-  FloorTemperatureValveControl.setTargetTemp(29);
+  FloorTemperatureValveControl.setTargetTemp(28);
   FloorTemperatureValveControl.setTolerance(0.5);
   FloorTemperatureValveControl.setHisteresis(0.7);
   FloorTemperatureValveControl.setFastThold(1); 
@@ -158,7 +175,7 @@ void setup() {
   FloorTemperatureValveControl.Start();
   RadiatorsTemperatureValveControl.Start();
 //  FloorTemperatureValveControl.Stop();
-//  RadiatorsTemperatureValveControl.Stop();
+  RadiatorsTemperatureValveControl.Stop();
 
 
    tSensor::Create(SENSOR_TYPE_IMPULSE,2);
@@ -178,8 +195,21 @@ void setup() {
    pinMode(21, INPUT_PULLUP);
    attachInterrupt(digitalPinToInterrupt(21), Interrupt1, FALLING);
    
-   
+   tSensor::Create(SENSOR_TYPE_PT100_ANALOG,4);
+   tSensor::Create(SENSOR_TYPE_PT100_ANALOG,5);
 
+   pSensor = tSensor::getSensor(4);
+   tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
+   Pt100AnalogSensorConfig.Pin = A14;
+   pSensor->SetMeasurementPeriod(20);   //2 sec
+   pSensor->SetSpecificConfig(&Pt100AnalogSensorConfig);
+   pSensor->SetEventCalback(&Pt100SensorCallback);
+
+   pSensor = tSensor::getSensor(5);
+   Pt100AnalogSensorConfig.Pin = A15;
+   pSensor->SetMeasurementPeriod(20);   //2 sec
+   pSensor->SetSpecificConfig(&Pt100AnalogSensorConfig);
+   pSensor->SetEventCalback(&Pt100SensorCallback);
 
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print("Free RAM: ");
