@@ -36,6 +36,8 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
    if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
    if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
    if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();
+   if (pRequestBuffer->startsWith("/heat")) return new tHeatingControlServletTMP();
+
 
    return NULL;
 }

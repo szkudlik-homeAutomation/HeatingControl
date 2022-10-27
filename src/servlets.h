@@ -12,4 +12,17 @@ public:
   virtual bool ProcessAndResponse();
 };
 
+
+class tHeatingControlServletTMP :  public tHttpServlet
+{
+public:
+	tHeatingControlServletTMP() : tHttpServlet() {}
+  virtual ~tHeatingControlServletTMP() {}
+
+  virtual bool ProcessAndResponse();
+};
+
+
 #endif
+
+
