@@ -33,6 +33,7 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
    if (pRequestBuffer->startsWith("/1.js")) return new tjavaScriptServlet();
    if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
    if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
+   if (pRequestBuffer->startsWith("/heat")) return new tHeatingControlServletTMP();
 
    return NULL;
 }
@@ -162,7 +163,7 @@ void setup() {
   FloorTemperatureValveControl.setHisteresis(0.7);
   FloorTemperatureValveControl.setFastThold(1); 
 
-  RadiatorsTemperatureValveControl.setTargetTemp(32);
+  RadiatorsTemperatureValveControl.setTargetTemp(31);
   RadiatorsTemperatureValveControl.setTolerance(0.7);
   RadiatorsTemperatureValveControl.setHisteresis(1);
   RadiatorsTemperatureValveControl.setFastThold(2); 
@@ -175,7 +176,7 @@ void setup() {
   FloorTemperatureValveControl.Start();
   RadiatorsTemperatureValveControl.Start();
 //  FloorTemperatureValveControl.Stop();
-  RadiatorsTemperatureValveControl.Stop();
+//  RadiatorsTemperatureValveControl.Stop();
 
 
    tSensor::Create(SENSOR_TYPE_IMPULSE,2);
