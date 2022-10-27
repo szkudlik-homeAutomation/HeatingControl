@@ -48,6 +48,8 @@ public:
    float getFastThold()  const { return ((float)(mFastValveMoveThold) / 10); }
    float getHisteresis() const { return ((float)(mHisteresis) / 10); }
 
+   bool isWorking() const { return mState != STATE_OFF; }
+
 private:
    typedef enum
    {
