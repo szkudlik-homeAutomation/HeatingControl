@@ -36,7 +36,7 @@ public:
    void Stop()  { mState = STATE_OFF; }
    void Start()  { mState = STATE_IDLE; }
 
-   virtual void onEvent(tSensor *pSensor, tEventType EventType);
+   virtual void onEvent(tSensor *pSensor, tSensorEventType EventType);
 
    void setTargetTemp(float TargetTemp) { mTargetTemp = TargetTemp * 10; }
    void setTolerance(float Tolerance)   { mTolerance = Tolerance * 10; }

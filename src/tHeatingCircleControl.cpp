@@ -12,7 +12,7 @@
 //#define LOCAL_DEBUG
 
 
-void tHeatingCircleControl::onEvent(tSensor *pSensor, tEventType EventType)
+void tHeatingCircleControl::onEvent(tSensor *pSensor, tSensorEventType EventType)
 {
 	if (EventType == EV_TYPE_MEASUREMENT_ERROR)
 	{
