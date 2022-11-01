@@ -10,12 +10,12 @@
 
 #include "../global.h"
 #include "tOutputProcessheatingControl.h"
-#include "Common_code/sensors/tSensor.h"
+#include "Common_code/sensors/tSensorHub.h"
 
 // note that the events are triggered by a sensor thold
 // set sensor to proper time
 // than set the object as a callback to the se
-class tHeatingCircleControl : public tSensorEvent {
+class tHeatingCircleControl : public tSensorHubEvent {
 public:
 	static const uint16_t MAX_VALVE_TIME = 100;
 	static const uint16_t MAX_PUMP_TIME = 100;
@@ -36,7 +36,7 @@ public:
    void Stop()  { mState = STATE_OFF; }
    void Start()  { mState = STATE_IDLE; }
 
-   virtual void onEvent(tSensor *pSensor, tSensorEventType EventType);
+   virtual void onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob);
 
    void setTargetTemp(float TargetTemp) { mTargetTemp = TargetTemp * 10; }
    void setTolerance(float Tolerance)   { mTolerance = Tolerance * 10; }

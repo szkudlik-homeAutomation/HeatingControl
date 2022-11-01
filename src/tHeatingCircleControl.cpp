@@ -12,7 +12,7 @@
 #define LOCAL_DEBUG
 
 
-void tHeatingCircleControl::onEvent(tSensor *pSensor, tSensorEventType EventType)
+void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
 {
 	if (EventType == EV_TYPE_MEASUREMENT_ERROR)
 	{
@@ -24,7 +24,7 @@ void tHeatingCircleControl::onEvent(tSensor *pSensor, tSensorEventType EventType
 		return;
 	}
 
-	tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pSensor->getMeasurementBlob();
+	tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
 	int16_t CurrentTemperature = (pDS1820Result+mSensorDevID)->Temp;
 	int16_t Delta = abs(CurrentTemperature - mTargetTemp);
 	bool doOpen = (mTargetTemp > CurrentTemperature);
