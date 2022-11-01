@@ -9,7 +9,7 @@
 #include "tHeatingCircleControl.h"
 #include "Common_code/sensors/tDS1820Sensor.h"
 
-//#define LOCAL_DEBUG
+#define LOCAL_DEBUG
 
 
 void tHeatingCircleControl::onEvent(tSensor *pSensor, tSensorEventType EventType)
