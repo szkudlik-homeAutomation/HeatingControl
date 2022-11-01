@@ -25,7 +25,7 @@ void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType
 	}
 
 	tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
-	int16_t CurrentTemperature = (pDS1820Result+mSensorDevID)->Temp;
+	int16_t CurrentTemperature = (pDS1820Result)->Temp[mSensorDevID];
 	int16_t Delta = abs(CurrentTemperature - mTargetTemp);
 	bool doOpen = (mTargetTemp > CurrentTemperature);
 
