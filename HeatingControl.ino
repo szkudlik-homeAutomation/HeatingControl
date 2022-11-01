@@ -48,19 +48,28 @@ public:
    virtual void onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
    {
       tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
-      uint8_t NumOfItems = dataBlobSize / sizeof(tDS1820Sensor::tResult); 
       
       switch (EventType)
       {
          case EV_TYPE_MEASUREMENT_COMPLETED: 
             DEBUG_SERIAL.print("Measurement completed. devs: ");
-            DEBUG_SERIAL.print(NumOfItems);
+            DEBUG_SERIAL.print(pDS1820Result->NumOfDevices);
+            DEBUG_SERIAL.print(" Avg: ");
+            DEBUG_SERIAL.print(pDS1820Result->Avg);
+            uint8_t NumOfItems;
+            if (pDS1820Result->Avg) {
+               NumOfItems = 1;
+            }
+            else
+            {
+               NumOfItems = pDS1820Result->NumOfDevices;
+            }
             for (int i = 0; i < NumOfItems; i++)
             {
                DEBUG_SERIAL.print(" dev: ");
                DEBUG_SERIAL.print(i);
                DEBUG_SERIAL.print(" temp: ");
-               DEBUG_SERIAL.print(((float)(pDS1820Result+i)->Temp) / 10);
+               DEBUG_SERIAL.print(((float)(pDS1820Result)->Temp[i]) / 10);
             }
             DEBUG_SERIAL.println();
             break;
@@ -99,7 +108,7 @@ public:
       if (EV_TYPE_MEASUREMENT_COMPLETED == EventType)
       {
          tPt100AnalogSensor::tResult *pResult =(tPt100AnalogSensor::tResult *) pDataBlob;
-         DEBUG_SERIAL.print("Temp: "); 
+         DEBUG_SERIAL.print("PT100 Temp: "); 
          DEBUG_SERIAL.println(pResult->Temperature);
       }
    }
