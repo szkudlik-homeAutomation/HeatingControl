@@ -183,10 +183,8 @@ void setup() {
   SensorHub.subscribeToEvents(SENSOR_ID_1820,&RadiatorsTemperatureValveControl);
   SensorHub.subscribeToEvents(SENSOR_ID_1820,&DS1820SensorCallback);
 
-  FloorTemperatureValveControl.Start();
-  RadiatorsTemperatureValveControl.Start();
-//  FloorTemperatureValveControl.Stop();
-//  RadiatorsTemperatureValveControl.Stop();
+  FloorTemperatureValveControl.Stop();
+  RadiatorsTemperatureValveControl.Stop();
 
 
   
