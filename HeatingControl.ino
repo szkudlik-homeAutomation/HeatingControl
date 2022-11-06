@@ -42,14 +42,14 @@ void setup() {
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.begin(115200);
   while (!DEBUG_SERIAL);
-  DEBUG_SERIAL.print("START, v");
+  DEBUG_SERIAL.print(F("START, v"));
   DEBUG_SERIAL.println(FW_VERSION);
 #endif
 
   Network.init();
   TcpServerProcess.add(true);
 #ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.println("START Tcp ");
+  DEBUG_SERIAL.println(F("START Tcp "));
 #endif
 
   SensorProcess.add(true);
@@ -58,9 +58,9 @@ void setup() {
   WatchdogProcess.add(true);
 
 #ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.print("Free RAM: ");
+  DEBUG_SERIAL.print(F("Free RAM: "));
   DEBUG_SERIAL.println(getFreeRam());
-  DEBUG_SERIAL.println("SYSTEM INITIALIZED");
+  DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
 #endif
   
 }
