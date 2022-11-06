@@ -74,7 +74,7 @@ public:
                DEBUG_SERIAL.print(" dev: ");
                DEBUG_SERIAL.print(i);
                DEBUG_SERIAL.print(" temp: ");
-               DEBUG_SERIAL.print(((float)(pDS1820Result)->Temp[i]) / 10);
+               DEBUG_SERIAL.print(((float)(pDS1820Result)->Dev[i].Temperature) / 10);
             }
             DEBUG_SERIAL.println();
             break;
