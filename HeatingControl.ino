@@ -15,6 +15,9 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
 
+// restart if no connection for 5 minutes
+#define TCP_WATCHDOG_TIMEOUT 300 
+
 Scheduler sched;
 tSensorProcess SensorProcess(sched); 
 //WorkerProcess Worker(sched);
@@ -22,7 +25,7 @@ tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
 tNetwork Network;
-tTcpServerProcess TcpServerProcess(sched);
+tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
 tHttpServer HttpServer;
 extern tTelnetServer TelnetServer;
 
