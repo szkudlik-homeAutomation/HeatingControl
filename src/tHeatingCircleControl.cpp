@@ -14,7 +14,9 @@
 
 void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
 {
-	if (EventType == EV_TYPE_MEASUREMENT_ERROR)
+   tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
+
+   if (EventType == EV_TYPE_MEASUREMENT_ERROR)
 	{
 		StopValve();
 		return;
@@ -24,7 +26,19 @@ void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType
 		return;
 	}
 
-	tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
+	if (mSensorDevID == 255)
+	{
+	   // find the sensor
+	   for(uint8_t i = 0; i < pDS1820Result->NumOfDevices; i++)
+	   {
+	      if (strncmp(mSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
+	      {
+	         mSensorDevID = i;
+	         break;
+	      }
+	   }
+	}
+
 	int16_t CurrentTemperature = (pDS1820Result)->Dev[mSensorDevID].Temperature;
 	int16_t Delta = abs(CurrentTemperature - mTargetTemp);
 	bool doOpen = (mTargetTemp > CurrentTemperature);
