@@ -16,7 +16,8 @@ manifest:
            - TCP_Communication_lib
            - ds1820
            - ArduinoProcessScheduler
-      revision: 056f2266be0c04d22948cd800c4b947b40376161
+           - Ethernet
+      revision: 258ec6a386bff7ab9fbb591af8d17fc7ac749486
 
   self:
       path: HeatingControl
