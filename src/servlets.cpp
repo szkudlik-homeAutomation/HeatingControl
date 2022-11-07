@@ -10,8 +10,8 @@ bool tjavaScriptServlet::ProcessAndResponse()
 }
 
 
-extern tHeatingCircleControl FloorTemperatureValveControl;
-extern tHeatingCircleControl RadiatorsTemperatureValveControl;
+extern tHeatingCircleControl *pFloorTemperatureValveControl;
+extern tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 
 
 bool tHeatingControlServletTMP::ProcessAndResponse()
@@ -24,33 +24,33 @@ bool tHeatingControlServletTMP::ProcessAndResponse()
 	if (GetParameter("PowerFloor",&PowerFloor))
 	{
 		if (PowerFloor)
-			FloorTemperatureValveControl.Start();
+			pFloorTemperatureValveControl->Start();
 		else
-			FloorTemperatureValveControl.Stop();
+			pFloorTemperatureValveControl->Stop();
 	}
 
 	if (GetParameter("PowerRadiators",&PowerRadiators))
 	{
 		if (PowerRadiators)
-			RadiatorsTemperatureValveControl.Start();
+			pRadiatorsTemperatureValveControl->Start();
 		else
-			RadiatorsTemperatureValveControl.Stop();
+			pRadiatorsTemperatureValveControl->Stop();
 	}
 
 	if (GetParameter("TempFloor",&TempFloor))
 	{
-		FloorTemperatureValveControl.setTargetTemp((float)TempFloor/10);
+		pFloorTemperatureValveControl->setTargetTemp((float)TempFloor/10);
 	}
 
 	if (GetParameter("TempRadiators",&TempRadiators))
 	{
-		RadiatorsTemperatureValveControl.setTargetTemp((float)TempRadiators/10);
+		pRadiatorsTemperatureValveControl->setTargetTemp((float)TempRadiators/10);
 	}
 
     pOwner->SendFlashString(PSTR("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n"));
 
     pOwner->SendFlashString(PSTR("Floor: "));
-    if (FloorTemperatureValveControl.isWorking())
+    if (pFloorTemperatureValveControl->isWorking())
     {
         pOwner->SendFlashString(PSTR("ON "));
     }
@@ -59,10 +59,10 @@ bool tHeatingControlServletTMP::ProcessAndResponse()
         pOwner->SendFlashString(PSTR("OFF "));
     }
     pOwner->SendFlashString(PSTR("Temperature set: "));
-    pOwner->mEthernetClient.println(FloorTemperatureValveControl.getTargetTemp());
+    pOwner->mEthernetClient.println(pFloorTemperatureValveControl->getTargetTemp());
 
     pOwner->SendFlashString(PSTR("Radiators: "));
-    if (RadiatorsTemperatureValveControl.isWorking())
+    if (pRadiatorsTemperatureValveControl->isWorking())
     {
         pOwner->SendFlashString(PSTR("ON "));
     }
@@ -71,7 +71,7 @@ bool tHeatingControlServletTMP::ProcessAndResponse()
         pOwner->SendFlashString(PSTR("OFF "));
     }
     pOwner->SendFlashString(PSTR("Temperature set: "));
-    pOwner->mEthernetClient.print(RadiatorsTemperatureValveControl.getTargetTemp());
+    pOwner->mEthernetClient.print(pRadiatorsTemperatureValveControl->getTargetTemp());
 
     return false;
 }

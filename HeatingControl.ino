@@ -123,8 +123,11 @@ tPt100SensorCallback Pt100SensorCallback;
 tDS1820SensorCallback DS1820SensorCallback;
 tImpulseSensorCallback ImpulseSensorCallback;
 
-tHeatingCircleControl FloorTemperatureValveControl(1,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
-tHeatingCircleControl RadiatorsTemperatureValveControl(0,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
+tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
+tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
+
+tHeatingCircleControl *pFloorTemperatureValveControl; 
+tHeatingCircleControl *pRadiatorsTemperatureValveControl; 
 
 tImpulseSensor *pImpulseSensor = NULL;
 tImpulseSensor *pImpulseSensor1 = NULL;
@@ -165,61 +168,73 @@ void setup() {
   WatchdogProcess.add(true);
   
 
+#define SENSOR_ID_1820_HEATING_TEMP 1
+#define SENSOR_ID_1820_AIR_HUW_TEMP 2
   tDS1820Sensor::tConfig Ds1820Config;
+
   Ds1820Config.Pin = 2;
-  Ds1820Config.NumOfDevices = 2;
+  Ds1820Config.NumOfDevices = 3;
   Ds1820Config.Avg = 0;
-#define SENSOR_ID_1820 1
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820, "HeatingTemp", &Ds1820Config, 50); //5 sec
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP, "HeatingTemp", &Ds1820Config, 50); //5 sec
+
+  Ds1820Config.Pin = 3;
+  Ds1820Config.NumOfDevices = 4;
+  Ds1820Config.Avg = 0;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP, "AirHuwTemp",  &Ds1820Config, 50); //5 sec
   
-  FloorTemperatureValveControl.setTargetTemp(28);
-  FloorTemperatureValveControl.setTolerance(0.5);
-  FloorTemperatureValveControl.setHisteresis(0.7);
-  FloorTemperatureValveControl.setFastThold(1); 
-
-  RadiatorsTemperatureValveControl.setTargetTemp(31);
-  RadiatorsTemperatureValveControl.setTolerance(0.7);
-  RadiatorsTemperatureValveControl.setHisteresis(1);
-  RadiatorsTemperatureValveControl.setFastThold(2); 
-
-  SensorHub.subscribeToEvents(SENSOR_ID_1820,&FloorTemperatureValveControl);
-  SensorHub.subscribeToEvents(SENSOR_ID_1820,&RadiatorsTemperatureValveControl);
-  SensorHub.subscribeToEvents(SENSOR_ID_1820,&DS1820SensorCallback);
-
-  FloorTemperatureValveControl.Stop();
-  RadiatorsTemperatureValveControl.Stop();
-
+  
+  pFloorTemperatureValveControl = new tHeatingCircleControl(FloorTemperatureTempSensorSerial,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
+  pRadiatorsTemperatureValveControl = new tHeatingCircleControl(RadiatorsTemperatureTempSensorSerial,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
 
   
-#define SENSOR_ID_IMPULSE 2
-#define SENSOR_ID_IMPULSE1 3
+  pFloorTemperatureValveControl->setTargetTemp(28);
+  pFloorTemperatureValveControl->setTolerance(0.5);
+  pFloorTemperatureValveControl->setHisteresis(0.7);
+  pFloorTemperatureValveControl->setFastThold(1); 
+
+  pRadiatorsTemperatureValveControl->setTargetTemp(31);
+  pRadiatorsTemperatureValveControl->setTolerance(0.7);
+  pRadiatorsTemperatureValveControl->setHisteresis(1);
+  pRadiatorsTemperatureValveControl->setFastThold(2); 
+
+  SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pFloorTemperatureValveControl);
+  SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pRadiatorsTemperatureValveControl);
+  SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,&DS1820SensorCallback);
+
+  pFloorTemperatureValveControl->Stop();
+  pRadiatorsTemperatureValveControl->Stop();
+
+
   
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE, "HeatPumpPower", NULL, 50); //5 sec
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE1, "AuxHeatPower", NULL, 50); //5 sec
+//#define SENSOR_ID_IMPULSE 2
+//#define SENSOR_ID_IMPULSE1 3
+  
+//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE, "HeatPumpPower", NULL, 50); //5 sec
+//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE1, "AuxHeatPower", NULL, 50); //5 sec
 
   // local pointers to sensors - interrupts
-  pImpulseSensor = tSensor::getSensor(SENSOR_ID_IMPULSE);
-  pImpulseSensor1 = tSensor::getSensor(SENSOR_ID_IMPULSE1);
-  pinMode(20, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(20), Interrupt, FALLING);
-  pinMode(21, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(21), Interrupt1, FALLING);
-  
-  
-  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE,&ImpulseSensorCallback);
-  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE1,&ImpulseSensorCallback);
-  
-#define SENSOR_ID_PT100_ANALOG 4
-#define SENSOR_ID_PT100_ANALOG1 5
+//  pImpulseSensor = tSensor::getSensor(SENSOR_ID_IMPULSE);
+//  pImpulseSensor1 = tSensor::getSensor(SENSOR_ID_IMPULSE1);
+//  pinMode(20, INPUT_PULLUP);
+//  attachInterrupt(digitalPinToInterrupt(20), Interrupt, FALLING);
+//  pinMode(21, INPUT_PULLUP);
+//  attachInterrupt(digitalPinToInterrupt(21), Interrupt1, FALLING);
+//  
+//  
+//  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE,&ImpulseSensorCallback);
+//  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE1,&ImpulseSensorCallback);
 
-  tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
-  Pt100AnalogSensorConfig.Pin = A14;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_ANALOG, "RoomHeatingAir", &Pt100AnalogSensorConfig, 20); //2 sec
-  Pt100AnalogSensorConfig.Pin = A15;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_ANALOG1, "AirPump", &Pt100AnalogSensorConfig, 20); //2 sec
-  
-  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG,&Pt100SensorCallback);
-  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG1,&Pt100SensorCallback);
+//#define SENSOR_ID_PT100_ANALOG 4
+//#define SENSOR_ID_PT100_ANALOG1 5
+//
+//  tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
+//  Pt100AnalogSensorConfig.Pin = A14;
+//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_ANALOG, "RoomHeatingAir", &Pt100AnalogSensorConfig, 20); //2 sec
+//  Pt100AnalogSensorConfig.Pin = A15;
+//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_ANALOG1, "AirPump", &Pt100AnalogSensorConfig, 20); //2 sec
+//  
+//  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG,&Pt100SensorCallback);
+//  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG1,&Pt100SensorCallback);
 
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
