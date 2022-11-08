@@ -1,4 +1,4 @@
-#include "src/lib/external/ArduinoProcessScheduler/src/ProcessScheduler.h"
+#include "src/lib/ArduinoProcessScheduler/src/ProcessScheduler.h"
 #include <Arduino.h>
 
 #include "global.h"
