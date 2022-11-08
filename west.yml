@@ -13,11 +13,10 @@ manifest:
       import: 
         path-prefix: HeatingControl
         name-allowlist: 
-           - TCP_Communication_lib
            - ds1820
            - ArduinoProcessScheduler
            - Ethernet
-      revision: 44b9f0347fff0725c5b5a282bb935fc53a7a8ef4
+      revision: 62a8284d00f4a57b8b045dac69e7972f96db9819
 
   self:
       path: HeatingControl
