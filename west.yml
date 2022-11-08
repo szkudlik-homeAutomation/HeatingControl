@@ -16,7 +16,7 @@ manifest:
            - ds1820
            - ArduinoProcessScheduler
            - Ethernet
-      revision: a50798011ffa250bf302f60d00d15e518b987f50
+      revision: 8b66613ed9af346872c39d80b341e39a41544d93
 
   self:
       path: HeatingControl

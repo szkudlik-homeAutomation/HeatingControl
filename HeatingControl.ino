@@ -6,7 +6,7 @@
 #include "src/Common_code/Network/network.h"
 #include "src/Common_code/Network/TcpServer.h"
 #include "src/Common_code/Network/HttpServer.h"
-#include "src/Common_code/TelnetServer.h"
+#include "src/Common_code/Network/TelnetServer.h"
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
