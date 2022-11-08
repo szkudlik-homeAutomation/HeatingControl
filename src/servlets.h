@@ -1,7 +1,7 @@
 #ifndef SERVLETS
 #define SERVLETS
 
-#include "lib/TCP_Communication_lib/httpServer.h"
+#include "Common_code/Network/httpServer.h"
 
 class tjavaScriptServlet :  public tHttpServlet
 {
