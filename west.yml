@@ -12,11 +12,7 @@ manifest:
       repo-path: Common_code.git
       import: 
         path-prefix: HeatingControl
-        name-allowlist: 
-           - ds1820
-           - ArduinoProcessScheduler
-           - Ethernet
-      revision: c989379bb865a149620e4d9eecebd1092b7ea596
+      revision: fa9bb2ff9358207d5de36088c9be33484ad57846
 
   self:
       path: HeatingControl
