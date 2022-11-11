@@ -170,6 +170,7 @@ void setup() {
 
 #define SENSOR_ID_1820_HEATING_TEMP 1
 #define SENSOR_ID_1820_AIR_HUW_TEMP 2
+#define SENSOR_ID_1820_OUTDOOR_TEMP 3
   tDS1820Sensor::tConfig Ds1820Config;
 
   Ds1820Config.Pin = 2;
@@ -182,6 +183,11 @@ void setup() {
   Ds1820Config.Avg = 0;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP, "AirHuwTemp",  &Ds1820Config, 50); //5 sec
   
+  Ds1820Config.Pin = 4;
+  Ds1820Config.NumOfDevices = 1;
+  Ds1820Config.Avg = 0;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp",  &Ds1820Config, 50); //5 sec
+
   
   pFloorTemperatureValveControl = new tHeatingCircleControl(FloorTemperatureTempSensorSerial,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
   pRadiatorsTemperatureValveControl = new tHeatingCircleControl(RadiatorsTemperatureTempSensorSerial,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
@@ -206,8 +212,8 @@ void setup() {
 
 
   
-//#define SENSOR_ID_IMPULSE 2
-//#define SENSOR_ID_IMPULSE1 3
+//#define SENSOR_ID_IMPULSE 
+//#define SENSOR_ID_IMPULSE1 
   
 //  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE, "HeatPumpPower", NULL, 50); //5 sec
 //  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE1, "AuxHeatPower", NULL, 50); //5 sec
@@ -224,8 +230,8 @@ void setup() {
 //  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE,&ImpulseSensorCallback);
 //  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE1,&ImpulseSensorCallback);
 
-//#define SENSOR_ID_PT100_ANALOG 4
-//#define SENSOR_ID_PT100_ANALOG1 5
+//#define SENSOR_ID_PT100_ANALOG 
+//#define SENSOR_ID_PT100_ANALOG1 
 //
 //  tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
 //  Pt100AnalogSensorConfig.Pin = A14;
