@@ -5,11 +5,12 @@
  *      Author: szkud
  */
 
+#define DEBUG_2
+
 #include "../global.h"
 #include "tHeatingCircleControl.h"
 #include "Common_code/sensors/tDS1820Sensor.h"
 
-#define LOCAL_DEBUG
 
 
 void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
@@ -58,18 +59,16 @@ void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType
 	 *  	- set state to IDLE
 	 */
 
-#ifdef LOCAL_DEBUG
-	   DEBUG_SERIAL.print("-->Temp: ");
-	   DEBUG_SERIAL.print((float)(CurrentTemperature) / 10);
-	   DEBUG_SERIAL.print(" Target: ");
-	   DEBUG_SERIAL.print(getTargetTemp());
-	   DEBUG_SERIAL.print(" Fast: ");
-	   DEBUG_SERIAL.print(getFastThold());
-	   DEBUG_SERIAL.print(" Tolerance: ");
-	   DEBUG_SERIAL.print(getTolerance());
-      DEBUG_SERIAL.print(" Histeresis: ");
-      DEBUG_SERIAL.println(getHisteresis());
-#endif
+	   DEBUG_PRINT_2("-->Temp: ");
+	   DEBUG_2(print((float)(CurrentTemperature) / 10));
+	   DEBUG_PRINT_2(" Target: ");
+	   DEBUG_2(print(getTargetTemp()));
+	   DEBUG_PRINT_2(" Fast: ");
+	   DEBUG_2(print(getFastThold()));
+	   DEBUG_PRINT_2(" Tolerance: ");
+	   DEBUG_2(print(getTolerance()));
+      DEBUG_PRINT_2(" Histeresis: ");
+      DEBUG_2(println(getHisteresis()));
 
 	if (mState == STATE_OFF)
 	{

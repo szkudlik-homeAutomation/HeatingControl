@@ -57,10 +57,10 @@ public:
       switch (EventType)
       {
          case EV_TYPE_MEASUREMENT_COMPLETED: 
-            DEBUG_SERIAL.print("Measurement completed. devs: ");
-            DEBUG_SERIAL.print(pDS1820Result->NumOfDevices);
-            DEBUG_SERIAL.print(" Avg: ");
-            DEBUG_SERIAL.print(pDS1820Result->Avg);
+            DEBUG_PRINT_3("Measurement completed. devs: ");
+            DEBUG_3(print(pDS1820Result->NumOfDevices));
+            DEBUG_PRINT_3(" Avg: ");
+            DEBUG_3(print(pDS1820Result->Avg));
             uint8_t NumOfItems;
             if (pDS1820Result->Avg) {
                NumOfItems = 1;
@@ -71,17 +71,16 @@ public:
             }
             for (int i = 0; i < NumOfItems; i++)
             {
-               DEBUG_SERIAL.print(" dev: ");
-               DEBUG_SERIAL.print(i);
-               DEBUG_SERIAL.print(" temp: ");
-               DEBUG_SERIAL.print(((float)(pDS1820Result)->Dev[i].Temperature) / 10);
+               DEBUG_PRINT_3(" dev: ");
+               DEBUG_3(print(i));
+               DEBUG_PRINT_3(" temp: ");
+               DEBUG_3(print(((float)(pDS1820Result)->Dev[i].Temperature) / 10));
             }
-            DEBUG_SERIAL.println();
+            DEBUG_PRINTLN_3("");
             break;
    
          case EV_TYPE_MEASUREMENT_ERROR:
-            DEBUG_SERIAL.print("Measurement completed. ERROR");
-            DEBUG_SERIAL.println();
+            DEBUG_PRINTLN_3("Measurement completed. ERROR");
             break;
       }
    }
@@ -96,10 +95,10 @@ public:
       if (EV_TYPE_MEASUREMENT_COMPLETED == EventType)
       {
          tImpulseSensor::tResult *pResult =(tImpulseSensor::tResult *) pDataBlob;
-         DEBUG_SERIAL.print("Impulse count: "); 
-         DEBUG_SERIAL.print(pResult->Count);
-         DEBUG_SERIAL.print(" Sum: "); 
-         DEBUG_SERIAL.println(pResult->Sum);
+         DEBUG_PRINT_3("Impulse count: "); 
+         DEBUG_3(print(pResult->Count));
+         DEBUG_PRINT_3(" Sum: "); 
+         DEBUG_3(println(pResult->Sum));
       }
    }
 };
@@ -113,8 +112,8 @@ public:
       if (EV_TYPE_MEASUREMENT_COMPLETED == EventType)
       {
          tPt100AnalogSensor::tResult *pResult =(tPt100AnalogSensor::tResult *) pDataBlob;
-         DEBUG_SERIAL.print("PT100 Temp: "); 
-         DEBUG_SERIAL.println(pResult->Temperature);
+         DEBUG_PRINT_3("PT100 Temp: "); 
+         DEBUG_3(println(pResult->Temperature));
       }
    }
 };
@@ -146,21 +145,18 @@ void Interrupt1(void)
 tSensorHub SensorHub;
 
 void setup() {
+   DEBUG_SERIAL.begin(115200);
+   while (!DEBUG_SERIAL);
+   DEBUG_PRINT_3("START, v");
+   DEBUG_PRINTLN_3(FW_VERSION);
+
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
     SetDefaultEEPromValues();
 
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.begin(115200);
-  while (!DEBUG_SERIAL);
-  DEBUG_SERIAL.print(F("START, v"));
-  DEBUG_SERIAL.println(FW_VERSION);
-#endif
 
   Network.init();
   TcpServerProcess.add(true);
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.println(F("START Tcp "));
-#endif
+  DEBUG_PRINTLN_3("START Tcp ");
 
   SensorProcess.add(true);
 //  Worker.add();
@@ -242,11 +238,9 @@ void setup() {
 //  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG,&Pt100SensorCallback);
 //  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG1,&Pt100SensorCallback);
 
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.print(F("Free RAM: "));
-  DEBUG_SERIAL.println(getFreeRam());
-  DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
-#endif
+  DEBUG_PRINT_3("Free RAM: ");
+  DEBUG_3(println(getFreeRam()));
+  DEBUG_3(println(F("SYSTEM INITIALIZED")));
 }
 
 
