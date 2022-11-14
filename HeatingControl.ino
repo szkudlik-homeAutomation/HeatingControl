@@ -175,11 +175,11 @@ void setup() {
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP, "HeatingTemp", &Ds1820Config, 50); //5 sec
 
   Ds1820Config.Pin = 3;
-  Ds1820Config.NumOfDevices = 4;
+  Ds1820Config.NumOfDevices = 5;
   Ds1820Config.Avg = 0;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP, "AirHuwTemp",  &Ds1820Config, 50); //5 sec
   
-  Ds1820Config.Pin = 4;
+  Ds1820Config.Pin = 7;
   Ds1820Config.NumOfDevices = 1;
   Ds1820Config.Avg = 0;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp",  &Ds1820Config, 50); //5 sec
@@ -201,7 +201,7 @@ void setup() {
 
   SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pFloorTemperatureValveControl);
   SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pRadiatorsTemperatureValveControl);
-  SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,&DS1820SensorCallback);
+  SensorHub.subscribeToEvents(SENSOR_ID_1820_OUTDOOR_TEMP,&DS1820SensorCallback);
 
   pFloorTemperatureValveControl->Stop();
   pRadiatorsTemperatureValveControl->Stop();
