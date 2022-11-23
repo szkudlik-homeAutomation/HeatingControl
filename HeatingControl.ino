@@ -7,6 +7,7 @@
 #include "src/Common_code/Network/TcpServer.h"
 #include "src/Common_code/Network/HttpServer.h"
 #include "src/Common_code/Network/TelnetServer.h"
+#include "src/Common_code/Network/servlets.h"
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
@@ -15,7 +16,6 @@
 #include "src/Common_code/sensors/tSensorStateServlet.h"
 #include "src/Common_code/sensors/tSensorHub.h"
 #include "src/tOutputProcessheatingControl.h"
-#include "src/servlets.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
 
@@ -35,7 +35,7 @@ extern tTelnetServer TelnetServer;
 
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
-   if (pRequestBuffer->startsWith("/1.js")) return new tjavaScriptServlet();
+   if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
    if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
    if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
    if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();

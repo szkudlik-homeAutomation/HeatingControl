@@ -3,13 +3,6 @@
 #include "tHeatingCircleControl.h"
 
 
-bool tjavaScriptServlet::ProcessAndResponse()
-{
-//	pOwner->SendFlashString(javascript_js_raw,javascript_js_raw_len);
-//	return false;
-}
-
-
 extern tHeatingCircleControl *pFloorTemperatureValveControl;
 extern tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 
