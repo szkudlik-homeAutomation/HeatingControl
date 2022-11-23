@@ -5,8 +5,7 @@
  *      Author: szkud
  */
 
-#ifndef SRC_THEATINGCIRCLECONTROL_H_
-#define SRC_THEATINGCIRCLECONTROL_H_
+#pragma once
 
 #include "../global.h"
 #include "tOutputProcessheatingControl.h"
@@ -86,5 +85,3 @@ private:
    void PumpOn()  { DEBUG_PRINTLN_3("==>PUMP ON"); OutputProcess.SetOutput(mPumpOutId, 1, MAX_VALVE_TIME); }
    void PumpOff() { DEBUG_PRINTLN_3("==>PUMP OFF"); OutputProcess.SetOutput(mPumpOutId, 0); }
 };
-
-#endif /* SRC_THEATINGCIRCLECONTROL_H_ */

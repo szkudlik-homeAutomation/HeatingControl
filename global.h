@@ -7,8 +7,8 @@
  *      Author: szkud
  */
 
-#ifndef GLOBAL_H_
-#define GLOBAL_H_
+#pragma once
+
 
 // #define CONFIG_TLE8457_serial_lib
 
@@ -28,5 +28,3 @@
 #include "src/Common_code/debug.h"
 #include "src/Common_code/helpers.h"
 
-
-#endif /* GLOBAL_H_ */
