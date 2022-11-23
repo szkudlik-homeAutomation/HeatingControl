@@ -18,6 +18,7 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
+#include "src/servlets.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
@@ -170,17 +171,14 @@ void setup() {
   tDS1820Sensor::tConfig Ds1820Config;
 
   Ds1820Config.Pin = 2;
-  Ds1820Config.NumOfDevices = 3;
   Ds1820Config.Avg = 0;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP, "HeatingTemp", &Ds1820Config, 50); //5 sec
 
   Ds1820Config.Pin = 3;
-  Ds1820Config.NumOfDevices = 5;
   Ds1820Config.Avg = 0;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP, "AirHuwTemp",  &Ds1820Config, 50); //5 sec
   
   Ds1820Config.Pin = 7;
-  Ds1820Config.NumOfDevices = 1;
   Ds1820Config.Avg = 0;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp",  &Ds1820Config, 50); //5 sec
 

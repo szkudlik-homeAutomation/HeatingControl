@@ -1,5 +1,5 @@
-#ifndef SERVLETS
-#define SERVLETS
+#ifndef SERVLETS_LOCAL
+#define SERVLETS_LOCAL
 
 #include "Common_code/Network/httpServer.h"
 
