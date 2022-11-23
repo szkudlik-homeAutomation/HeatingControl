@@ -1,5 +1,4 @@
-#ifndef OUTPUT_PINS
-#define  OUTPUT_PINS
+#pragma once
 
 #define NUM_OF_OUTPUTS 16
 
@@ -37,5 +36,3 @@
 #define OUT_ID_FLOOR_TEMP_HIGHER 14
 #define OUT_ID_RADIATOR_TEMP_HIGHER 15
 
-
-#endif

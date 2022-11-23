@@ -1,5 +1,5 @@
-#ifndef VERSION_H
-#define VERSION_H
+#pragma once
+
 
 #define FW_VERSION_MAJOR 1
 #define FW_VERSION_MINOR 1
@@ -12,6 +12,3 @@
 #define CONCATENATE_FW_VERSION(A,B,C) stringify_expanded(A) "." stringify_expanded(B) "." stringify_expanded(C)
 
 #define FW_VERSION CONCATENATE_FW_VERSION(FW_VERSION_MAJOR,FW_VERSION_MINOR,FW_VERSION_PATCH)
-
-
-#endif //VERSION_H

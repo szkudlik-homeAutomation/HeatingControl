@@ -5,8 +5,8 @@
  *      Author: szkud
  */
 
-#ifndef TOUTPUTPROCESSHEATINGCONTROL_H_
-#define TOUTPUTPROCESSHEATINGCONTROL_H_
+#pragma once
+
 
 #include "../global.h"
 #include "Common_code/OutputProcess.h"
@@ -63,4 +63,3 @@ class tOutputStateServlet : public tHttpServlet
 
 extern tOutputProcess_heatingControl OutputProcess;
 
-#endif /* TOUTPUTPROCESSHEATINGCONTROL_H_ */

@@ -1,5 +1,4 @@
-#ifndef EEPROM_DEFS
-#define EEPROM_DEFS
+#pragma once
 
 #include <EEPROM.h>
 
@@ -28,5 +27,3 @@ typedef struct __tEeprom
 #define EEPROM_MAC offsetof(__tEeprom,MAC[0])
 
 void SetDefaultEEPromValues();
-
-#endif //EEPROM_DEFS
