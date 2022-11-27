@@ -5,7 +5,7 @@
  *      Author: szkud
  */
 
-#define DEBUG_2
+//#define DEBUG_2
 
 #include "../global.h"
 #include "tHeatingCircleControl.h"
@@ -27,20 +27,29 @@ void tHeatingCircleControl::onEvent(uint8_t SensorID, tSensorEventType EventType
 		return;
 	}
 
-	if (mSensorDevID == 255)
+	if (mValveTempSensorDevID == 255)
 	{
 	   // find the sensor
 	   for(uint8_t i = 0; i < pDS1820Result->NumOfDevices; i++)
 	   {
-	      if (strncmp(mSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
+	      if (strncmp(mValveTempSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
 	      {
-	         mSensorDevID = i;
-	         break;
+	         mValveTempSensorDevID = i;
 	      }
+         if (strncmp(mHeatSourceSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
+         {
+            mHeatSourceSensorDevID = i;
+         }
 	   }
 	}
 
-	int16_t CurrentTemperature = (pDS1820Result)->Dev[mSensorDevID].Temperature;
+	if ((mHeatSourceSensorDevID == 255) || (mHeatSourceSensorDevID == 255))
+	{
+      DEBUG_PRINT_3("Heating circle - device not found");
+	   return;
+	}
+
+	int16_t CurrentTemperature = (pDS1820Result)->Dev[mValveTempSensorDevID].Temperature;
 	int16_t Delta = abs(CurrentTemperature - mTargetTemp);
 	bool doOpen = (mTargetTemp > CurrentTemperature);
 
