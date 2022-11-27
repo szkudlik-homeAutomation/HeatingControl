@@ -125,6 +125,8 @@ tImpulseSensorCallback ImpulseSensorCallback;
 
 tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
 tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
+tDS1820Sensor::DeviceAddress HeatingSourceTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
+
 
 tHeatingCircleControl *pFloorTemperatureValveControl; 
 tHeatingCircleControl *pRadiatorsTemperatureValveControl; 
@@ -168,6 +170,16 @@ void setup() {
 #define SENSOR_ID_1820_HEATING_TEMP 1
 #define SENSOR_ID_1820_AIR_HUW_TEMP 2
 #define SENSOR_ID_1820_OUTDOOR_TEMP 3
+  
+#define SENSOR_ID_IMPULSE_HEATPUMP        4
+#define SENSOR_ID_IMPULSE_WATER_HEATER    5
+  
+#define SENSOR_ID_PT100_HOTAIR            6 
+  
+#define SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL   7
+#define SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST     8
+#define SENSOR_ID_DIGITAL_AUX                      9
+
   tDS1820Sensor::tConfig Ds1820Config;
 
   Ds1820Config.Pin = 2;
@@ -183,8 +195,20 @@ void setup() {
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp",  &Ds1820Config, 50); //5 sec
 
   
-  pFloorTemperatureValveControl = new tHeatingCircleControl(FloorTemperatureTempSensorSerial,OUT_ID_FLOOR_TEMP_HIGHER,OUT_ID_FLOOR_TEMP_LOWER,OUT_ID_FLOOR_PUMP,2); 
-  pRadiatorsTemperatureValveControl = new tHeatingCircleControl(RadiatorsTemperatureTempSensorSerial,OUT_ID_RADIATOR_TEMP_HIGHER,OUT_ID_RADIATOR_TEMP_LOWER,OUT_ID_READIATORS_PUMP,2); 
+  pFloorTemperatureValveControl = new tHeatingCircleControl(
+        FloorTemperatureTempSensorSerial,
+        HeatingSourceTempSensorSerial,
+        OUT_ID_FLOOR_TEMP_HIGHER,
+        OUT_ID_FLOOR_TEMP_LOWER,
+        OUT_ID_FLOOR_PUMP,
+        2); 
+  pRadiatorsTemperatureValveControl = new tHeatingCircleControl(
+        RadiatorsTemperatureTempSensorSerial,
+        HeatingSourceTempSensorSerial,
+        OUT_ID_RADIATOR_TEMP_HIGHER,
+        OUT_ID_RADIATOR_TEMP_LOWER,
+        OUT_ID_READIATORS_PUMP,
+        2); 
 
   
   pFloorTemperatureValveControl->setTargetTemp(28);
