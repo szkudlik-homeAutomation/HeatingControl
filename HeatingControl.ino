@@ -181,6 +181,8 @@ void setup() {
 #define SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST     8
 #define SENSOR_ID_DIGITAL_AUX                      9
 
+#define SENSOR_ID_OUTPUT_STATES                    10
+
   tDS1820Sensor::tConfig Ds1820Config;
 
   Ds1820Config.Pin = 2;
@@ -267,6 +269,8 @@ void setup() {
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_HOTAIR, "HotAir", &Pt100AnalogSensorConfig, 100); //10 sec
 
 //  SensorHub.subscribeToEvents(SENSOR_ID_PT100_HOTAIR,&Pt100SensorCallback);
+  
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, "OutStates", NULL, 10); // 1 sec
 
   DEBUG_PRINT_3("Free RAM: ");
   DEBUG_3(println(getFreeRam()));
