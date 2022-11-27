@@ -14,8 +14,6 @@ bool enableLogs(Commander &Cmdr);
 bool disableLogs(Commander &Cmdr);
 bool send_GetVersion(Commander &Cmdr);
 bool send_Reset(Commander &Cmdr);
-bool floor_tmp(Commander &Cmdr);
-bool rad_tmp(Commander &Cmdr);
 
 
 const commandList_t TelnetCommands[] = {
