@@ -260,14 +260,13 @@ void setup() {
 //#define SENSOR_ID_PT100_ANALOG 
 //#define SENSOR_ID_PT100_ANALOG1 
 //
-//  tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
-//  Pt100AnalogSensorConfig.Pin = A14;
-//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_ANALOG, "RoomHeatingAir", &Pt100AnalogSensorConfig, 20); //2 sec
-//  Pt100AnalogSensorConfig.Pin = A15;
-//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_ANALOG1, "AirPump", &Pt100AnalogSensorConfig, 20); //2 sec
-//  
-//  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG,&Pt100SensorCallback);
-//  SensorHub.subscribeToEvents(SENSOR_ID_PT100_ANALOG1,&Pt100SensorCallback);
+  tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
+  Pt100AnalogSensorConfig.Pin = A14;
+  Pt100AnalogSensorConfig.Correction = 8;
+  
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_HOTAIR, "HotAir", &Pt100AnalogSensorConfig, 100); //10 sec
+
+//  SensorHub.subscribeToEvents(SENSOR_ID_PT100_HOTAIR,&Pt100SensorCallback);
 
   DEBUG_PRINT_3("Free RAM: ");
   DEBUG_3(println(getFreeRam()));
