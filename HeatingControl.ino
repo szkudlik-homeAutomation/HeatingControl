@@ -10,6 +10,7 @@
 #include "src/Common_code/Network/servlets.h"
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
+#include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/Common_code/sensors/tImpulseSensor.h"
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
@@ -229,9 +230,17 @@ void setup() {
   pRadiatorsTemperatureValveControl->Stop();
 
 
+  tSimpleDigitalInputSensor::tConfig DigitalInputSensorConfig;
+
+  DigitalInputSensorConfig.ActiveState = 0;
+  DigitalInputSensorConfig.Pin = A7;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST , "WaterHeaterRequest", &DigitalInputSensorConfig, 10);   // 1sec 
   
-//#define SENSOR_ID_IMPULSE 
-//#define SENSOR_ID_IMPULSE1 
+  DigitalInputSensorConfig.Pin = A8;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, "PumpControl", &DigitalInputSensorConfig, 10);   // 1sec 
+
+  DigitalInputSensorConfig.Pin = A9;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, "DigitalInputAux", &DigitalInputSensorConfig, 10);   // 1sec 
   
 //  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE, "HeatPumpPower", NULL, 50); //5 sec
 //  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE1, "AuxHeatPower", NULL, 50); //5 sec
