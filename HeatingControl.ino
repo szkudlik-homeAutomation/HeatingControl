@@ -213,9 +213,9 @@ void setup() {
 
   
   pFloorTemperatureValveControl->setTargetTemp(28);
-  pFloorTemperatureValveControl->setTolerance(0.5);
-  pFloorTemperatureValveControl->setHisteresis(0.7);
-  pFloorTemperatureValveControl->setFastThold(1); 
+  pFloorTemperatureValveControl->setTolerance(0.7);
+  pFloorTemperatureValveControl->setHisteresis(0.8);
+  pFloorTemperatureValveControl->setFastThold(1.5); 
 
   pRadiatorsTemperatureValveControl->setTargetTemp(31);
   pRadiatorsTemperatureValveControl->setTolerance(0.7);
