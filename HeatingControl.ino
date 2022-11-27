@@ -16,6 +16,7 @@
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSensorStateServlet.h"
 #include "src/Common_code/sensors/tSensorHub.h"
+#include "src/Common_code/sensors/tHeatingCircleStatusSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/Common_code/controllers/tHeatingCircleControl.h"
@@ -183,6 +184,10 @@ void setup() {
 
 #define SENSOR_ID_OUTPUT_STATES                    10
 
+#define SENSOR_ID_RADIATORS_HEATING_STATE          11
+#define SENSOR_ID_FLOOR_HEATING_STATE              12
+
+  
   tDS1820Sensor::tConfig Ds1820Config;
 
   Ds1820Config.Pin = 2;
@@ -271,6 +276,14 @@ void setup() {
 //  SensorHub.subscribeToEvents(SENSOR_ID_PT100_HOTAIR,&Pt100SensorCallback);
   
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, "OutStates", NULL, 10); // 1 sec
+
+  tHeatingCircleStatusSensor::tConfig HeatingCircleStatusSensorConfig;
+
+  HeatingCircleStatusSensorConfig.pHeatingControl = pRadiatorsTemperatureValveControl;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_RADIATORS_HEATING_STATE, "RadiatorsState", &HeatingCircleStatusSensorConfig, 50); // 5 sec
+
+  HeatingCircleStatusSensorConfig.pHeatingControl = pFloorTemperatureValveControl;
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE, "FloorState", &HeatingCircleStatusSensorConfig, 50); // 5 sec
 
   DEBUG_PRINT_3("Free RAM: ");
   DEBUG_3(println(getFreeRam()));
