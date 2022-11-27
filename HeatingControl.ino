@@ -18,7 +18,7 @@
 #include "src/Common_code/sensors/tSensorHub.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
-#include "src/tHeatingCircleControl.h"
+#include "src/Common_code/controllers/tHeatingCircleControl.h"
 #include "src/servlets.h"
 
 // restart if no connection for 5 minutes

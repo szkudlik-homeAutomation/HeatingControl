@@ -1,6 +1,6 @@
 #include "servlets.h"
 #include "tOutputProcessheatingControl.h"
-#include "tHeatingCircleControl.h"
+#include "Common_code/controllers/tHeatingCircleControl.h"
 
 
 extern tHeatingCircleControl *pFloorTemperatureValveControl;
