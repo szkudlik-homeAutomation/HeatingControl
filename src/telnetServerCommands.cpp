@@ -26,9 +26,6 @@ const commandList_t TelnetCommands[] = {
 tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
 
 
-extern tHeatingCircleControl FloorTemperatureValveControl;
-
-
 bool enableLogs(Commander &Cmdr)
 {
    TelnetServer.EnableLogs();

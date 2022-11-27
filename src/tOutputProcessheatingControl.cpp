@@ -28,14 +28,12 @@ bool tOutputSetServlet::ProcessAndResponse()
      return false;
    }
 
-   #ifdef DEBUG_3
-      RespHandler.print(F("==>HTTP set output, Out="));
-      RespHandler.print(Output,DEC);
-      RespHandler.print(F(" State="));
-      RespHandler.print(State,DEC);
-      RespHandler.print(F(" Timer="));
-      RespHandler.println(Timer,DEC);
-   #endif
+   DEBUG_PRINT_3("==>HTTP set output, Out=");
+   DEBUG_3(print(Output,DEC));
+   DEBUG_PRINT_3(" State=");
+   DEBUG_3(print(State,DEC));
+   DEBUG_PRINT_3(" Timer=");
+   DEBUG_3(println(Timer,DEC));
 
    OutputProcess.SetOutput(Output,State,Timer,tOutputProcess::ForceTimer);
    SendResponse200();
@@ -66,19 +64,16 @@ bool tOutputStateServlet::ProcessAndResponse()
    TimerValue = OutputProcess.GetOutputTimer(Output);
 
 
-   #ifdef DEBUG_3
-      RespHandler.print(F("==>HTTP output state get, Out="));
-      RespHandler.print(Output,DEC);
-      RespHandler.print(F(" State="));
-      RespHandler.print(State,DEC);
-      RespHandler.print(F(" Timer="));
-      RespHandler.print(TimerValue,DEC);
-      RespHandler.print(F(" DefaultTimer="));
-      RespHandler.println(DefaultTimer,DEC);
+   DEBUG_PRINT_3("==>HTTP output state get, Out=");
+   DEBUG_3(print(Output,DEC));
+   DEBUG_PRINT_3(" State=");
+   DEBUG_3(print(State,DEC));
+   DEBUG_PRINT_3(" Timer=");
+   DEBUG_3(print(TimerValue,DEC));
+   DEBUG_PRINT_3(" DefaultTimer=");
+   DEBUG_3(println(DefaultTimer,DEC));
 
-   #endif
-
-//   // format JSON response
+   //   // format JSON response
    pOwner->SendFlashString(PSTR("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{\"Output\": "));
    pOwner->mEthernetClient.print(Output,DEC);
    pOwner->SendFlashString(PSTR(", \"State\": "));

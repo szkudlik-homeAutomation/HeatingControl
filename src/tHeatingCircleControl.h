@@ -19,17 +19,18 @@ public:
 	static const uint16_t MAX_VALVE_TIME = 100;
 	static const uint16_t MAX_PUMP_TIME = 100;
 
-   tHeatingCircleControl(uint8_t SensorDevID, uint8_t ValveOpenOutId, uint8_t ValveCloseOutId, uint8_t PumpOutId, uint16_t SlowValveTime)
+   tHeatingCircleControl(char* SensorSerial, uint8_t ValveOpenOutId, uint8_t ValveCloseOutId, uint8_t PumpOutId, uint16_t SlowValveTime)
       : mTargetTemp(0),
-        mSensorDevID(SensorDevID),
-		mTolerance(0),
-		mSlowValveTime(SlowValveTime),
-		mFastValveMoveThold(0),
-		mValveOpenOutId(ValveOpenOutId),
-		mValveCloseOutId(ValveCloseOutId),
-		mHisteresis(0),
-		mPumpOutId(PumpOutId),
-		mState(STATE_DISABLED) {}
+        mSensorDevID(255),
+        mSensorSerial(SensorSerial),
+		  mTolerance(0),
+		  mSlowValveTime(SlowValveTime),
+		  mFastValveMoveThold(0),
+		  mValveOpenOutId(ValveOpenOutId),
+		  mValveCloseOutId(ValveCloseOutId),
+		  mHisteresis(0),
+		  mPumpOutId(PumpOutId),
+		  mState(STATE_DISABLED) {}
 
    void Disable() { mState = STATE_DISABLED; }
    void Stop()  { mState = STATE_OFF; }
@@ -61,6 +62,7 @@ private:
 
    tState mState;
 
+   char *mSensorSerial;
    uint8_t mSensorDevID;
    int16_t mTargetTemp;			   //< target temperature (*10)
    int16_t mFastValveMoveThold;	//< delta thold when the valve is triggered at full speed
