@@ -128,7 +128,7 @@ tImpulseSensorCallback ImpulseSensorCallback;
 tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
 tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
 tDS1820Sensor::DeviceAddress HeatingSourceTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
-
+tDS1820Sensor::DeviceAddress HeatingStorageTempSensorSerial = { 0x28, 0x6D, 0xDB, 0x7E, 0xA1, 0x21, 0x01, 0x02};
 
 tHeatingCircleControl *pFloorTemperatureValveControl; 
 tHeatingCircleControl *pRadiatorsTemperatureValveControl; 
@@ -206,6 +206,7 @@ void setup() {
   pFloorTemperatureValveControl = new tHeatingCircleControl(
         FloorTemperatureTempSensorSerial,
         HeatingSourceTempSensorSerial,
+        HeatingStorageTempSensorSerial,
         OUT_ID_FLOOR_TEMP_HIGHER,
         OUT_ID_FLOOR_TEMP_LOWER,
         OUT_ID_FLOOR_PUMP,
@@ -213,6 +214,7 @@ void setup() {
   pRadiatorsTemperatureValveControl = new tHeatingCircleControl(
         RadiatorsTemperatureTempSensorSerial,
         HeatingSourceTempSensorSerial,
+        HeatingStorageTempSensorSerial,
         OUT_ID_RADIATOR_TEMP_HIGHER,
         OUT_ID_RADIATOR_TEMP_LOWER,
         OUT_ID_READIATORS_PUMP,

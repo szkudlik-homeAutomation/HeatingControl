@@ -6,6 +6,10 @@
 extern tHeatingCircleControl *pFloorTemperatureValveControl;
 extern tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 
+// DEFINETLY not a god point for those macros
+#define PUMP_DISABLE_THOLD_SHIFT -2
+#define PUMP_ENABLE_THOLD_SHITF 0
+
 
 bool tHeatingControlServletTMP::ProcessAndResponse()
 {
@@ -51,6 +55,8 @@ bool tHeatingControlServletTMP::ProcessAndResponse()
     {
         pOwner->SendFlashString(PSTR("OFF "));
     }
+
+
     pOwner->SendFlashString(PSTR("Temperature set: "));
     pOwner->mEthernetClient.println(pFloorTemperatureValveControl->getTargetTemp());
 
@@ -66,5 +72,19 @@ bool tHeatingControlServletTMP::ProcessAndResponse()
     pOwner->SendFlashString(PSTR("Temperature set: "));
     pOwner->mEthernetClient.print(pRadiatorsTemperatureValveControl->getTargetTemp());
 
-    return false;
+    // calculate setPumpEnableTemp
+    float RadiatorsTemp = -200;
+    if (pRadiatorsTemperatureValveControl->isWorking())
+       RadiatorsTemp = pRadiatorsTemperatureValveControl->getTargetTemp();
+
+    float FloorTemp = -200;
+    if (pFloorTemperatureValveControl->isWorking())
+       FloorTemp = pFloorTemperatureValveControl->getTargetTemp();
+
+   float MaxTemp = (FloorTemp > RadiatorsTemp) ? FloorTemp : RadiatorsTemp;
+
+   tHeatingCircleControl::setPumpStopTemp(MaxTemp+PUMP_DISABLE_THOLD_SHIFT);
+   tHeatingCircleControl::setPumpStartTemp(MaxTemp+PUMP_ENABLE_THOLD_SHITF);
+
+   return false;
 }
