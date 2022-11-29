@@ -242,13 +242,13 @@ void setup() {
   tSimpleDigitalInputSensor::tConfig DigitalInputSensorConfig;
 
   DigitalInputSensorConfig.ActiveState = 0;
-  DigitalInputSensorConfig.Pin = A7;
+  DigitalInputSensorConfig.Pin = A9;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST , "WaterHeaterRequest", &DigitalInputSensorConfig, 10);   // 1sec 
   
   DigitalInputSensorConfig.Pin = A8;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, "PumpControl", &DigitalInputSensorConfig, 10);   // 1sec 
 
-  DigitalInputSensorConfig.Pin = A9;
+  DigitalInputSensorConfig.Pin = A7;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, "DigitalInputAux", &DigitalInputSensorConfig, 10);   // 1sec 
   
 //  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE, "HeatPumpPower", NULL, 50); //5 sec
