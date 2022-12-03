@@ -237,10 +237,6 @@ void setup() {
   SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pRadiatorsTemperatureValveControl);
   SensorHub.subscribeToEvents(SENSOR_ID_1820_OUTDOOR_TEMP,&DS1820SensorCallback);
 
-  pFloorTemperatureValveControl->Stop();
-  pRadiatorsTemperatureValveControl->Stop();
-
-
   tSimpleDigitalInputSensor::tConfig DigitalInputSensorConfig;
 
   DigitalInputSensorConfig.ActiveState = 0;
