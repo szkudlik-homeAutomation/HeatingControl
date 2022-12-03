@@ -98,7 +98,9 @@ public:
       if (EV_TYPE_MEASUREMENT_COMPLETED == EventType)
       {
          tImpulseSensor::tResult *pResult =(tImpulseSensor::tResult *) pDataBlob;
-         DEBUG_PRINT_3("Impulse count: "); 
+         DEBUG_PRINT_3("SensorID: ");
+         DEBUG_3(print(SensorID));
+         DEBUG_PRINT_3(" impulse count: "); 
          DEBUG_3(print(pResult->Count));
          DEBUG_PRINT_3(" Sum: "); 
          DEBUG_3(println(pResult->Sum));
@@ -134,17 +136,17 @@ tHeatingCircleControl *pFloorTemperatureValveControl;
 tHeatingCircleControl *pRadiatorsTemperatureValveControl; 
 
 tImpulseSensor *pImpulseSensor = NULL;
-tImpulseSensor *pImpulseSensor1 = NULL;
+//tImpulseSensor *pImpulseSensor1 = NULL;
 
 void Interrupt(void)
 {
    if(pImpulseSensor) pImpulseSensor->Impulse();
 }
 
-void Interrupt1(void)
-{
-   if(pImpulseSensor1) pImpulseSensor1->Impulse();
-}
+//void Interrupt1(void)
+//{
+//   if(pImpulseSensor1) pImpulseSensor1->Impulse();
+//}
 
 
 tSensorHub SensorHub;
@@ -251,24 +253,20 @@ void setup() {
   DigitalInputSensorConfig.Pin = A7;
   SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, "DigitalInputAux", &DigitalInputSensorConfig, 10);   // 1sec 
   
-//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE, "HeatPumpPower", NULL, 50); //5 sec
-//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE1, "AuxHeatPower", NULL, 50); //5 sec
+  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, "HeatPumpEnergy", NULL, 50); //5 sec
+//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_WATER_HEATER, "AuxHeatEnergy", NULL, 50); //5 sec
 
   // local pointers to sensors - interrupts
-//  pImpulseSensor = tSensor::getSensor(SENSOR_ID_IMPULSE);
-//  pImpulseSensor1 = tSensor::getSensor(SENSOR_ID_IMPULSE1);
+  pImpulseSensor = tSensor::getSensor(SENSOR_ID_IMPULSE_HEATPUMP);
+//  pImpulseSensor1 = tSensor::getSensor(SENSOR_ID_IMPULSE_WATER_HEATER);
+  pinMode(21, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(21), Interrupt, FALLING);
 //  pinMode(20, INPUT_PULLUP);
-//  attachInterrupt(digitalPinToInterrupt(20), Interrupt, FALLING);
-//  pinMode(21, INPUT_PULLUP);
-//  attachInterrupt(digitalPinToInterrupt(21), Interrupt1, FALLING);
-//  
-//  
-//  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE,&ImpulseSensorCallback);
-//  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE1,&ImpulseSensorCallback);
+//  attachInterrupt(digitalPinToInterrupt(20), Interrupt1, FALLING);
+  
+  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE_HEATPUMP,&ImpulseSensorCallback);
+//  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE_WATER_HEATER,&ImpulseSensorCallback);
 
-//#define SENSOR_ID_PT100_ANALOG 
-//#define SENSOR_ID_PT100_ANALOG1 
-//
   tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
   Pt100AnalogSensorConfig.Pin = A14;
   Pt100AnalogSensorConfig.Correction = 8;
