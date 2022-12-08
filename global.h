@@ -12,16 +12,24 @@
 
 // #define CONFIG_TLE8457_serial_lib
 
-#ifdef __AVR_ATmega2560__
-#define CONFIG_CENTRAL_NODE 1
-#elif __AVR_ATmega328P__
+//#ifdef __AVR_ATmega2560__
+//#define CONFIG_CENTRAL_NODE 1
+//#elif __AVR_ATmega328P__
+//#define CONFIG_CENTRAL_NODE 0
+//#else
+//#error unknown board
+//#endif
+
 #define CONFIG_CENTRAL_NODE 0
-#else
-#error unknown board
-#endif
 
-#define CONFIG_CENTRAL_NODE 1
+#if CONFIG_CENTRAL_NODE
 
+#define CONFIG_HEATING_CIRCLE_CONTROL 1
+#define CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR 1
+#define CONFIG_SENSOR_HUB 1
+#define CONFIG_SENSORS_JSON_OUTPUT 1
+
+#endif //CONFIG_CENTRAL_NODE
 
 #include <Arduino.h>
 #include "GlobalDefs/version.h"
