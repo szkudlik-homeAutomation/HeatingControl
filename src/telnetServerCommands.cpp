@@ -8,7 +8,6 @@
 #include "../global.h"
 #include <Commander.h>
 #include "Common_code/Network/telnetServer.h"
-#include "Common_code/controllers/tHeatingCircleControl.h"
 
 bool enableLogs(Commander &Cmdr);
 bool disableLogs(Commander &Cmdr);
