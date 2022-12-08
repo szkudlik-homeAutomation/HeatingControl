@@ -13,12 +13,14 @@
 // #define CONFIG_TLE8457_serial_lib
 
 #ifdef __AVR_ATmega2560__
-#define CONTROLLER
+#define CONFIG_CENTRAL_NODE 1
 #elif __AVR_ATmega328P__
+#define CONFIG_CENTRAL_NODE 0
 #else
 #error unknown board
 #endif
 
+#define CONFIG_CENTRAL_NODE 1
 
 
 #include <Arduino.h>
