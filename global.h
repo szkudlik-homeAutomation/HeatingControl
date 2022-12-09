@@ -20,7 +20,7 @@
 //#error unknown board
 //#endif
 
-#define CONFIG_CENTRAL_NODE 0
+#define CONFIG_CENTRAL_NODE 1
 
 #if CONFIG_CENTRAL_NODE
 
@@ -28,9 +28,16 @@
 #define CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR 1
 #define CONFIG_SENSOR_HUB 1
 #define CONFIG_SENSORS_JSON_OUTPUT 1
+#define CONFIG_HTTP_SERVER 1
+#define CONFIG_HTTP_SERVLET_OUTCONTROL_JS 1
+#define CONFIG_SENSOR_STATE_SERVLET 1
 
 #endif //CONFIG_CENTRAL_NODE
 
+
+//#define CONFIG_HTTP_SERVER 1
+//#define CONFIG_HTTP_SERVLET_OUTCONTROL_JS 1
+//
 #include <Arduino.h>
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
