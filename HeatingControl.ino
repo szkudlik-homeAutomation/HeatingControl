@@ -22,6 +22,8 @@
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSensorHub.h"
 #include "src/Common_code/sensors/tHeatingCircleStatusSensor.h"
+#include "src/Common_code/sensors/tOutputStateSensor.h"
+#include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/Common_code/controllers/tHeatingCircleControl.h"
@@ -197,20 +199,25 @@ void setup() {
 #define SENSOR_ID_FLOOR_HEATING_STATE              12
 
   
+  tSensor *pSensor;
   tDS1820Sensor::tConfig Ds1820Config;
-
+  
   Ds1820Config.Pin = 2;
   Ds1820Config.Avg = 0;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP, "HeatingTemp", &Ds1820Config, 50); //5 sec
-
+  pSensor = new tDS1820Sensor;
+  pSensor->Register(SENSOR_ID_1820_HEATING_TEMP,"HeatingTemp",&Ds1820Config,50); //5 sec
+  
+  
   Ds1820Config.Pin = 3;
   Ds1820Config.Avg = 0;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP, "AirHuwTemp",  &Ds1820Config, 50); //5 sec
-  
+  pSensor = new tDS1820Sensor;
+  pSensor->Register(SENSOR_ID_1820_AIR_HUW_TEMP,"AirHuwTemp",&Ds1820Config,50); //5 sec
+
   Ds1820Config.Pin = 7;
   Ds1820Config.Avg = 0;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp",  &Ds1820Config, 50); //5 sec
-
+  pSensor = new tDS1820Sensor;
+  pSensor->Register(SENSOR_ID_1820_OUTDOOR_TEMP,"OutdoorTemp",&Ds1820Config,50); //5 sec
+  
   
   pFloorTemperatureValveControl = new tHeatingCircleControl(
         FloorTemperatureTempSensorSerial,
@@ -229,7 +236,7 @@ void setup() {
         OUT_ID_READIATORS_PUMP,
         2); 
 
-  
+
   pFloorTemperatureValveControl->setTargetTemp(28);
   pFloorTemperatureValveControl->setTolerance(0.7);
   pFloorTemperatureValveControl->setHisteresis(0.8);
@@ -248,45 +255,48 @@ void setup() {
 
   DigitalInputSensorConfig.ActiveState = 0;
   DigitalInputSensorConfig.Pin = A9;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST , "WaterHeaterRequest", &DigitalInputSensorConfig, 10);   // 1sec 
-  
+  pSensor = new tSimpleDigitalInputSensor;
+  pSensor->Register(SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST,"WaterHeaterRequest",&DigitalInputSensorConfig,10); //1 sec
+
+  DigitalInputSensorConfig.ActiveState = 0;
   DigitalInputSensorConfig.Pin = A8;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, "PumpControl", &DigitalInputSensorConfig, 10);   // 1sec 
+  pSensor = new tSimpleDigitalInputSensor;
+  pSensor->Register(SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL,"PumpControl",&DigitalInputSensorConfig,1); //1 sec
 
+  DigitalInputSensorConfig.ActiveState = 0;
   DigitalInputSensorConfig.Pin = A7;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, "DigitalInputAux", &DigitalInputSensorConfig, 10);   // 1sec 
+  pSensor = new tSimpleDigitalInputSensor;
+  pSensor->Register(SENSOR_ID_DIGITAL_AUX,"DigitalInputAux",&DigitalInputSensorConfig,1); //1 sec
   
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, "HeatPumpEnergy", NULL, 50); //5 sec
-//  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_WATER_HEATER, "AuxHeatEnergy", NULL, 50); //5 sec
 
-  // local pointers to sensors - interrupts
-  pImpulseSensor = tSensor::getSensor(SENSOR_ID_IMPULSE_HEATPUMP);
-//  pImpulseSensor1 = tSensor::getSensor(SENSOR_ID_IMPULSE_WATER_HEATER);
+  pImpulseSensor = new tImpulseSensor;
+  pImpulseSensor->Register(SENSOR_ID_IMPULSE_HEATPUMP,"HeatPumpEnergy",NULL,50); //5 sec
   pinMode(21, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(21), Interrupt, FALLING);
+//  pImpulseSensor1 = new tImpulseSensor;
+//  pImpulseSensor1->Register(SENSOR_ID_IMPULSE_WATER_HEATER,"AuxHeatEnergy",NULL,50); //5 sec
 //  pinMode(20, INPUT_PULLUP);
 //  attachInterrupt(digitalPinToInterrupt(20), Interrupt1, FALLING);
-  
-  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE_HEATPUMP,&ImpulseSensorCallback);
-//  SensorHub.subscribeToEvents(SENSOR_ID_IMPULSE_WATER_HEATER,&ImpulseSensorCallback);
 
   tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
   Pt100AnalogSensorConfig.Pin = A14;
   Pt100AnalogSensorConfig.Correction = 8;
-  
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_HOTAIR, "HotAir", &Pt100AnalogSensorConfig, 100); //10 sec
+  pSensor = new tPt100AnalogSensor;
+  pSensor->Register(SENSOR_ID_PT100_HOTAIR,"HotAir",&Pt100AnalogSensorConfig,50); //5 sec
 
-//  SensorHub.subscribeToEvents(SENSOR_ID_PT100_HOTAIR,&Pt100SensorCallback);
   
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, "OutStates", NULL, 10); // 1 sec
-
+  pSensor = new tOutputStateSensor;
+  pSensor->Register(SENSOR_ID_OUTPUT_STATES,"OutStates",&Pt100AnalogSensorConfig,50); //5 sec
+  
   tHeatingCircleStatusSensor::tConfig HeatingCircleStatusSensorConfig;
 
   HeatingCircleStatusSensorConfig.pHeatingControl = pRadiatorsTemperatureValveControl;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_RADIATORS_HEATING_STATE, "RadiatorsState", &HeatingCircleStatusSensorConfig, 50); // 5 sec
-
+  pSensor = new tHeatingCircleStatusSensor;
+  pSensor->Register(SENSOR_ID_RADIATORS_HEATING_STATE,"RadiatorsState",&HeatingCircleStatusSensorConfig,50); //5 sec
+  
   HeatingCircleStatusSensorConfig.pHeatingControl = pFloorTemperatureValveControl;
-  SensorHub.CreateSensorRequest(1, SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE, "FloorState", &HeatingCircleStatusSensorConfig, 50); // 5 sec
+  pSensor = new tHeatingCircleStatusSensor;
+  pSensor->Register(SENSOR_ID_FLOOR_HEATING_STATE,"FloorState",&HeatingCircleStatusSensorConfig,50); //5 sec
 
   DEBUG_PRINT_3("Free RAM: ");
   DEBUG_3(println(getFreeRam()));
