@@ -24,6 +24,7 @@
 #include "src/Common_code/sensors/tHeatingCircleStatusSensor.h"
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
+#include "src/Common_code/sensors/tSystemStatusSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/Common_code/controllers/tHeatingCircleControl.h"
@@ -171,7 +172,7 @@ void setup() {
   Network.init();
   TcpServerProcess.add(true);
 #ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.println(F("START Tcp "));
+  DEBUG_SERIAL.println(F("START"));
 #endif
 
   SensorProcess.add(true);
@@ -180,26 +181,32 @@ void setup() {
   WatchdogProcess.add(true);
   
 
-#define SENSOR_ID_1820_HEATING_TEMP 1
-#define SENSOR_ID_1820_AIR_HUW_TEMP 2
-#define SENSOR_ID_1820_OUTDOOR_TEMP 3
-  
-#define SENSOR_ID_IMPULSE_HEATPUMP        4
-#define SENSOR_ID_IMPULSE_WATER_HEATER    5
-  
-#define SENSOR_ID_PT100_HOTAIR            6 
-  
-#define SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL   7
-#define SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST     8
-#define SENSOR_ID_DIGITAL_AUX                      9
 
-#define SENSOR_ID_OUTPUT_STATES                    10
+#define SENSOR_ID_SYSTEM_STATUS 1
+#define SENSOR_ID_1820_HEATING_TEMP 2
+#define SENSOR_ID_1820_AIR_HUW_TEMP 3
+#define SENSOR_ID_1820_OUTDOOR_TEMP 4
+  
+#define SENSOR_ID_IMPULSE_HEATPUMP        5
+#define SENSOR_ID_IMPULSE_WATER_HEATER    6
+  
+#define SENSOR_ID_PT100_HOTAIR            7 
+  
+#define SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL   8
+#define SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST     9
+#define SENSOR_ID_DIGITAL_AUX                      10
 
-#define SENSOR_ID_RADIATORS_HEATING_STATE          11
-#define SENSOR_ID_FLOOR_HEATING_STATE              12
+#define SENSOR_ID_OUTPUT_STATES                    11
+
+#define SENSOR_ID_RADIATORS_HEATING_STATE          12
+#define SENSOR_ID_FLOOR_HEATING_STATE              13
 
   
   tSensor *pSensor;
+
+  pSensor = new tSystemStatusSensor;
+  pSensor->Register(SENSOR_ID_SYSTEM_STATUS,"SystemStatus",NULL,10); //1 sec
+
   tDS1820Sensor::tConfig Ds1820Config;
   
   Ds1820Config.Pin = 2;
@@ -298,6 +305,7 @@ void setup() {
   pSensor = new tHeatingCircleStatusSensor;
   pSensor->Register(SENSOR_ID_FLOOR_HEATING_STATE,"FloorState",&HeatingCircleStatusSensorConfig,50); //5 sec
 
+  
   DEBUG_PRINT_3("Free RAM: ");
   DEBUG_3(println(getFreeRam()));
   DEBUG_3(println(F("SYSTEM INITIALIZED")));
