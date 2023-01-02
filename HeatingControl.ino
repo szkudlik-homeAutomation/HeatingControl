@@ -29,7 +29,10 @@ tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
 #if CONFIG_HTTP_SERVER
 tHttpServer HttpServer;
 #endif
+
+#if CONFIG_TELNET_SERVER
 extern tTelnetServer TelnetServer;
+#endif
 
 #if CONFIG_HTTP_SERVER
 tHttpServlet * ServletFactory(String *pRequestBuffer)

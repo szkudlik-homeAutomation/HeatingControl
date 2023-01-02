@@ -32,13 +32,10 @@
 #define CONFIG_HTTP_SERVLET_OUTCONTROL_JS 1
 #define CONFIG_SENSOR_STATE_SERVLET 1
 #define CONFIG_OUTPUT_CONTROL_SERVLET 1
-
+#define CONFIG_TELNET_SERVER 1
 #endif //CONFIG_CENTRAL_NODE
 
 
-//#define CONFIG_HTTP_SERVER 1
-//#define CONFIG_HTTP_SERVLET_OUTCONTROL_JS 1
-//
 #include <Arduino.h>
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
