@@ -26,10 +26,12 @@ tWatchdogProcess WatchdogProcess(sched);
 
 tNetwork Network;
 tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
+#if CONFIG_HTTP_SERVER
 tHttpServer HttpServer;
+#endif
 extern tTelnetServer TelnetServer;
 
-
+#if CONFIG_HTTP_SERVER
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
@@ -38,7 +40,7 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 
    return NULL;
 }
-
+#endif
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
