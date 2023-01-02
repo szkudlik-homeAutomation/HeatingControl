@@ -6,6 +6,8 @@
  */
 
 #include "../global.h"
+#if CONFIG_TELNET_SERVER
+
 #include <Commander.h>
 #include "Common_code/Network/telnetServer.h"
 
@@ -74,3 +76,4 @@ bool trigger_ScanNodes(Commander &Cmdr)
 //  Worker.triggerNodesScan();
 }
 
+#endif CONFIG_TELNET_SERVER
