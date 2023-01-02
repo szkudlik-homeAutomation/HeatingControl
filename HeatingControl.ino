@@ -24,8 +24,11 @@ tSensorProcess SensorProcess(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
+#if CONFIG_NETWORK
+
 tNetwork Network;
 tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
+
 #if CONFIG_HTTP_SERVER
 tHttpServer HttpServer;
 #endif
@@ -45,6 +48,8 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 }
 #endif
 
+#endif // CONFIG_NETWORK
+
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
     SetDefaultEEPromValues();
@@ -56,8 +61,11 @@ void setup() {
   DEBUG_SERIAL.println(FW_VERSION);
 #endif
 
+#if CONFIG_NETWORK
   Network.init();
   TcpServerProcess.add(true);
+#endif // CONFIG_NETWORK
+  
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.println(F("START Tcp "));
 #endif
