@@ -11,31 +11,18 @@
 #include <Commander.h>
 #include "Common_code/Network/telnetServer.h"
 
-bool enableLogs(Commander &Cmdr);
-bool disableLogs(Commander &Cmdr);
 bool send_GetVersion(Commander &Cmdr);
 bool send_Reset(Commander &Cmdr);
 
 
 const commandList_t TelnetCommands[] = {
-  {"enableLogs",      enableLogs,                   "enable logs on telnet console"},
-  {"disableLogs",     disableLogs,                  "enable logs on telnet console"},
+  {"enableLogs",      TelnetEnableLogs,             "enable logs on telnet console"},
+  {"disableLogs",     TelnetDisableLogs,            "enable logs on telnet console"},
   {"GetVersion",      send_GetVersion,              "show version"},
   {"Reset",           send_Reset,                   "reset the system"},
 };
 
 tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
-
-
-bool enableLogs(Commander &Cmdr)
-{
-   TelnetServer.EnableLogs();
-}
-
-bool disableLogs(Commander &Cmdr)
-{
-   TelnetServer.DisableLogs();
-}
 
 bool send_GetVersion(Commander &Cmdr)
 {
