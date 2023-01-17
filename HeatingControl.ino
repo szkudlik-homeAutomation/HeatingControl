@@ -38,12 +38,20 @@ tSensorProcess SensorProcess(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
+#if CONFIG_NETWORK
+
 tNetwork Network;
 tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
+
+#if CONFIG_HTTP_SERVER
 tHttpServer HttpServer;
+#endif
+
+#if CONFIG_TELNET_SERVER
 extern tTelnetServer TelnetServer;
+#endif
 
-
+#if CONFIG_HTTP_SERVER
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
@@ -55,6 +63,9 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 
    return NULL;
 }
+#endif
+
+#endif // CONFIG_NETWORK
 
 class tDS1820SensorCallback : public tSensorHubEvent
 {
@@ -160,26 +171,29 @@ void Interrupt(void)
 tSensorHub SensorHub;
 
 void setup() {
-   DEBUG_SERIAL.begin(115200);
-   while (!DEBUG_SERIAL);
-   DEBUG_PRINT_3("START, v");
-   DEBUG_PRINTLN_3(FW_VERSION);
-
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
     SetDefaultEEPromValues();
 
+#ifdef DEBUG_SERIAL
+  DEBUG_SERIAL.begin(115200);
+  while (!DEBUG_SERIAL);
+  DEBUG_SERIAL.print(F("START, v"));
+  DEBUG_SERIAL.println(FW_VERSION);
+#endif
 
+#if CONFIG_NETWORK
   Network.init();
   TcpServerProcess.add(true);
+#endif // CONFIG_NETWORK
+  
 #ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.println(F("START"));
+  DEBUG_SERIAL.println(F("START Tcp "));
 #endif
 
   SensorProcess.add(true);
 //  Worker.add();
   OutputProcess.add(true);
   WatchdogProcess.add(true);
-  
 
 
 #define SENSOR_ID_SYSTEM_STATUS 1
@@ -305,10 +319,11 @@ void setup() {
   pSensor = new tHeatingCircleStatusSensor;
   pSensor->Register(SENSOR_ID_FLOOR_HEATING_STATE,"FloorState",&HeatingCircleStatusSensorConfig,50); //5 sec
 
-  
-  DEBUG_PRINT_3("Free RAM: ");
-  DEBUG_3(println(getFreeRam()));
-  DEBUG_3(println(F("SYSTEM INITIALIZED")));
+#ifdef DEBUG_SERIAL
+  DEBUG_SERIAL.print(F("Free RAM: "));
+  DEBUG_SERIAL.println(getFreeRam());
+  DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
+#endif
 }
 
 
