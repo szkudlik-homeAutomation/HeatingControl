@@ -8,7 +8,7 @@
 #include "../global.h"
 #if CONFIG_TELNET_SERVER
 
-#include <Commander.h>
+#include "lib/Commander/src/Commander.h"
 #include "Common_code/Network/telnetServer.h"
 
 bool send_GetVersion(Commander &Cmdr);
