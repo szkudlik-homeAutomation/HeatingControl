@@ -24,29 +24,5 @@ public:
    }
 };
 
-
-/**
- * output servlet - controlling or checking state of an output
- */
-class tOutputSetServlet :  public tHttpServlet
-{
-public:
-  tOutputSetServlet() : tHttpServlet() {}
-  virtual ~tOutputSetServlet() {}
-
-  virtual bool ProcessAndResponse();
-};
-
-class tOutputStateServlet : public tHttpServlet
-{
-  public:
-   tOutputStateServlet() :  tHttpServlet() {};
-   virtual ~tOutputStateServlet() {}
-
-   virtual bool ProcessAndResponse();
-};
-
-
-
 extern tOutputProcess_heatingControl OutputProcess;
 

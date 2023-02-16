@@ -7,11 +7,11 @@
 #include "src/Common_code/Network/TcpServer.h"
 #include "src/Common_code/Network/HttpServer.h"
 #include "src/Common_code/Network/TelnetServer.h"
-#include "src/Common_code/Network/servlets.h"
+#include "src/Common_code/Network/servlets/servlets.h"
+#include "src/Common_code/Network/servlets/tOutputControlServlets.h"
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
-#include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/Common_code/controllers/tHeatingCircleControl.h"
 
@@ -24,19 +24,31 @@ tSensorProcess SensorProcess(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
+#if CONFIG_NETWORK
+
 tNetwork Network;
 tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
-tHttpServer HttpServer;
-extern tTelnetServer TelnetServer;
 
+#if CONFIG_HTTP_SERVER
+tHttpServer HttpServer;
+#endif
+
+#if CONFIG_TELNET_SERVER
+extern tTelnetServer TelnetServer;
+#endif
+
+#if CONFIG_HTTP_SERVER
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
-   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
-   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
+   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet(&OutputProcess);
+   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet(&OutputProcess);
 
    return NULL;
 }
+#endif
+
+#endif // CONFIG_NETWORK
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -49,8 +61,11 @@ void setup() {
   DEBUG_SERIAL.println(FW_VERSION);
 #endif
 
+#if CONFIG_NETWORK
   Network.init();
   TcpServerProcess.add(true);
+#endif // CONFIG_NETWORK
+  
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.println(F("START Tcp "));
 #endif
@@ -72,3 +87,8 @@ void setup() {
 void loop() {
   sched.run();
 }
+
+// 36032 / 1554
+// remove HTTP server and servles 28722/1440
+
+
