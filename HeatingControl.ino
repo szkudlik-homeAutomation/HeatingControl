@@ -27,7 +27,7 @@
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
-#include "src/Common_code/controllers/tHeatingCircleControl.h"
+#include "src/tHeatingCircleControl.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
