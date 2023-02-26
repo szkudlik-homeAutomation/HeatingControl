@@ -13,7 +13,7 @@
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/tOutputProcessheatingControl.h"
-#include "src/Common_code/controllers/tHeatingCircleControl.h"
+#include "src/tHeatingCircleControl.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
