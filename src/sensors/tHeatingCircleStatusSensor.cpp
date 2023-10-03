@@ -12,21 +12,18 @@
 #include "../tHeatingCircleControl.h"
 
 
-uint8_t tHeatingCircleStatusSensor::SetSpecificConfig(void *pBlob)
+uint8_t tHeatingCircleStatusSensor::doSetConfig()
 {
-   tConfig *pConfig = (tConfig *)pBlob;
-   mHeatingControl = pConfig->pHeatingControl;
    mCurrentMeasurementBlob = (void*) &mResult;
    mMeasurementBlobSize = sizeof(mResult);
-   mConfigSet = true;
    return STATUS_SUCCESS;
 }
 
 
 void tHeatingCircleStatusSensor::doTriggerMeasurement()
 {
-   mResult.TargetTemp = mHeatingControl->getTargetTemp();
-   mResult.isWorking = mHeatingControl->isWorking();
+   mResult.TargetTemp = Config.pHeatingControl->getTargetTemp();
+   mResult.isWorking = Config.pHeatingControl->isWorking();
    onMeasurementCompleted(true);
 }
 

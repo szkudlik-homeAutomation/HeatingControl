@@ -15,7 +15,8 @@
 class tHeatingCircleControl;
 class tHeatingCircleStatusSensor : public tSensor {
 public:
-   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE) {}
+   static const uint8_t API_VERSION = 1;
+   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, API_VERSION) {}
 
    typedef struct
    {
@@ -28,15 +29,17 @@ public:
       tHeatingCircleControl *pHeatingControl;
    } tConfig;
 
-   virtual void doTriggerMeasurement();
-   virtual uint8_t SetSpecificConfig(void *pBlob);
+   tConfig Config;
+
 #if CONFIG_SENSORS_JSON_OUTPUT
    static uint8_t TranslateBlobToJSON(uint8_t dataBlobSize, void *pDataCache, Stream *pStream);
 #endif //CONFIG_SENSORS_JSON_OUTPUT
 
+protected:
+   virtual void doTriggerMeasurement();
+   virtual uint8_t doSetConfig();
 private:
    tResult mResult;
-   tHeatingCircleControl *mHeatingControl;
 };
 
 #endif //CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
