@@ -2,7 +2,7 @@
 
 void SetDefaultEEPromValues()
 {
-   DEBUG_PRINTLN_3("!!!!!!!!!!!!!!!!!!!!!!!!! CLEAN EEPROM MEMORY - SETTING DEFAULTS !!!!!!!!!!!!!!!!!")
+  DEBUG_PRINTLN_3("!!!!!!!!!!!!!!!!!!!!!!!!! CLEAN EEPROM MEMORY - SETTING DEFAULTS !!!!!!!!!!!!!!!!!");
   EEPROM.write(EEPROM_CANNARY_OFFSET,EEPROM_CANNARY);
 
   // device ID is supposed to be pre-set for a node
