@@ -168,7 +168,26 @@ void Interrupt(void)
 //}
 
 
-tSensorHub SensorHub;
+class tHeatingConrolSensorHub : public tSensorHub
+{
+public:
+    tHeatingConrolSensorHub() : tSensorHub() {}
+protected:
+   virtual tSensorDesc *appSpecificSenorDescFactory(uint8_t SensorType, uint8_t SensorID, char * pSensorName) 
+   {
+        tSensorDesc *newSensorDesc = NULL;
+        switch (SensorType)
+        {
+            case SENSOR_TYPE_HEATING_CIRCLE_STATE:
+                newSensorDesc = new tHeatingCircleStatusSensorDesc(SensorID, pSensorName);
+                break;
+        }
+        
+        return newSensorDesc;
+   } 
+};
+
+tHeatingConrolSensorHub SensorHub;
 
 void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -272,9 +291,9 @@ void setup() {
   pRadiatorsTemperatureValveControl->setHisteresis(1);
   pRadiatorsTemperatureValveControl->setFastThold(2); 
 
-  SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pFloorTemperatureValveControl);
-  SensorHub.subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pRadiatorsTemperatureValveControl);
-  SensorHub.subscribeToEvents(SENSOR_ID_1820_OUTDOOR_TEMP,&DS1820SensorCallback);
+  tSensorHub::Instance->subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pFloorTemperatureValveControl);
+  tSensorHub::Instance->subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pRadiatorsTemperatureValveControl);
+  tSensorHub::Instance->subscribeToEvents(SENSOR_ID_1820_OUTDOOR_TEMP,&DS1820SensorCallback);
 
 
   tSimpleDigitalInputSensor *pSimpleDigitalInputSensor = new tSimpleDigitalInputSensor;

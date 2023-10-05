@@ -11,6 +11,20 @@
 #if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 #include "../Common_code/sensors/tSensor.h"
+#include "../Common_code/sensors/tSensorDesc.h"
+
+class tHeatingCircleStatusSensorDesc : public tSensorDesc
+{
+public:
+    tHeatingCircleStatusSensorDesc(uint8_t aSensorID, char * apSensorName) :
+        tSensorDesc(SENSOR_TYPE_HEATING_CIRCLE_STATE, aSensorID, apSensorName) {}
+
+protected:
+#if CONFIG_SENSORS_JSON_OUTPUT
+   /* sensor specific JSON formatter */
+    virtual uint8_t doFormatJSON(Stream *pStream);
+#endif // CONFIG_SENSORS_JSON_OUTPUT
+};
 
 class tHeatingCircleControl;
 class tHeatingCircleStatusSensor : public tSensor {
@@ -30,10 +44,6 @@ public:
    } tConfig;
 
    tConfig Config;
-
-#if CONFIG_SENSORS_JSON_OUTPUT
-   static uint8_t TranslateBlobToJSON(uint8_t dataBlobSize, void *pDataCache, Stream *pStream);
-#endif //CONFIG_SENSORS_JSON_OUTPUT
 
 protected:
    virtual void doTriggerMeasurement();
