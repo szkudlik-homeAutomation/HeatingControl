@@ -12,7 +12,7 @@ manifest:
       repo-path: Common_code.git
       import: 
         path-prefix: HeatingControl
-      revision: 483f831f16cc2fae444096dd8fadd2f1b678dd5b
+      revision: 156ad6bba4153de3ccf63ad3196bfbbbe671d2f3
 
   self:
       path: HeatingControl
