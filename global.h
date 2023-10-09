@@ -53,11 +53,13 @@
 
 #endif //CONFIG_CENTRAL_NODE
 
+#define CONFIG_TLE8457_COMM_LIB 1
 
 #include <Arduino.h>
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
 #include "GlobalDefs/outputPins.h"
+#include "GlobalDefs/CommDefs.h"
 #include "src/Common_code/debug.h"
 #include "src/Common_code/helpers.h"
 #include "src/Common_code/status.h"

@@ -14,6 +14,8 @@
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
+#include "src/IncomingFrameHandler.h"
+#include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
@@ -23,6 +25,10 @@ tSensorProcess SensorProcess(sched);
 //WorkerProcess Worker(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
+
+tIncomingFrameHandler IncomingFrameHandler;
+CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
+CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 
 #if CONFIG_NETWORK
 
