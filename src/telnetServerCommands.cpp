@@ -10,6 +10,7 @@
 
 #include "lib/Commander/src/Commander.h"
 #include "Common_code/Network/telnetServer.h"
+#include "OutgoingMessage.h"
 
 bool send_GetVersion(Commander &Cmdr);
 bool send_Reset(Commander &Cmdr);
@@ -26,18 +27,18 @@ tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
 
 bool send_GetVersion(Commander &Cmdr)
 {
-//  int Dst;
-//  if(Cmdr.getInt(Dst))
-//  {
-//    Worker.SendMsgVersionRequest(Dst);
-//  }
-//  else
-//  {
-//    Cmdr.println(F("Usage: GetVersion dst_dev_id"));
-//    return false;
-//  }
-//
-//  return true;
+  int Dst;
+  if(Cmdr.getInt(Dst))
+  {
+	  OutgoingMessage::SendMsgVersionRequest(Dst);
+  }
+  else
+  {
+    Cmdr.println(F("Usage: GetVersion dst_dev_id"));
+    return false;
+  }
+
+  return true;
 }
 
 

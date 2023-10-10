@@ -30,6 +30,10 @@ tIncomingFrameHandler IncomingFrameHandler;
 CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 
+void COMM_SERIAL_EVENT() {
+  CommReciever.serialEvent();
+}
+
 #if CONFIG_NETWORK
 
 tNetwork Network;
@@ -66,6 +70,12 @@ void setup() {
   DEBUG_SERIAL.print(F("START, v"));
   DEBUG_SERIAL.println(FW_VERSION);
 #endif
+
+  COMM_SERIAL.begin(9600);
+  while (!COMM_SERIAL);
+
+  CommSender.add();
+  CommReciever.add();
 
 #if CONFIG_NETWORK
   Network.init();
