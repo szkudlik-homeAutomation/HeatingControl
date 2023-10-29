@@ -103,17 +103,17 @@ private:
    uint8_t mSlowValveTime;       //< num of seconds the valve is opened in a single step when moving at slow speed
 
    void StopValve()  { DEBUG_PRINTLN_3("==>STOP");
-      OutputProcess.SetOutput(mValveOpenOutId, 0);  OutputProcess.SetOutput(mValveCloseOutId, 0); }
+      tOutputProcess::get()->SetOutput(mValveOpenOutId, 0);  tOutputProcess::get()->SetOutput(mValveCloseOutId, 0); }
    void OpenValve()  { DEBUG_PRINTLN_3("==>OPEN");
-      OutputProcess.SetOutput(mValveCloseOutId, 0); OutputProcess.SetOutput(mValveOpenOutId, 1, MAX_VALVE_TIME); }
+      tOutputProcess::get()->SetOutput(mValveCloseOutId, 0); tOutputProcess::get()->SetOutput(mValveOpenOutId, 1, MAX_VALVE_TIME); }
    void CloseValve() { DEBUG_PRINTLN_3("==>CLOSE");
-      OutputProcess.SetOutput(mValveOpenOutId, 0);  OutputProcess.SetOutput(mValveCloseOutId,1, MAX_VALVE_TIME); }
+      tOutputProcess::get()->SetOutput(mValveOpenOutId, 0);  tOutputProcess::get()->SetOutput(mValveCloseOutId,1, MAX_VALVE_TIME); }
    void OpenValveSlow()  { DEBUG_PRINTLN_3("==>OPEN SLOW");
-      OutputProcess.SetOutput(mValveCloseOutId, 0); OutputProcess.SetOutput(mValveOpenOutId, 1,mSlowValveTime); }
+      tOutputProcess::get()->SetOutput(mValveCloseOutId, 0); tOutputProcess::get()->SetOutput(mValveOpenOutId, 1,mSlowValveTime); }
    void CloseValveSlow() { DEBUG_PRINTLN_3("==>CLOSE SLOW");
-      OutputProcess.SetOutput(mValveOpenOutId, 0);  OutputProcess.SetOutput(mValveCloseOutId, 1,mSlowValveTime); }
+      tOutputProcess::get()->SetOutput(mValveOpenOutId, 0);  tOutputProcess::get()->SetOutput(mValveCloseOutId, 1,mSlowValveTime); }
 
-   void PumpOn()  { DEBUG_PRINTLN_3("==>PUMP ON"); OutputProcess.SetOutput(mPumpOutId, 1, MAX_VALVE_TIME); }
-   void PumpOff() { DEBUG_PRINTLN_3("==>PUMP OFF"); OutputProcess.SetOutput(mPumpOutId, 0); }
+   void PumpOn()  { DEBUG_PRINTLN_3("==>PUMP ON"); tOutputProcess::get()->SetOutput(mPumpOutId, 1, MAX_VALVE_TIME); }
+   void PumpOff() { DEBUG_PRINTLN_3("==>PUMP OFF"); tOutputProcess::get()->SetOutput(mPumpOutId, 0); }
 };
 #endif //CONFIG_HEATING_CIRCLE_CONTROL

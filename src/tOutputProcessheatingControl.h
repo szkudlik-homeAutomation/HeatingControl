@@ -23,6 +23,3 @@ public:
       Output[OUT_ID_TEST3].SetPin(OUT_PIN_TEST3,0);
    }
 };
-
-extern tOutputProcess_heatingControl OutputProcess;
-

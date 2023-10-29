@@ -41,8 +41,8 @@ extern tTelnetServer TelnetServer;
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
-   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet(&OutputProcess);
-   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet(&OutputProcess);
+   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
+   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
 
    return NULL;
 }
