@@ -14,7 +14,7 @@
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
-#include "src/IncomingFrameHandler.h"
+#include "src/tHeatingCtrlIncomingFrameHandler.h"
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 
 // restart if no connection for 5 minutes
@@ -26,7 +26,7 @@ tSensorProcess SensorProcess(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
-tIncomingFrameHandler IncomingFrameHandler;
+tHeatingCtrlIncomingFrameHandler IncomingFrameHandler;
 CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 
@@ -61,15 +61,15 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #endif // CONFIG_NETWORK
 
 void setup() {
-  if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
-    SetDefaultEEPromValues();
-
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.begin(115200);
   while (!DEBUG_SERIAL);
   DEBUG_SERIAL.print(F("START, v"));
   DEBUG_SERIAL.println(FW_VERSION);
 #endif
+
+  if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
+    SetDefaultEEPromValues();
 
   COMM_SERIAL.begin(9600);
   while (!COMM_SERIAL);
@@ -99,12 +99,7 @@ void setup() {
   
 }
 
-
 void loop() {
   sched.run();
 }
-
-// 36032 / 1554
-// remove HTTP server and servles 28722/1440
-
 
