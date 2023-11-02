@@ -10,57 +10,20 @@
 
 #include "lib/Commander/src/Commander.h"
 #include "Common_code/Network/telnetServer.h"
-
-bool send_GetVersion(Commander &Cmdr);
-bool send_Reset(Commander &Cmdr);
-
+#include "tHeatingControlOutgoingFrames.h"
 
 const commandList_t TelnetCommands[] = {
   {"enableLogs",      TelnetEnableLogs,             "enable logs on telnet console"},
   {"disableLogs",     TelnetDisableLogs,            "enable logs on telnet console"},
   {"GetVersion",      send_GetVersion,              "show version"},
   {"Reset",           send_Reset,                   "reset the system"},
+  {"ScanActiveNodes", trigger_ScanNodes,            "Scan the bus for nodes from 1 to 32"},
+  {"StateOverview",   send_stateOverviewHandler,    "MESSAGE_TYPE_REQUEST_OVERVIEW_STATE dev_id"},
+  {"OutputState",     send_OutputStateHandler,      "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id"},
+  {"SetOutput",       send_SetOutputHandler,        "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id state [timer] (not set=default, 0-forever)"},
 };
 
 tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
 
-bool send_GetVersion(Commander &Cmdr)
-{
-//  int Dst;
-//  if(Cmdr.getInt(Dst))
-//  {
-//    Worker.SendMsgVersionRequest(Dst);
-//  }
-//  else
-//  {
-//    Cmdr.println(F("Usage: GetVersion dst_dev_id"));
-//    return false;
-//  }
-//
-//  return true;
-}
-
-
-bool send_Reset(Commander &Cmdr)
-{
-//  int Dst;
-//  if(Cmdr.getInt(Dst))
-//  {
-//    Worker.SendMsgReset(Dst);
-//  }
-//  else
-//  {
-//    Cmdr.println(F("Usage: SendReset dst_dev_id"));
-//    return false;
-//  }
-//
-//  return true;
-}
-
-
-bool trigger_ScanNodes(Commander &Cmdr)
-{
-//  Worker.triggerNodesScan();
-}
 
 #endif CONFIG_TELNET_SERVER

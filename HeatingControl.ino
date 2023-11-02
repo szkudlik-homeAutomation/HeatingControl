@@ -28,6 +28,9 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
+#include "src/tHeatingCtrlIncomingFrameHandler.h"
+#include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
+#include "src/Common_code/WorkerProcess.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
@@ -37,6 +40,18 @@ tSensorProcess SensorProcess(sched);
 //WorkerProcess Worker(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
+
+tHeatingCtrlIncomingFrameHandler IncomingFrameHandler;
+CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
+CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
+
+void COMM_SERIAL_EVENT() {
+  CommReciever.serialEvent();
+}
+
+#if CONFIG_WORKER_PROCESS
+WorkerProcess Worker(sched);
+#endif
 
 #if CONFIG_NETWORK
 
@@ -55,8 +70,8 @@ extern tTelnetServer TelnetServer;
 tHttpServlet * ServletFactory(String *pRequestBuffer)
 {
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
-   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet(&OutputProcess);
-   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet(&OutputProcess);
+   if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
+   if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
    if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();
    if (pRequestBuffer->startsWith("/heat")) return new tHeatingControlServletTMP();
 
@@ -190,15 +205,21 @@ protected:
 tHeatingConrolSensorHub SensorHub;
 
 void setup() {
-  if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
-    SetDefaultEEPromValues();
-
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.begin(115200);
   while (!DEBUG_SERIAL);
   DEBUG_SERIAL.print(F("START, v"));
   DEBUG_SERIAL.println(FW_VERSION);
 #endif
+
+  if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
+    SetDefaultEEPromValues();
+
+  COMM_SERIAL.begin(9600);
+  while (!COMM_SERIAL);
+
+  CommSender.add();
+  CommReciever.add();
 
 #if CONFIG_NETWORK
   Network.init();
@@ -210,7 +231,9 @@ void setup() {
 #endif
 
   SensorProcess.add(true);
-//  Worker.add();
+#if CONFIG_WORKER_PROCESS
+  Worker.add();
+#endif //CONFIG_WORKER_PROCESS
   OutputProcess.add(true);
   WatchdogProcess.add(true);
 
@@ -359,7 +382,6 @@ void setup() {
   DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
 #endif
 }
-
 
 void loop() {
   sched.run();

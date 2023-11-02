@@ -9,7 +9,7 @@
 
 
 #include "../global.h"
-#include "Common_code/OutputProcess.h"
+#include "Common_code/tOutputProcess.h"
 #include "Common_code/Network/httpServer.h"
 
 class tOutputProcess_heatingControl : public tOutputProcess {
@@ -36,6 +36,3 @@ public:
       Output[OUT_ID_RADIATOR_TEMP_HIGHER].SetPin(OUT_PIN_RADIATOR_TEMP_HIGHER,0);
    }
 };
-
-extern tOutputProcess_heatingControl OutputProcess;
-

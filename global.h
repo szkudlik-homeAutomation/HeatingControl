@@ -24,11 +24,18 @@
 
 #if CONFIG_CENTRAL_NODE
 
+#define COMM_SERIAL Serial1
+#define COMM_SERIAL_EVENT serialEvent1
+
 #define CONFIG_LOGGER 1
 
 #define DEBUG_3_ENABLE
+#define DEBUG_2_ENABLE
+#define DEBUG_1_ENABLE
 #define DEBUG_SERIAL Serial
 #define DEBUG_SERIAL_EVENT serialEvent
+
+#define CONFIG_OUTPUT_PROCESS 1
 
 #define CONFIG_HEATING_CIRCLE_CONTROL 1
 #define CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR 1
@@ -49,13 +56,17 @@
 #define CONFIG_TELNET_SERVER 1
 #define CONFIG_WATCHDOG 1
 
+#define CONFIG_WORKER_PROCESS 1
+#define CONFIG_NODE_SCAN_TASK 1
 #endif //CONFIG_CENTRAL_NODE
 
+#define CONFIG_TLE8457_COMM_LIB 1
 
 #include <Arduino.h>
+#include "src/Common_code/helpers.h"
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
 #include "GlobalDefs/outputPins.h"
+#include "GlobalDefs/CommDefs.h"
 #include "src/Common_code/debug.h"
-#include "src/Common_code/helpers.h"
 #include "src/Common_code/status.h"
