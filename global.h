@@ -30,8 +30,6 @@
 #define CONFIG_LOGGER 1
 
 #define DEBUG_3_ENABLE
-#define DEBUG_2_ENABLE
-#define DEBUG_1_ENABLE
 #define DEBUG_SERIAL Serial
 #define DEBUG_SERIAL_EVENT serialEvent
 
