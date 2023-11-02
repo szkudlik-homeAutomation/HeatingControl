@@ -9,7 +9,7 @@
 
 
 #include "../global.h"
-#include "Common_code/OutputProcess.h"
+#include "Common_code/tOutputProcess.h"
 #include "Common_code/Network/httpServer.h"
 
 class tOutputProcess_heatingControl : public tOutputProcess {
