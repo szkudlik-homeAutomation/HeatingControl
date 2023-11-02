@@ -7,7 +7,6 @@
 
 #include "../global.h"
 #include "tHeatingCtrlIncomingFrameHandler.h"
-#include "OutgoingMessage.h"
 
 void tHeatingCtrlIncomingFrameHandler::onMessage(uint8_t type, uint16_t data, void *pData)
 {

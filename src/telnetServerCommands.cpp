@@ -10,7 +10,7 @@
 
 #include "lib/Commander/src/Commander.h"
 #include "Common_code/Network/telnetServer.h"
-#include "OutgoingMessage.h"
+#include "tHeatingControlOutgoingFrames.h"
 
 const commandList_t TelnetCommands[] = {
   {"enableLogs",      TelnetEnableLogs,             "enable logs on telnet console"},
