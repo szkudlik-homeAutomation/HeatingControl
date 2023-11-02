@@ -16,6 +16,7 @@
 #include "src/tHeatingCircleControl.h"
 #include "src/tHeatingCtrlIncomingFrameHandler.h"
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
+#include "src/Common_code/WorkerProcess.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
@@ -33,6 +34,10 @@ CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.r
 void COMM_SERIAL_EVENT() {
   CommReciever.serialEvent();
 }
+
+#if CONFIG_WORKER_PROCESS
+WorkerProcess Worker(sched);
+#endif
 
 #if CONFIG_NETWORK
 
@@ -87,7 +92,9 @@ void setup() {
 #endif
 
   SensorProcess.add(true);
-//  Worker.add();
+#if CONFIG_WORKER_PROCESS
+  Worker.add();
+#endif //CONFIG_WORKER_PROCESS
   OutputProcess.add(true);
   WatchdogProcess.add(true);
 
