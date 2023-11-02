@@ -9,9 +9,20 @@
 #include "src/Common_code/Network/TelnetServer.h"
 #include "src/Common_code/Network/servlets/servlets.h"
 #include "src/Common_code/Network/servlets/tOutputControlServlets.h"
+#include "src/Common_code/Network/servlets/tSensorStateServlet.h"
 #include "src/Common_code/WatchdogProcess.h"
+
 #include "src/Common_code/sensors/tSensor.h"
+#include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
+#include "src/Common_code/sensors/tImpulseSensor.h"
+#include "src/Common_code/sensors/tPt100AnalogSensor.h"
+#include "src/Common_code/sensors/tSensorHub.h"
+#include "src/sensors/tHeatingCircleStatusSensor.h"
+#include "src/Common_code/sensors/tOutputStateSensor.h"
+#include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
+#include "src/Common_code/sensors/tSystemStatusSensor.h"
+#include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
 #include "src/tHeatingCtrlIncomingFrameHandler.h"
@@ -58,6 +69,7 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
    if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
    if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
+   if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();
 
    return NULL;
 }
@@ -98,6 +110,12 @@ void setup() {
   OutputProcess.add(true);
   WatchdogProcess.add(true);
 
+#define SENSOR_ID_SYSTEM_STATUS 1
+  tSystemStatusSensor *pSystemStatusSensor = new tSystemStatusSensor;
+
+  pSystemStatusSensor->setConfig(10); // 1 sec
+  pSystemStatusSensor->Register(SENSOR_ID_SYSTEM_STATUS,"SystemStatus");
+  pSystemStatusSensor->Start();
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
   DEBUG_SERIAL.println(getFreeRam());
