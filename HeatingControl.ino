@@ -113,7 +113,7 @@ void setup() {
 #define SENSOR_ID_SYSTEM_STATUS 1
   tSystemStatusSensor *pSystemStatusSensor = new tSystemStatusSensor;
 
-  pSystemStatusSensor->setConfig(10); // 1 sec
+  pSystemStatusSensor->setConfig(50); // 5 sec
   pSystemStatusSensor->Register(SENSOR_ID_SYSTEM_STATUS,"SystemStatus");
   pSystemStatusSensor->Start();
 #ifdef DEBUG_SERIAL

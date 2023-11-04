@@ -30,7 +30,7 @@ class tHeatingCircleControl;
 class tHeatingCircleStatusSensor : public tSensor {
 public:
    static const uint8_t API_VERSION = 1;
-   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, API_VERSION) {}
+   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, API_VERSION, sizeof(tConfig), &Config) {}
 
    typedef struct
    {

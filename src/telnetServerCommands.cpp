@@ -22,6 +22,7 @@ const commandList_t TelnetCommands[] = {
   {"OutputState",     send_OutputStateHandler,      "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id"},
   {"SetOutput",       send_SetOutputHandler,        "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id state [timer] (not set=default, 0-forever)"},
   {"GetSensorById",   send_GetSensorByIdReqestHandler,"MESSAGE_TYPE_GET_SENSOR_BY_ID_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
+  {"GetSensorMeasurement",  send_GetSensorMeasurementReqest, "MESSAGE_TYPE_SENSOR_MEASUREMENT_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
 };
 
 tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
