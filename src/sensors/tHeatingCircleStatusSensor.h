@@ -16,8 +16,7 @@
 class tHeatingCircleStatusSensorDesc : public tSensorDesc
 {
 public:
-    tHeatingCircleStatusSensorDesc(uint8_t aSensorID, char * apSensorName) :
-        tSensorDesc(SENSOR_TYPE_HEATING_CIRCLE_STATE, aSensorID, apSensorName) {}
+    tHeatingCircleStatusSensorDesc() : tSensorDesc() {}
 
 protected:
 #if CONFIG_SENSORS_JSON_OUTPUT
