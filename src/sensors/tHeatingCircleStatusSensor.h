@@ -16,8 +16,7 @@
 class tHeatingCircleStatusSensorDesc : public tSensorDesc
 {
 public:
-    tHeatingCircleStatusSensorDesc(uint8_t aSensorID, char * apSensorName) :
-        tSensorDesc(SENSOR_TYPE_HEATING_CIRCLE_STATE, aSensorID, apSensorName) {}
+    tHeatingCircleStatusSensorDesc() : tSensorDesc() {}
 
 protected:
 #if CONFIG_SENSORS_JSON_OUTPUT
@@ -29,21 +28,25 @@ protected:
 class tHeatingCircleControl;
 class tHeatingCircleStatusSensor : public tSensor {
 public:
-   static const uint8_t API_VERSION = 1;
-   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, API_VERSION) {}
 
    typedef struct
    {
       uint8_t isWorking;
       float TargetTemp;
-   } tResult;
+   } tResult_api_v1;
 
    typedef struct
    {
       tHeatingCircleControl *pHeatingControl;
-   } tConfig;
+   } tConfig_api_v1;
+
+   static const uint8_t API_VERSION = 1;
+   typedef tConfig_api_v1 tConfig;
+   typedef tResult_api_v1 tResult;
 
    tConfig Config;
+
+   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, API_VERSION, sizeof(tConfig), &Config) {}
 
 protected:
    virtual void doTriggerMeasurement();

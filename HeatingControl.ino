@@ -188,13 +188,13 @@ class tHeatingConrolSensorHub : public tSensorHub
 public:
     tHeatingConrolSensorHub() : tSensorHub() {}
 protected:
-   virtual tSensorDesc *appSpecificSenorDescFactory(uint8_t SensorType, uint8_t SensorID, char * pSensorName) 
+   virtual tSensorDesc *appSpecificSenorDescFactory(uint8_t SensorType) 
    {
         tSensorDesc *newSensorDesc = NULL;
         switch (SensorType)
         {
             case SENSOR_TYPE_HEATING_CIRCLE_STATE:
-                newSensorDesc = new tHeatingCircleStatusSensorDesc(SensorID, pSensorName);
+                newSensorDesc = new tHeatingCircleStatusSensorDesc();
                 break;
         }
         
@@ -260,7 +260,7 @@ void setup() {
   
   tSystemStatusSensor *pSystemStatusSensor = new tSystemStatusSensor;
 
-  pSystemStatusSensor->setConfig(10); // 1 sec
+  pSystemStatusSensor->setConfig(50); // 5 sec
   pSystemStatusSensor->Register(SENSOR_ID_SYSTEM_STATUS,"SystemStatus");
   pSystemStatusSensor->Start();
 
