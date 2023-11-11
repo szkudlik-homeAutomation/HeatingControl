@@ -12,6 +12,7 @@
 #include "src/Common_code/Network/servlets/tSensorStateServlet.h"
 #include "src/Common_code/WatchdogProcess.h"
 
+#include "src/Common_code/sensors/tSensorFactory.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
@@ -118,12 +119,12 @@ void setup() {
   OutputProcess.add(true);
   WatchdogProcess.add(true);
 
-#define SENSOR_ID_SYSTEM_STATUS 1
-  tSystemStatusSensor *pSystemStatusSensor = new tSystemStatusSensor;
 
-  pSystemStatusSensor->setConfig(50); // 5 sec
-  pSystemStatusSensor->Register(SENSOR_ID_SYSTEM_STATUS,"SystemStatus");
-  pSystemStatusSensor->Start();
+#define SENSOR_ID_SYSTEM_STATUS 1
+  tSensor *pSensor;
+  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
+  pSensor->Register("SystemStatus");
+  
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
   DEBUG_SERIAL.println(getFreeRam());
