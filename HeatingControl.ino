@@ -18,6 +18,7 @@
 #include "src/Common_code/sensors/tImpulseSensor.h"
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSensorHub.h"
+#include "src/Common_code/sensors/tSensorFactory.h"
 #include "src/sensors/tHeatingCircleStatusSensor.h"
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
@@ -76,6 +77,9 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #endif
 
 #endif // CONFIG_NETWORK
+
+tSensorHub SensorHub;
+tSensorFactory SensorFactory;
 
 void setup() {
 #ifdef DEBUG_SERIAL
