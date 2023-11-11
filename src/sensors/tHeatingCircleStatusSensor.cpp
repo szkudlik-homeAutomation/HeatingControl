@@ -30,6 +30,11 @@ void tHeatingCircleStatusSensor::doTriggerMeasurement()
 #if CONFIG_SENSORS_JSON_OUTPUT
 uint8_t tHeatingCircleStatusSensorDesc::doFormatJSON(Stream *pStream)
 {
+    if (sensorApiVersion != 1)
+    {
+          return STATUS_JSON_ENCODE_UNSUPPORTED_API_VERSION;
+    }
+
    if (dataBlobSize != sizeof(tHeatingCircleStatusSensor::tResult))
    {
          return STATUS_JSON_ENCODE_ERROR;
