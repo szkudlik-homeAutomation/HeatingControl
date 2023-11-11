@@ -39,6 +39,7 @@ tSensorProcess SensorProcess(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
+#if CONFIG_TLE8457_COMM_LIB
 tHeatingCtrlIncomingFrameHandler IncomingFrameHandler;
 CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
@@ -46,6 +47,7 @@ CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.r
 void COMM_SERIAL_EVENT() {
   CommReciever.serialEvent();
 }
+#endif //CONFIG_TLE8457_COMM_LIB
 
 #if CONFIG_WORKER_PROCESS
 WorkerProcess Worker(sched);
@@ -95,8 +97,10 @@ void setup() {
   COMM_SERIAL.begin(9600);
   while (!COMM_SERIAL);
 
+#if CONFIG_TLE8457_COMM_LIB
   CommSender.add();
   CommReciever.add();
+#endif //CONFIG_TLE8457_COMM_LIB
 
 #if CONFIG_NETWORK
   Network.init();
@@ -125,10 +129,8 @@ void setup() {
   DEBUG_SERIAL.println(getFreeRam());
   DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
 #endif
-  
 }
 
 void loop() {
   sched.run();
 }
-

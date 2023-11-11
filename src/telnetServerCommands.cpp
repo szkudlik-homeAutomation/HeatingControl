@@ -15,6 +15,7 @@
 const commandList_t TelnetCommands[] = {
   {"enableLogs",      TelnetEnableLogs,             "enable logs on telnet console"},
   {"disableLogs",     TelnetDisableLogs,            "enable logs on telnet console"},
+#if CONFIG_TLE8457_COMM_LIB
   {"GetVersion",      send_GetVersion,              "show version"},
   {"Reset",           send_Reset,                   "reset the system"},
   {"ScanActiveNodes", trigger_ScanNodes,            "Scan the bus for nodes from 1 to 32"},
@@ -23,6 +24,7 @@ const commandList_t TelnetCommands[] = {
   {"SetOutput",       send_SetOutputHandler,        "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id state [timer] (not set=default, 0-forever)"},
   {"GetSensorById",   send_GetSensorByIdReqestHandler,"MESSAGE_TYPE_GET_SENSOR_BY_ID_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
   {"GetSensorMeasurement",  send_GetSensorMeasurementReqest, "MESSAGE_TYPE_SENSOR_MEASUREMENT_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
+#endif //CONFIG_TLE8457_COMM_LIB
 };
 
 tTelnetServer TelnetServer(TelnetCommands,sizeof(TelnetCommands));
