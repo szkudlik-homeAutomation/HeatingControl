@@ -53,7 +53,7 @@ public:
    void Stop()  { mState = STATE_OFF; }
    void Start()  { mState = STATE_IDLE; mPausePreventionCycles = PAUSE_PREVENTION_CYCLES; }
 
-   virtual void onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob);
+   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob);
 
    void setTargetTemp(float TargetTemp) { mTargetTemp = TargetTemp * 10; }
    void setTolerance(float Tolerance)   { mTolerance = Tolerance * 10; }
