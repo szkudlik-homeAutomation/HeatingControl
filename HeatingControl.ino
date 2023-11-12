@@ -90,13 +90,12 @@ class tDS1820SensorCallback : public tSensorHubEvent
 public:
    tDS1820SensorCallback() {};
    
-   virtual void onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
+   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
    {
       tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
       
-      switch (EventType)
+      if (EventType & EV_TYPE_MEASUREMENT_COMPLETED)
       {
-         case EV_TYPE_MEASUREMENT_COMPLETED: 
             DEBUG_PRINT_3("Measurement completed. devs: ");
             DEBUG_3(print(pDS1820Result->NumOfDevices));
             DEBUG_PRINT_3(" Avg: ");
@@ -117,11 +116,6 @@ public:
                DEBUG_3(print(((float)(pDS1820Result)->Dev[i].Temperature) / 10));
             }
             DEBUG_PRINTLN_3("");
-            break;
-   
-         case EV_TYPE_MEASUREMENT_ERROR:
-            DEBUG_PRINTLN_3("Measurement completed. ERROR");
-            break;
       }
    }
 };
@@ -130,9 +124,9 @@ class tImpulseSensorCallback : public tSensorHubEvent
 {
 public:
    tImpulseSensorCallback() {};
-   virtual void onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
+   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
    {
-      if (EV_TYPE_MEASUREMENT_COMPLETED == EventType)
+      if (EV_TYPE_MEASUREMENT_COMPLETED & EventType)
       {
          tImpulseSensor::tResult *pResult =(tImpulseSensor::tResult *) pDataBlob;
          DEBUG_PRINT_3("SensorID: ");
@@ -149,9 +143,9 @@ class tPt100SensorCallback : public tSensorHubEvent
 {
 public:
    tPt100SensorCallback() {};
-   virtual void onEvent(uint8_t SensorID, tSensorEventType EventType, uint8_t dataBlobSize, void *pDataBlob)
+   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
    {
-      if (EV_TYPE_MEASUREMENT_COMPLETED == EventType)
+      if (EV_TYPE_MEASUREMENT_COMPLETED & EventType)
       {
          tPt100AnalogSensor::tResult *pResult =(tPt100AnalogSensor::tResult *) pDataBlob;
          DEBUG_PRINT_3("PT100 Temp: "); 
@@ -273,6 +267,7 @@ void setup() {
 
   pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
   pSensor->Register("SystemStatus");
+  pSensor->setSensorSerialEventsMask(EV_TYPE_MEASUREMENT_ERROR | EV_TYPE_MEASUREMENT_COMPLETED);
 
   DS1820config.Avg = 0;
   DS1820config.Pin = 2;
