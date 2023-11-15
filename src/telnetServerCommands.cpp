@@ -22,8 +22,11 @@ const commandList_t TelnetCommands[] = {
   {"StateOverview",   send_stateOverviewHandler,    "MESSAGE_TYPE_REQUEST_OVERVIEW_STATE dev_id"},
   {"OutputState",     send_OutputStateHandler,      "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id"},
   {"SetOutput",       send_SetOutputHandler,        "MESSAGE_TYPE_OUTPUT_STATE_REQUEST dev_id out_id state [timer] (not set=default, 0-forever)"},
+#if CONFIG_SENSORS
   {"GetSensorById",   send_GetSensorByIdReqestHandler,"MESSAGE_TYPE_GET_SENSOR_BY_ID_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
   {"GetSensorMeasurement",  send_GetSensorMeasurementReqest, "MESSAGE_TYPE_SENSOR_MEASUREMENT_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
+  {"CreateSensor", send_CreateSensorRequest, "MESSAGE_TYPE_SENSOR_CREATE dev_id sensor_type sensor_id"},
+#endif // CONFIG_SENSORS
 #endif //CONFIG_TLE8457_COMM_LIB
 };
 
