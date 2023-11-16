@@ -50,7 +50,7 @@ public:
 
 protected:
    virtual void doTriggerMeasurement();
-   virtual uint8_t doSetConfig();
+   virtual uint8_t onSetConfig();
 private:
    tResult mResult;
 };

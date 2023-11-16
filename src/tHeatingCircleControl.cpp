@@ -29,12 +29,12 @@ void tHeatingCircleControl::onEvent(uint8_t SensorID, uint8_t EventType, uint8_t
       return;
    }
 
-   if (EventType & EV_TYPE_MEASUREMENT_ERROR)
+   if (EventType == EV_TYPE_MEASUREMENT_ERROR)
 	{
 		StopValve();
 		return;
 	}
-	if (!(EventType & EV_TYPE_MEASUREMENT_COMPLETED))
+	if (!(EventType == EV_TYPE_MEASUREMENT_COMPLETED))
 	{
 		return;
 	}
