@@ -360,15 +360,15 @@ void setup() {
   pSensor->Register("OutStates");
 
   
-  tHeatingCircleStatusSensor *pHeatingCircleStatusSensor = new tHeatingCircleStatusSensor;
+  tHeatingCircleStatusSensor *pHeatingCircleStatusSensor = new tHeatingCircleStatusSensor(SENSOR_ID_RADIATORS_HEATING_STATE);
   pHeatingCircleStatusSensor->Config.pHeatingControl = pRadiatorsTemperatureValveControl;
-  pHeatingCircleStatusSensor->setConfig(SENSOR_ID_RADIATORS_HEATING_STATE, 50); // 5 sec
+  pHeatingCircleStatusSensor->setConfig(50); // 5 sec
   pHeatingCircleStatusSensor->Register("RadiatorsState");
   pHeatingCircleStatusSensor->Start();
   
-  pHeatingCircleStatusSensor = new tHeatingCircleStatusSensor;
+  pHeatingCircleStatusSensor = new tHeatingCircleStatusSensor(SENSOR_ID_FLOOR_HEATING_STATE);
   pHeatingCircleStatusSensor->Config.pHeatingControl =  pFloorTemperatureValveControl;
-  pHeatingCircleStatusSensor->setConfig(SENSOR_ID_FLOOR_HEATING_STATE, 50); // 5 sec
+  pHeatingCircleStatusSensor->setConfig(50); // 5 sec
   pHeatingCircleStatusSensor->Register("FloorState");
   pHeatingCircleStatusSensor->Start();
 

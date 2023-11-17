@@ -46,7 +46,7 @@ public:
 
    tConfig Config;
 
-   tHeatingCircleStatusSensor() : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, API_VERSION, sizeof(tConfig), &Config) {}
+   tHeatingCircleStatusSensor(uint8_t sensorID) : tSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, sensorID, API_VERSION, sizeof(tConfig), &Config) {}
 
 protected:
    virtual void doTriggerMeasurement();
