@@ -26,6 +26,8 @@ const commandList_t TelnetCommands[] = {
   {"GetSensorById",   send_GetSensorByIdReqestHandler,"MESSAGE_TYPE_GET_SENSOR_BY_ID_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
   {"GetSensorMeasurement",  send_GetSensorMeasurementReqest, "MESSAGE_TYPE_SENSOR_MEASUREMENT_REQUEST sensor_id [dst_dev]   if dst is not provided => broadcast"},
   {"CreateSensor", send_CreateSensorRequest, "MESSAGE_TYPE_SENSOR_CREATE dev_id sensor_type sensor_id"},
+  {"StartSensor", send_StartSensorRequest, "MESSAGE_TYPE_SENSOR_START dev_id sensor_id [sensor_ev_mask = EV_TYPE_MEASUREMENT_COMPLETED]"},
+  {"StopSensor", send_StopSensorRequest, "MESSAGE_TYPE_SENSOR_STOP dev_id sensor_id"},
 #endif // CONFIG_SENSORS
 #endif //CONFIG_TLE8457_COMM_LIB
 };
