@@ -28,6 +28,8 @@ const commandList_t TelnetCommands[] = {
   {"CreateSensor", send_CreateSensorRequest, "MESSAGE_TYPE_SENSOR_CREATE dev_id sensor_type sensor_id"},
   {"StartSensor", send_StartSensorRequest, "MESSAGE_TYPE_SENSOR_START dev_id sensor_id [sensor_ev_mask = EV_TYPE_MEASUREMENT_COMPLETED]"},
   {"StopSensor", send_StopSensorRequest, "MESSAGE_TYPE_SENSOR_STOP dev_id sensor_id"},
+  {"ConfigureSensor", send_ConfigureSensorRequest, "MESSAGE_TYPE_SENSOR_CONFIGURE"},
+  {"ConfigureSensor", send_ConfigureSensorRequest, "ConfigureSensor sensor_id period [dev_id = broadcast]"},
 #endif // CONFIG_SENSORS
 #endif //CONFIG_TLE8457_COMM_LIB
 };
