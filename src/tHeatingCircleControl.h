@@ -9,6 +9,10 @@
 
 #if CONFIG_HEATING_CIRCLE_CONTROL
 
+#if !CONFIG_SENSOR_HUB
+#error CONFIG_SENSOR_HUB must be set for heating control
+#endif
+
 #include "../global.h"
 #include "tOutputProcessheatingControl.h"
 #include "Common_code/sensors/tSensorHub.h"

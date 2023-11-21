@@ -73,15 +73,18 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
    if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
    if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
+#if CONFIG_SENSOR_STATE_SERVLET 
    if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();
-
+#endif // CONFIG_SENSOR_STATE_SERVLET
    return NULL;
 }
 #endif
 
 #endif // CONFIG_NETWORK
 
+#if CONFIG_SENSOR_HUB
 tSensorHub SensorHub;
+#endif // CONFIG_SENSOR_HUB
 tSensorFactory SensorFactory;
 
 void setup() {
