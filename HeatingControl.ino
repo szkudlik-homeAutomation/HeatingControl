@@ -124,10 +124,10 @@ void setup() {
 
 
 #define SENSOR_ID_SYSTEM_STATUS 1
-//  tSensor *pSensor;
-//  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
-//  pSensor->Register("SystemStatus");
-//  pSensor->setSensorSerialEventsMask(EV_TYPE_MEASUREMENT_ERROR | EV_TYPE_MEASUREMENT_COMPLETED);
+  tSensor *pSensor;
+  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
+  tSensorHub::Instance->RegisterLocalSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
+  pSensor->setSensorSerialEventsMask(EV_TYPE_MEASUREMENT_ERROR | EV_TYPE_MEASUREMENT_COMPLETED);
   
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));

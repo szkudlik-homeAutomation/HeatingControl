@@ -35,7 +35,7 @@ uint8_t tHeatingCircleStatusSensorDesc::doFormatJSON(Stream *pStream)
           return STATUS_JSON_ENCODE_UNSUPPORTED_API_VERSION;
     }
 
-   if (dataBlobSize != sizeof(tHeatingCircleStatusSensor::tResult))
+   if (mDataBlobSize != sizeof(tHeatingCircleStatusSensor::tResult))
    {
          return STATUS_JSON_ENCODE_ERROR;
    }
