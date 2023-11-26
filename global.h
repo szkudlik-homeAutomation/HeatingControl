@@ -54,11 +54,11 @@
 #define CONFIG_TELNET_SERVER 1
 #define CONFIG_WATCHDOG 1
 
-#define CONFIG_WORKER_PROCESS 1
-#define CONFIG_NODE_SCAN_TASK 1
+#define CONFIG_WORKER_PROCESS 0
+#define CONFIG_NODE_SCAN_TASK 0
 #endif //CONFIG_CENTRAL_NODE
 
-#define CONFIG_TLE8457_COMM_LIB 1
+#define CONFIG_TLE8457_COMM_LIB 0
 
 #include <Arduino.h>
 #include "src/Common_code/helpers.h"
