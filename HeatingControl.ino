@@ -12,6 +12,7 @@
 #include "src/Common_code/Network/servlets/tSensorStateServlet.h"
 #include "src/Common_code/WatchdogProcess.h"
 
+#include "src/Common_code/sensors/tSensorFactory.h"
 #include "src/Common_code/sensors/tSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
@@ -38,6 +39,7 @@ tSensorProcess SensorProcess(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
+#if CONFIG_TLE8457_COMM_LIB
 tHeatingCtrlIncomingFrameHandler IncomingFrameHandler;
 CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
@@ -45,6 +47,7 @@ CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.r
 void COMM_SERIAL_EVENT() {
   CommReciever.serialEvent();
 }
+#endif //CONFIG_TLE8457_COMM_LIB
 
 #if CONFIG_WORKER_PROCESS
 WorkerProcess Worker(sched);
@@ -69,13 +72,19 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
    if (pRequestBuffer->startsWith("/OutputControl.js")) return new tOutputControlJavaScript();
    if (pRequestBuffer->startsWith("/outputState")) return new tOutputStateServlet();
    if (pRequestBuffer->startsWith("/outputSet")) return new tOutputSetServlet();
+#if CONFIG_SENSOR_STATE_SERVLET 
    if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();
-
+#endif // CONFIG_SENSOR_STATE_SERVLET
    return NULL;
 }
 #endif
 
 #endif // CONFIG_NETWORK
+
+#if CONFIG_SENSOR_HUB
+tSensorHub SensorHub;
+#endif // CONFIG_SENSOR_HUB
+tSensorFactory SensorFactory;
 
 void setup() {
 #ifdef DEBUG_SERIAL
@@ -91,8 +100,10 @@ void setup() {
   COMM_SERIAL.begin(9600);
   while (!COMM_SERIAL);
 
+#if CONFIG_TLE8457_COMM_LIB
   CommSender.add();
   CommReciever.add();
+#endif //CONFIG_TLE8457_COMM_LIB
 
 #if CONFIG_NETWORK
   Network.init();
@@ -110,21 +121,19 @@ void setup() {
   OutputProcess.add(true);
   WatchdogProcess.add(true);
 
-#define SENSOR_ID_SYSTEM_STATUS 1
-  tSystemStatusSensor *pSystemStatusSensor = new tSystemStatusSensor;
 
-  pSystemStatusSensor->setConfig(10); // 1 sec
-  pSystemStatusSensor->Register(SENSOR_ID_SYSTEM_STATUS,"SystemStatus");
-  pSystemStatusSensor->Start();
+#define SENSOR_ID_SYSTEM_STATUS 1
+  tSensor *pSensor;
+  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
+  tSensorHub::Instance->RegisterLocalSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
+  
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
   DEBUG_SERIAL.println(getFreeRam());
   DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
 #endif
-  
 }
 
 void loop() {
   sched.run();
 }
-

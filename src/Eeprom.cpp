@@ -7,6 +7,7 @@ void SetDefaultEEPromValues()
 
   // device ID is supposed to be pre-set for a node
 
+#if CONFIG_NETWORK
   EEPROM.write(EEPROM_IP+0,192);
   EEPROM.write(EEPROM_IP+1,168);
   EEPROM.write(EEPROM_IP+2,101);
@@ -29,5 +30,6 @@ void SetDefaultEEPromValues()
   EEPROM.write(EEPROM_MAC+3,0x5A);
   EEPROM.write(EEPROM_MAC+4,0x5B);
   EEPROM.write(EEPROM_MAC+5,0x15);
+#endif //CONFIG_NETWORK
 
 }

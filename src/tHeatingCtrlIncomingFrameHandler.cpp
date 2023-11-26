@@ -6,6 +6,8 @@
  */
 
 #include "../global.h"
+#if CONFIG_TLE8457_COMM_LIB
+
 #include "tHeatingCtrlIncomingFrameHandler.h"
 
 void tHeatingCtrlIncomingFrameHandler::onMessage(uint8_t type, uint16_t data, void *pData)
@@ -27,3 +29,4 @@ void tHeatingCtrlIncomingFrameHandler::onMessage(uint8_t type, uint16_t data, vo
 			 DEBUG_PRINTLN_3("MESSAGE unknown type, drop");
       }
 }
+#endif //CONFIG_TLE8457_COMM_LIB

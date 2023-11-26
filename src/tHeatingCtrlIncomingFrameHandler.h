@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../global.h"
+#if CONFIG_TLE8457_COMM_LIB
 #include "Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 
 class tHeatingCtrlIncomingFrameHandler : public tIncomingFrameHanlder {
@@ -20,3 +21,4 @@ private:
    // handlers of all incoming frames
 
 };
+#endif // CONFIG_TLE8457_COMM_LIB

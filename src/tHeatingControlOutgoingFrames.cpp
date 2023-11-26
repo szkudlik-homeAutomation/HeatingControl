@@ -6,5 +6,7 @@
  */
 
 #include "../global.h"
+#if CONFIG_TLE8457_COMM_LIB
 #include "tHeatingControlOutgoingFrames.h"
+#endif //CONFIG_TLE8457_COMM_LIB
 

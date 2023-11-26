@@ -12,7 +12,7 @@
 #include "../tHeatingCircleControl.h"
 
 
-uint8_t tHeatingCircleStatusSensor::doSetConfig()
+uint8_t tHeatingCircleStatusSensor::onSetConfig()
 {
    mCurrentMeasurementBlob = (void*) &mResult;
    mMeasurementBlobSize = sizeof(mResult);
@@ -30,7 +30,12 @@ void tHeatingCircleStatusSensor::doTriggerMeasurement()
 #if CONFIG_SENSORS_JSON_OUTPUT
 uint8_t tHeatingCircleStatusSensorDesc::doFormatJSON(Stream *pStream)
 {
-   if (dataBlobSize != sizeof(tHeatingCircleStatusSensor::tResult))
+    if (sensorApiVersion != 1)
+    {
+          return STATUS_JSON_ENCODE_UNSUPPORTED_API_VERSION;
+    }
+
+   if (mDataBlobSize != sizeof(tHeatingCircleStatusSensor::tResult))
    {
          return STATUS_JSON_ENCODE_ERROR;
    }
