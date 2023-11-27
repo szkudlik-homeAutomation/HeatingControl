@@ -26,8 +26,8 @@
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tHeatingCircleControl.h"
-#include "src/tHeatingCtrlIncomingFrameHandler.h"
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
+#include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 #include "src/Common_code/WorkerProcess.h"
 
 // restart if no connection for 5 minutes
@@ -40,7 +40,7 @@ tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
 #if CONFIG_TLE8457_COMM_LIB
-tHeatingCtrlIncomingFrameHandler IncomingFrameHandler;
+tIncomingFrameHanlder IncomingFrameHandler;
 CommRecieverProcess CommReciever(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 CommSenderProcess CommSender(sched,EEPROM.read(EEPROM_DEVICE_ID_OFFSET),EEPROM.read(EEPROM_DEVICE_ID_OFFSET));
 
