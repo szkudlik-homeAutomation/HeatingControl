@@ -15,13 +15,13 @@
 
 #include "../global.h"
 #include "tOutputProcessheatingControl.h"
-#include "Common_code/sensors/tSensorHub.h"
+#include "Common_code/tMessageReciever.h"
 
 
 // note that the events are triggered by a sensor thold
 // set sensor to proper time
 // than set the object as a callback to the se
-class tHeatingCircleControl : public tSensorHubEvent {
+class tHeatingCircleControl : public tMessageReciever {
 public:
 	static const uint16_t MAX_VALVE_TIME = 100;
 	static const uint16_t MAX_PUMP_TIME = 100;
@@ -29,6 +29,7 @@ public:
 	static const uint8_t PAUSE_PREVENTION_CYCLES = 5;  // TODO - provide! 25sec now
 
    tHeatingCircleControl(
+		    uint8_t DatasourceSensorID,
             char* ValveTempSensorSerial,
             char* HeatSourceSensorSerial,
             char* HeatStorageSensorSerial,
@@ -36,7 +37,8 @@ public:
             uint8_t ValveCloseOutId,
             uint8_t PumpOutId,
             uint16_t SlowValveTime)
-      : mTargetTemp(0),
+      : mDatasourceSensorID(DatasourceSensorID),
+    	mTargetTemp(0),
         mValveTempSensorDevID(255),
         mHeatSourceSensorDevID(255),
         mHeatStorageSensorDevID(255),
@@ -51,13 +53,14 @@ public:
 		  mHisteresis(0),
 		  mPumpOutId(PumpOutId),
 		  mPausePreventionCycles(0),
-		  mState(STATE_DISABLED) {}
+		  mState(STATE_DISABLED)
+		{ RegisterMessageType(MessageType_SensorEvent); }
 
    void Disable() { mState = STATE_DISABLED; }
    void Stop()  { mState = STATE_OFF; }
    void Start()  { mState = STATE_IDLE; mPausePreventionCycles = PAUSE_PREVENTION_CYCLES; }
 
-   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob);
+   virtual void onMessage(uint8_t type, uint16_t data, void *pData);
 
    void setTargetTemp(float TargetTemp) { mTargetTemp = TargetTemp * 10; }
    void setTolerance(float Tolerance)   { mTolerance = Tolerance * 10; }
@@ -86,6 +89,7 @@ private:
 	   STATE_PAUSED
    } tState;
 
+   uint8_t mDatasourceSensorID;
    static int16_t mPumpStopTempThold;
    static int16_t mPumpStartTempThold;
    uint8_t mPausePreventionCycles;
