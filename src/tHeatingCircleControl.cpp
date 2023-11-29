@@ -17,9 +17,15 @@
 int16_t tHeatingCircleControl::mPumpStopTempThold = 0;
 int16_t tHeatingCircleControl::mPumpStartTempThold = 0;
 
-void tHeatingCircleControl::onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
+void tHeatingCircleControl::onMessage(uint8_t type, uint16_t data, void *pData)
 {
-   tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
+   uint8_t SensorID = data;
+   if (type != MessageType_SensorEvent)
+	   return;
+   if (data != mDatasourceSensorID)
+	   return;
+   tSensorEvent *pSensorEvent = (tSensorEvent *)pData;
+   tDS1820Sensor::tResult *pDS1820Result = (tDS1820Sensor::tResult *)pSensorEvent->pDataBlob;
 
    if (mState == STATE_DISABLED)
    {
@@ -29,12 +35,12 @@ void tHeatingCircleControl::onEvent(uint8_t SensorID, uint8_t EventType, uint8_t
       return;
    }
 
-   if (EventType == EV_TYPE_MEASUREMENT_ERROR)
+   if (pSensorEvent->EventType == EV_TYPE_MEASUREMENT_ERROR)
 	{
 		StopValve();
 		return;
 	}
-	if (!(EventType == EV_TYPE_MEASUREMENT_COMPLETED))
+	if (!(pSensorEvent->EventType == EV_TYPE_MEASUREMENT_COMPLETED))
 	{
 		return;
 	}
