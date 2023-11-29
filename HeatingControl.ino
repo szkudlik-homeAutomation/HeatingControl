@@ -123,78 +123,11 @@ protected:
 
 tHeatingConrolSensorFactory SensorFactory;
 
-class tDS1820SensorCallback : public tSensorHubEvent
-{
-public:
-   tDS1820SensorCallback() {};
-   
-   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
-   {
-      tDS1820Sensor::tResult *pDS1820Result =(tDS1820Sensor::tResult *) pDataBlob;
-      
-      if (EventType & EV_TYPE_MEASUREMENT_COMPLETED)
-      {
-            DEBUG_PRINT_3("Measurement completed. devs: ");
-            DEBUG_3(print(pDS1820Result->NumOfDevices));
-            DEBUG_PRINT_3(" Avg: ");
-            DEBUG_3(print(pDS1820Result->Avg));
-            uint8_t NumOfItems;
-            if (pDS1820Result->Avg) {
-               NumOfItems = 1;
-            }
-            else
-            {
-               NumOfItems = pDS1820Result->NumOfDevices;
-            }
-            for (int i = 0; i < NumOfItems; i++)
-            {
-               DEBUG_PRINT_3(" dev: ");
-               DEBUG_3(print(i));
-               DEBUG_PRINT_3(" temp: ");
-               DEBUG_3(print(((float)(pDS1820Result)->Dev[i].Temperature) / 10));
-            }
-            DEBUG_PRINTLN_3("");
-      }
-   }
-};
+#include "SensorCallbacksPOC.h"
 
-class tImpulseSensorCallback : public tSensorHubEvent
-{
-public:
-   tImpulseSensorCallback() {};
-   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
-   {
-      if (EV_TYPE_MEASUREMENT_COMPLETED & EventType)
-      {
-         tImpulseSensor::tResult *pResult =(tImpulseSensor::tResult *) pDataBlob;
-         DEBUG_PRINT_3("SensorID: ");
-         DEBUG_3(print(SensorID));
-         DEBUG_PRINT_3(" impulse count: "); 
-         DEBUG_3(print(pResult->Count));
-         DEBUG_PRINT_3(" Sum: "); 
-         DEBUG_3(println(pResult->Sum));
-      }
-   }
-};
-
-class tPt100SensorCallback : public tSensorHubEvent
-{
-public:
-   tPt100SensorCallback() {};
-   virtual void onEvent(uint8_t SensorID, uint8_t EventType, uint8_t dataBlobSize, void *pDataBlob)
-   {
-      if (EV_TYPE_MEASUREMENT_COMPLETED & EventType)
-      {
-         tPt100AnalogSensor::tResult *pResult =(tPt100AnalogSensor::tResult *) pDataBlob;
-         DEBUG_PRINT_3("PT100 Temp: "); 
-         DEBUG_3(println(pResult->Temperature));
-      }
-   }
-};
-
-tPt100SensorCallback Pt100SensorCallback;
-tDS1820SensorCallback DS1820SensorCallback;
-tImpulseSensorCallback ImpulseSensorCallback;
+tPt100SensorCallback Pt100SensorCallback(SENSOR_ID_PT100_HOTAIR);
+tDS1820SensorCallback DS1820SensorCallback;	// all DS1820
+tImpulseSensorCallback ImpulseSensorCallback(SENSOR_ID_IMPULSE_HEATPUMP);
 
 tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
 tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
@@ -253,28 +186,10 @@ void setup() {
   WatchdogProcess.add(true);
 
 
-#define SENSOR_ID_SYSTEM_STATUS 1
+
   tSensor *pSensor;
   pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
   tSensorHub::Instance->RegisterLocalSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
-
-#define SENSOR_ID_1820_HEATING_TEMP 2
-#define SENSOR_ID_1820_AIR_HUW_TEMP 3
-#define SENSOR_ID_1820_OUTDOOR_TEMP 4
-  
-#define SENSOR_ID_IMPULSE_HEATPUMP        5
-#define SENSOR_ID_IMPULSE_WATER_HEATER    6
-  
-#define SENSOR_ID_PT100_HOTAIR            7 
-  
-#define SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL   8
-#define SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST     9
-#define SENSOR_ID_DIGITAL_AUX                      10
-
-#define SENSOR_ID_OUTPUT_STATES                    11
-
-#define SENSOR_ID_RADIATORS_HEATING_STATE          12
-#define SENSOR_ID_FLOOR_HEATING_STATE              13
 
   tDS1820Sensor::tConfig DS1820config;
   tSimpleDigitalInputSensor::tConfig SimpleDigitalInputSensorConfig;
@@ -296,6 +211,7 @@ void setup() {
   tSensorHub::Instance->RegisterLocalSensor(SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp");
 
   pFloorTemperatureValveControl = new tHeatingCircleControl(
+		SENSOR_ID_1820_HEATING_TEMP,
         FloorTemperatureTempSensorSerial,
         HeatingSourceTempSensorSerial,
         HeatingStorageTempSensorSerial,
@@ -304,6 +220,7 @@ void setup() {
         OUT_ID_FLOOR_PUMP,
         2); 
   pRadiatorsTemperatureValveControl = new tHeatingCircleControl(
+	    SENSOR_ID_1820_HEATING_TEMP,
         RadiatorsTemperatureTempSensorSerial,
         HeatingSourceTempSensorSerial,
         HeatingStorageTempSensorSerial,
@@ -321,12 +238,6 @@ void setup() {
   pRadiatorsTemperatureValveControl->setTolerance(0.7);
   pRadiatorsTemperatureValveControl->setHisteresis(1);
   pRadiatorsTemperatureValveControl->setFastThold(2); 
-
-  tSensorHub::Instance->subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pFloorTemperatureValveControl);
-  tSensorHub::Instance->subscribeToEvents(SENSOR_ID_1820_HEATING_TEMP,pRadiatorsTemperatureValveControl);
-  tSensorHub::Instance->subscribeToEvents(SENSOR_ID_1820_OUTDOOR_TEMP,&DS1820SensorCallback);
-
-
 
   SimpleDigitalInputSensorConfig.ActiveState = 0;
   SimpleDigitalInputSensorConfig.Pin = A9;

@@ -39,6 +39,8 @@
 #define CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR 1
 #define CONFIG_SENSORS 1
 #define CONFIG_SENSOR_HUB 1
+#define CONFIG_SENSOR_HUB_GENERATE_EVENTS 0
+#define CONFIG_SENSOR_GENERATE_EVENTS 1
 #define CONFIG_SENSORS_JSON_OUTPUT 1
 #define CONFIG_DS1820_SENSOR 1
 #define CONFIG_OUTPUT_STATE_SENSOR 1
@@ -54,11 +56,11 @@
 #define CONFIG_TELNET_SERVER 1
 #define CONFIG_WATCHDOG 1
 
-#define CONFIG_WORKER_PROCESS 0
-#define CONFIG_NODE_SCAN_TASK 0
+#define CONFIG_WORKER_PROCESS 1
+#define CONFIG_NODE_SCAN_TASK 1
 #endif //CONFIG_CENTRAL_NODE
 
-#define CONFIG_TLE8457_COMM_LIB 0
+#define CONFIG_TLE8457_COMM_LIB 1
 
 #include <Arduino.h>
 #include "src/Common_code/helpers.h"
@@ -66,5 +68,6 @@
 #include "GlobalDefs/Eeprom.h"
 #include "GlobalDefs/outputPins.h"
 #include "GlobalDefs/CommDefs.h"
+#include "GlobalDefs/SensorId.h"
 #include "src/Common_code/debug.h"
 #include "src/Common_code/status.h"
