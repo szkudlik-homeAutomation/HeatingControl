@@ -22,6 +22,9 @@ const commandList_t TelnetCommands[] = {
   {"StateOverview",   send_stateOverviewHandler,    "StateOverview dev_id"},
   {"OutputState",     send_OutputStateHandler,      "OutputState dev_id out_id"},
   {"SetOutput",       send_SetOutputHandler,        "SetOutput dev_id out_id state [timer] (not set=default, 0-forever)"},
+#if CONFIG_SENSORS
+  {"GetSensorById",   send_GetSensorByIdReqestHandler,"GetSensorById sensor_id [dst_dev = broadcast]"},
+#endif // CONFIG_SENSORS
 #endif //CONFIG_TLE8457_COMM_LIB
 };
 
