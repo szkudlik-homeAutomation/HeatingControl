@@ -25,6 +25,7 @@ const commandList_t TelnetCommands[] = {
 #if CONFIG_SENSORS
   {"GetSensorById",   send_GetSensorByIdReqestHandler,"GetSensorById sensor_id [dst_dev = broadcast]"},
   {"CreateSensor", send_CreateSensorRequest, "CreateSensor dev_id sensor_type sensor_id"},
+  {"ConfigureSensor", send_ConfigureSensorRequest, "ConfigureSensor sensor_id period [dev_id = broadcast]"},
 #endif // CONFIG_SENSORS
 #endif //CONFIG_TLE8457_COMM_LIB
 };
