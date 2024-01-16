@@ -59,6 +59,7 @@
 #endif //CONFIG_CENTRAL_NODE
 
 #define CONFIG_TLE8457_COMM_LIB 1
+#define CONFIG_SENSOR_GENERATE_SERIAL_EVENTS 1
 
 #include <Arduino.h>
 #include "src/Common_code/helpers.h"
