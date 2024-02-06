@@ -32,6 +32,7 @@
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 #include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 #include "src/Common_code/WorkerProcess.h"
+#include "src/tHeatingControlSensorFactory.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
@@ -88,40 +89,8 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #if CONFIG_SENSOR_HUB
 tSensorHub SensorHub;
 #endif // CONFIG_SENSOR_HUB
-
-class tHeatingConrolSensorFactory : public tSensorFactory
-{
-public:
-	tHeatingConrolSensorFactory() : tSensorFactory() {}
-protected:
-   virtual tSensorDesc *appSpecificCreateDesc(uint8_t SensorType)
-   {
-        tSensorDesc *newSensorDesc = NULL;
-        switch (SensorType)
-        {
-            case SENSOR_TYPE_HEATING_CIRCLE_STATE:
-                newSensorDesc = new tHeatingCircleStatusSensorDesc();
-                break;
-        }
-
-        return newSensorDesc;
-   }
-
-   virtual tSensor *appSpecificCreateSensor(uint8_t SensorType, uint8_t SensorID)
-   {
-	   tSensor *newSensor= NULL;
-       switch (SensorType)
-       {
-           case SENSOR_TYPE_HEATING_CIRCLE_STATE:
-        	   newSensor = new tHeatingCircleStatusSensor(SensorID);
-               break;
-       }
-
-       return newSensor;
-   }
-};
-
 tHeatingConrolSensorFactory SensorFactory;
+
 
 #include "SensorCallbacksPOC.h"
 

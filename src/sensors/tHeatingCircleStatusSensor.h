@@ -13,21 +13,13 @@
 #define SENSOR_TYPE_HEATING_CIRCLE_STATE 128
 
 #include "../Common_code/sensors/tSensor.h"
-#include "../Common_code/sensors/tSensorDesc.h"
+#include "../Common_code/sensors/tSensorCache.h"
 
-#if CONFIG_SENSOR_HUB
-class tHeatingCircleStatusSensorDesc : public tSensorDesc
-{
-public:
-    tHeatingCircleStatusSensorDesc() : tSensorDesc() {}
-
-protected:
 #if CONFIG_SENSORS_JSON_OUTPUT
-   /* sensor specific JSON formatter */
-    virtual uint8_t doFormatJSON(Stream *pStream);
-#endif // CONFIG_SENSORS_JSON_OUTPUT
-};
-#endif //CONFIG_SENSOR_HUB
+
+uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache *cache);
+
+#endif //CONFIG_SENSORS_JSON_OUTPUT
 
 class tHeatingCircleControl;
 class tHeatingCircleStatusSensor : public tSensor {

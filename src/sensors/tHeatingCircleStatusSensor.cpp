@@ -28,19 +28,14 @@ void tHeatingCircleStatusSensor::doTriggerMeasurement()
 }
 
 #if CONFIG_SENSORS_JSON_OUTPUT
-uint8_t tHeatingCircleStatusSensorDesc::doFormatJSON(Stream *pStream)
+uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache *cache)
 {
-    if (sensorApiVersion != 1)
-    {
-          return STATUS_JSON_ENCODE_UNSUPPORTED_API_VERSION;
-    }
-
-   if (mDataBlobSize != sizeof(tHeatingCircleStatusSensor::tResult))
+   if (cache->getDataBlobSize() != sizeof(tHeatingCircleStatusSensor::tResult))
    {
          return STATUS_JSON_ENCODE_ERROR;
    }
 
-   tHeatingCircleStatusSensor::tResult *pResult =(tHeatingCircleStatusSensor::tResult *) pDataCache;
+   tHeatingCircleStatusSensor::tResult *pResult =(tHeatingCircleStatusSensor::tResult *) cache->pDataCache;
    pStream->print(F("\"IsWorking\":"));
    pStream->print(pResult->isWorking);
 
