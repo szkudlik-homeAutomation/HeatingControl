@@ -29,6 +29,7 @@
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 #include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 #include "src/Common_code/WorkerProcess.h"
+#include "src/tHeatingControlSensorFactory.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
@@ -84,7 +85,7 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #if CONFIG_SENSOR_HUB
 tSensorHub SensorHub;
 #endif // CONFIG_SENSOR_HUB
-tSensorFactory SensorFactory;
+tHeatingConrolSensorFactory SensorFactory;
 
 void setup() {
 #ifdef DEBUG_SERIAL
