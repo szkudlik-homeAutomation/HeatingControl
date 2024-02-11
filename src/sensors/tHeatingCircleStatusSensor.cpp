@@ -35,7 +35,7 @@ uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache 
          return STATUS_JSON_ENCODE_ERROR;
    }
 
-   tHeatingCircleStatusSensor::tResult *pResult =(tHeatingCircleStatusSensor::tResult *) cache->pDataCache;
+   tHeatingCircleStatusSensor::tResult *pResult =(tHeatingCircleStatusSensor::tResult *) cache->getData();
    pStream->print(F("\"IsWorking\":"));
    pStream->print(pResult->isWorking);
 
