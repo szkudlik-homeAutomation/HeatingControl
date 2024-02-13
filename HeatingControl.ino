@@ -14,6 +14,7 @@
 
 #include "src/Common_code/sensors/tSensorFactory.h"
 #include "src/Common_code/sensors/tSensor.h"
+#include "src/Common_code/sensors/tRemoteSensorProcess.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/Common_code/sensors/tImpulseSensor.h"
@@ -36,7 +37,11 @@
 #define TCP_WATCHDOG_TIMEOUT 300 
 
 Scheduler sched;
-tSensorProcess SensorProcess(sched); 
+#if CONFIG_TLE8457_COMM_LIB
+	tRemoteSensorProcess SensorProcess(sched);
+#else
+	tSensorProcess SensorProcess(sched);
+#endif
 //WorkerProcess Worker(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
