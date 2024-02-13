@@ -19,6 +19,7 @@
 #include "src/Common_code/sensors/tImpulseSensor.h"
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSensorHub.h"
+#include "src/Common_code/sensors/tRemoteSensorHub.h"
 #include "src/sensors/tHeatingCircleStatusSensor.h"
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
@@ -83,8 +84,13 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #endif // CONFIG_NETWORK
 
 #if CONFIG_SENSOR_HUB
-tSensorHub SensorHub;
+#if CONFIG_SENSORS_OVER_SERIAL_COMM
+	tRemoteSensorHub SensorHub;
+#else //CONFIG_SENSORS_OVER_SERIAL_COMM
+	tSensorHub SensorHub;
+#endif //CONFIG_SENSORS_OVER_SERIAL_COMM
 #endif // CONFIG_SENSOR_HUB
+
 tHeatingConrolSensorFactory SensorFactory;
 
 void setup() {
@@ -124,9 +130,13 @@ void setup() {
 
 
 #define SENSOR_ID_SYSTEM_STATUS 1
+#define REMOTE_SENSOR_ID_SYSTEM_STATUS 2
+
   tSensor *pSensor;
   pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
-  tSensorHub::Instance->RegisterLocalSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
+  tSensorHub::Instance->RegisterSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
+  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, REMOTE_SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
+  tSensorHub::Instance->RegisterSensor(REMOTE_SENSOR_ID_SYSTEM_STATUS, "RemoteSystemStatus");
   
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
