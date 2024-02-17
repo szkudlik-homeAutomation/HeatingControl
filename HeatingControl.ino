@@ -14,11 +14,13 @@
 
 #include "src/Common_code/sensors/tSensorFactory.h"
 #include "src/Common_code/sensors/tSensor.h"
+#include "src/Common_code/sensors/tRemoteSensorProcess.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tDS1820Sensor.h"
 #include "src/Common_code/sensors/tImpulseSensor.h"
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSensorHub.h"
+#include "src/Common_code/sensors/tRemoteSensorHub.h"
 #include "src/sensors/tHeatingCircleStatusSensor.h"
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
@@ -29,12 +31,17 @@
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 #include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 #include "src/Common_code/WorkerProcess.h"
+#include "src/tHeatingControlSensorFactory.h"
 
 // restart if no connection for 5 minutes
 #define TCP_WATCHDOG_TIMEOUT 300 
 
 Scheduler sched;
-tSensorProcess SensorProcess(sched); 
+#if CONFIG_TLE8457_COMM_LIB
+	tRemoteSensorProcess SensorProcess(sched);
+#else
+	tSensorProcess SensorProcess(sched);
+#endif
 //WorkerProcess Worker(sched);
 tOutputProcess_heatingControl OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
@@ -82,9 +89,14 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #endif // CONFIG_NETWORK
 
 #if CONFIG_SENSOR_HUB
-tSensorHub SensorHub;
+#if CONFIG_SENSORS_OVER_SERIAL_COMM
+	tRemoteSensorHub SensorHub;
+#else //CONFIG_SENSORS_OVER_SERIAL_COMM
+	tSensorHub SensorHub;
+#endif //CONFIG_SENSORS_OVER_SERIAL_COMM
 #endif // CONFIG_SENSOR_HUB
-tSensorFactory SensorFactory;
+
+tHeatingConrolSensorFactory SensorFactory;
 
 void setup() {
 #ifdef DEBUG_SERIAL
@@ -123,10 +135,17 @@ void setup() {
 
 
 #define SENSOR_ID_SYSTEM_STATUS 1
+#define REMOTE_SENSOR_ID_SYSTEM_STATUS 2
+#define MANUAL_SENSOR_ID 3
+
   tSensor *pSensor;
   pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
-  tSensorHub::Instance->RegisterLocalSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
-  
+  tSensorHub::Instance->RegisterSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
+  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, REMOTE_SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
+  tSensorHub::Instance->RegisterSensor(REMOTE_SENSOR_ID_SYSTEM_STATUS, "RemoteSystemStatus");
+
+  tSensorHub::Instance->RegisterSensor(MANUAL_SENSOR_ID, "ManualSensor");
+
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
   DEBUG_SERIAL.println(getFreeRam());
