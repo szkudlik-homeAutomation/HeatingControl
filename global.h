@@ -20,6 +20,9 @@
 //#error unknown board
 //#endif
 
+#define REMOTE_SENSORS_TEST 0
+
+
 #define CONFIG_CENTRAL_NODE 1
 
 #if CONFIG_CENTRAL_NODE
