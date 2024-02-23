@@ -109,7 +109,7 @@ void setup() {
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
     SetDefaultEEPromValues();
 
-  COMM_SERIAL.begin(9600);
+  COMM_SERIAL.begin(TRANSMISSION_SPEED);
   while (!COMM_SERIAL);
 
 #if CONFIG_TLE8457_COMM_LIB
