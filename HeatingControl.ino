@@ -138,13 +138,9 @@ void setup() {
 #define REMOTE_SENSOR_ID_SYSTEM_STATUS 2
 #define MANUAL_SENSOR_ID 3
 
-  tSensor *pSensor;
-  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
-  tSensorHub::Instance->RegisterSensor(SENSOR_ID_SYSTEM_STATUS, "SystemStatus");
-  pSensor = SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, REMOTE_SENSOR_ID_SYSTEM_STATUS,1,NULL,0,50,true);
-  tSensorHub::Instance->RegisterSensor(REMOTE_SENSOR_ID_SYSTEM_STATUS, "RemoteSystemStatus");
-
-  tSensorHub::Instance->RegisterSensor(MANUAL_SENSOR_ID, "ManualSensor");
+  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,"Local1",1,NULL,0,50,true);
+  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, REMOTE_SENSOR_ID_SYSTEM_STATUS,"Local2",1,NULL,0,50,true);
+  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, 3,"Local2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",1,NULL,0,50,true);
 
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));
