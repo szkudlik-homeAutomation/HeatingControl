@@ -31,5 +31,10 @@ void SetDefaultEEPromValues()
   EEPROM.write(EEPROM_MAC+4,0x5B);
   EEPROM.write(EEPROM_MAC+5,0x15);
 #endif //CONFIG_NETWORK
+  eepromDeleteAllSensors();
+}
 
+void eepromDeleteAllSensors()
+{
+    EEPROM.write(EEPROM_NUM_OF_SENSORS, 0);
 }
