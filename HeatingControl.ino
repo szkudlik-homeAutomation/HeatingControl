@@ -138,9 +138,11 @@ void setup() {
 #define REMOTE_SENSOR_ID_SYSTEM_STATUS 2
 #define MANUAL_SENSOR_ID 3
 
-  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,"Local1",1,NULL,0,50,true);
-  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, REMOTE_SENSOR_ID_SYSTEM_STATUS,"Local2",1,NULL,0,50,true);
-  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, 3,"Local2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",1,NULL,0,50,true);
+//  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,"Local1",1,NULL,0,50,true);
+//  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, REMOTE_SENSOR_ID_SYSTEM_STATUS,"Local2",1,NULL,0,50,true);
+//  SensorFactory.CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, 3,"Local2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",1,NULL,0,50,true);
+
+//  tSensor::RestoreFromEEprom();
 
 #ifdef DEBUG_SERIAL
   DEBUG_SERIAL.print(F("Free RAM: "));

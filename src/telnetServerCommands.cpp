@@ -29,6 +29,9 @@ const commandList_t TelnetCommands[] = {
   {"StartSensor", send_StartSensorRequest, "StartSensor sensor_id [sensor_ev_mask = EV_TYPE_MEASUREMENT_COMPLETED] [dev_id = broadcast]"},
   {"StopSensor", send_StopSensorRequest, "StopSensor sensor_id [dev_id = broadcast]"},
   {"ConfigureSensor", send_ConfigureSensorRequest, "ConfigureSensor sensor_id period [dev_id = broadcast]"},
+  {"SaveSensorsToEeprom", send_saveSensorsToEeprom, "SaveSensorsToEeprom dst_dev"},
+  {"RestoreSensorsFromEeprom", send_restoreSensorsFromEeprom, "RestoreSensorsFromEeprom dst_dev"},
+
 #endif // CONFIG_TELNET_COMMANDS_SENSORS
 #endif //CONFIG_TLE8457_COMM_LIB
 };
