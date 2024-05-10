@@ -10,22 +10,7 @@
 #pragma once
 
 
-// #define CONFIG_TLE8457_serial_lib
-
-//#ifdef __AVR_ATmega2560__
-//#define CONFIG_CENTRAL_NODE 1
-//#elif __AVR_ATmega328P__
-//#define CONFIG_CENTRAL_NODE 0
-//#else
-//#error unknown board
-//#endif
-
 #define REMOTE_SENSORS_TEST 0
-
-
-#define CONFIG_CENTRAL_NODE 1
-
-#if CONFIG_CENTRAL_NODE
 
 #define COMM_SERIAL Serial1
 #define COMM_SERIAL_EVENT serialEvent1
@@ -66,9 +51,18 @@
 
 #define CONFIG_WORKER_PROCESS 1
 #define CONFIG_NODE_SCAN_TASK 1
-#endif //CONFIG_CENTRAL_NODE
 
 #define CONFIG_TLE8457_COMM_LIB 1
+
+#if APP_HeatingCentral
+#include "appDefs\HeatingCental.h"
+#elif APP_generalTest
+#include "appDefs\generalTest.h"
+#elif APP_node
+#include "appDefs\node.h"
+#else
+#error no app defined
+#endif
 
 #include <Arduino.h>
 #include "src/Common_code/helpers.h"
