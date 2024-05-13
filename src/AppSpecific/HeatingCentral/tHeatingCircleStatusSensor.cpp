@@ -5,11 +5,11 @@
  *      Author: szkud
  */
 
-#include "../../global.h"
+#include "../../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 #include "tHeatingCircleStatusSensor.h"
-#include "../AppSpecific/HeatingCentral/tHeatingCircleControl.h"
+#include "tHeatingCircleControl.h"
 
 
 uint8_t tHeatingCircleStatusSensor::onSetConfig()

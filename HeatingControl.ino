@@ -12,6 +12,7 @@
 #include "src/Common_code/Network/servlets/tSensorStateServlet.h"
 #include "src/AppSpecific/HeatingCentral/tHeatingControlServlet.h"
 #include "src/AppSpecific/HeatingCentral/tHeatingCircleControl.h"
+#include "src/AppSpecific/HeatingCentral/tHeatingCircleStatusSensor.h"
 
 
 #include "src/Common_code/WatchdogProcess.h"
@@ -25,7 +26,6 @@
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSensorHub.h"
 #include "src/Common_code/sensors/tRemoteSensorHub.h"
-#include "src/sensors/tHeatingCircleStatusSensor.h"
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
