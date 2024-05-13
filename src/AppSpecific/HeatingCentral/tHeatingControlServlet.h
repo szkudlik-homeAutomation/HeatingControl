@@ -1,7 +1,8 @@
-#ifndef SERVLETS_LOCAL
-#define SERVLETS_LOCAL
+#pragma once
 
 #include "../../../global.h"
+#if CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
+
 #include "../../Common_code/Network/httpServer.h"
 
 class tHeatingControlServlet :  public tHttpServlet
@@ -14,6 +15,7 @@ public:
 };
 
 
-#endif
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
+
 
 

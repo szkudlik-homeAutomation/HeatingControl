@@ -1,5 +1,7 @@
 #include "../../../global.h"
 
+#if CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
+
 #include "tHeatingControlServlet.h"
 #include "../../tOutputProcessheatingControl.h"
 #include "../../tHeatingCircleControl.h"
@@ -7,20 +9,6 @@
 
 extern tHeatingCircleControl *pFloorTemperatureValveControl;
 extern tHeatingCircleControl *pRadiatorsTemperatureValveControl;
-
-// DEFINETLY not a god point for those macros
-
-// stop the pumps if heating water supply temp drops below target_temp + PUMP_DISABLE_THOLD_SHIFT
-#define PUMP_DISABLE_THOLD_SHIFT -4
-
-// never stop pumps if heating water supply temp is higher than PUMP_DISABLE_MAX_TEMP
-#define PUMP_DISABLE_MAX_TEMP 36
-
-// restart pump if heating storage temp raise higer than target_temp + PUMP_ENABLE_THOLD_SHIFT
-#define PUMP_ENABLE_THOLD_SHIFT 0
-
-// always restart pumps if heating water supply temp is higher than PUMP_ENABLE_PUMPS_FORCE
-#define PUMP_FORCE_ENABLE_TEMP 36
 
 bool tHeatingControlServlet::ProcessAndResponse()
 {
@@ -106,3 +94,4 @@ bool tHeatingControlServlet::ProcessAndResponse()
 
    return false;
 }
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
