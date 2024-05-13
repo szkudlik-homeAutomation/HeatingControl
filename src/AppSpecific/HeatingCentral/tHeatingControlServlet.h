@@ -1,8 +1,8 @@
 #ifndef SERVLETS_LOCAL
 #define SERVLETS_LOCAL
 
-#include "../global.h"
-#include "Common_code/Network/httpServer.h"
+#include "../../../global.h"
+#include "../../Common_code/Network/httpServer.h"
 
 class tHeatingControlServlet :  public tHttpServlet
 {

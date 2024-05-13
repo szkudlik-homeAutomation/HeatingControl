@@ -10,7 +10,7 @@
 #include "src/Common_code/Network/servlets/servlets.h"
 #include "src/Common_code/Network/servlets/tOutputControlServlets.h"
 #include "src/Common_code/Network/servlets/tSensorStateServlet.h"
-#include "src/tHeatingControlServlet.h"
+#include "src/AppSpecific/HeatingCentral/tHeatingControlServlet.h"
 
 
 #include "src/Common_code/WatchdogProcess.h"

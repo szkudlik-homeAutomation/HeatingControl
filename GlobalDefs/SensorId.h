@@ -6,6 +6,7 @@
  */
 
 #pragma once
+// sensor IDs must be common across all the system (all applications)
 
 #define SENSOR_ID_SYSTEM_STATUS 1
 

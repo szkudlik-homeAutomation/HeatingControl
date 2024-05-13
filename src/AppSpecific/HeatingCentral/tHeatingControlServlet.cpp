@@ -1,7 +1,8 @@
+#include "../../../global.h"
 
 #include "tHeatingControlServlet.h"
-#include "tOutputProcessheatingControl.h"
-#include "tHeatingCircleControl.h"
+#include "../../tOutputProcessheatingControl.h"
+#include "../../tHeatingCircleControl.h"
 
 
 extern tHeatingCircleControl *pFloorTemperatureValveControl;
