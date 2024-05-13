@@ -10,7 +10,7 @@
 #include "src/Common_code/Network/servlets/servlets.h"
 #include "src/Common_code/Network/servlets/tOutputControlServlets.h"
 #include "src/Common_code/Network/servlets/tSensorStateServlet.h"
-#include "src/tHeatingControlServletTMP.h"
+#include "src/tHeatingControlServlet.h"
 
 
 #include "src/Common_code/WatchdogProcess.h"
@@ -85,7 +85,7 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 #if CONFIG_SENSOR_STATE_SERVLET 
    if (pRequestBuffer->startsWith("/sensorState")) return new tSensorStateServlet();
 #endif // CONFIG_SENSOR_STATE_SERVLET
-   if (pRequestBuffer->startsWith("/heat")) return new tHeatingControlServletTMP();
+   if (pRequestBuffer->startsWith("/heat")) return new tHeatingControlServlet();
    return NULL;
 }
 #endif

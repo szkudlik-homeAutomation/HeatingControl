@@ -1,5 +1,5 @@
 
-#include "tHeatingControlServletTMP.h"
+#include "tHeatingControlServlet.h"
 #include "tOutputProcessheatingControl.h"
 #include "tHeatingCircleControl.h"
 
@@ -21,7 +21,7 @@ extern tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 // always restart pumps if heating water supply temp is higher than PUMP_ENABLE_PUMPS_FORCE
 #define PUMP_FORCE_ENABLE_TEMP 36
 
-bool tHeatingControlServletTMP::ProcessAndResponse()
+bool tHeatingControlServlet::ProcessAndResponse()
 {
 	uint16_t PowerFloor;
 	uint16_t TempFloor;

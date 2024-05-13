@@ -4,11 +4,11 @@
 #include "../global.h"
 #include "Common_code/Network/httpServer.h"
 
-class tHeatingControlServletTMP :  public tHttpServlet
+class tHeatingControlServlet :  public tHttpServlet
 {
 public:
-	tHeatingControlServletTMP() : tHttpServlet() {}
-  virtual ~tHeatingControlServletTMP() {}
+	tHeatingControlServlet() : tHttpServlet() {}
+  virtual ~tHeatingControlServlet() {}
 
   virtual bool ProcessAndResponse();
 };
