@@ -66,7 +66,6 @@
 #include "src/Common_code/helpers.h"
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
-#include "GlobalDefs/outputPins.h"
 #include "GlobalDefs/CommDefs.h"
 #include "GlobalDefs/SensorId.h"
 #include "src/Common_code/debug.h"

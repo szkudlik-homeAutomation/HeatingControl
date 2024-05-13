@@ -3,7 +3,6 @@
 #if CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
 
 #include "tHeatingControlServlet.h"
-#include "../../tOutputProcessheatingControl.h"
 #include "tHeatingCircleControl.h"
 
 

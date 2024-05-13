@@ -13,7 +13,7 @@
 #include "src/AppSpecific/HeatingCentral/tHeatingControlServlet.h"
 #include "src/AppSpecific/HeatingCentral/tHeatingCircleControl.h"
 #include "src/AppSpecific/HeatingCentral/tHeatingCircleStatusSensor.h"
-
+#include "src/AppSpecific/HeatingCentral/tOutputProcess_appSpecific.h"
 
 #include "src/Common_code/WatchdogProcess.h"
 
@@ -29,8 +29,6 @@
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
-#include "src/tOutputProcessheatingControl.h"
-#include "src/tOutputProcessheatingControl.h"
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 #include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 #include "src/Common_code/WorkerProcess.h"
@@ -46,7 +44,7 @@ Scheduler sched;
 	tSensorProcess SensorProcess(sched);
 #endif
 //WorkerProcess Worker(sched);
-tOutputProcess_heatingControl OutputProcess(sched);
+tOutputProcess_appSpecific OutputProcess(sched);
 tWatchdogProcess WatchdogProcess(sched);
 
 #if CONFIG_TLE8457_COMM_LIB

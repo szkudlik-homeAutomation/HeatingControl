@@ -1,5 +1,5 @@
 /*
- * tOutputProcessheatingControl.h
+ * tOutputProcess_appSpecific.h
  *
  *  Created on: 9 pa� 2022
  *      Author: szkud
@@ -8,13 +8,12 @@
 #pragma once
 
 
-#include "../global.h"
-#include "Common_code/tOutputProcess.h"
-#include "Common_code/Network/httpServer.h"
+#include "../../../global.h"
+#include "../../Common_code/tOutputProcess.h"
 
-class tOutputProcess_heatingControl : public tOutputProcess {
+class tOutputProcess_appSpecific : public tOutputProcess {
 public:
-   tOutputProcess_heatingControl(Scheduler &manager) : tOutputProcess(manager) {}
+    tOutputProcess_appSpecific(Scheduler &manager) : tOutputProcess(manager) {}
 
    virtual void setup()
    {

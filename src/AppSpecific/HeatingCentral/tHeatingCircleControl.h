@@ -15,8 +15,8 @@
 #error CONFIG_SENSOR_HUB must be set for heating control
 #endif
 
-#include "../../tOutputProcessheatingControl.h"
 #include "../../Common_code/tMessageReciever.h"
+#include "../../Common_code/tOutputProcess.h"
 
 
 // note that the events are triggered by a sensor thold
