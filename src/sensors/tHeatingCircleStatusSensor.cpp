@@ -9,7 +9,7 @@
 #if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 #include "tHeatingCircleStatusSensor.h"
-#include "../tHeatingCircleControl.h"
+#include "../AppSpecific/HeatingCentral/tHeatingCircleControl.h"
 
 
 uint8_t tHeatingCircleStatusSensor::onSetConfig()

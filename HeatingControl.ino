@@ -11,6 +11,7 @@
 #include "src/Common_code/Network/servlets/tOutputControlServlets.h"
 #include "src/Common_code/Network/servlets/tSensorStateServlet.h"
 #include "src/AppSpecific/HeatingCentral/tHeatingControlServlet.h"
+#include "src/AppSpecific/HeatingCentral/tHeatingCircleControl.h"
 
 
 #include "src/Common_code/WatchdogProcess.h"
@@ -30,7 +31,6 @@
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
 #include "src/tOutputProcessheatingControl.h"
 #include "src/tOutputProcessheatingControl.h"
-#include "src/tHeatingCircleControl.h"
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 #include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
 #include "src/Common_code/WorkerProcess.h"

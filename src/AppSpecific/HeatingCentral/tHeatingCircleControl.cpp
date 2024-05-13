@@ -7,11 +7,11 @@
 
 #define DEBUG_2
 
-#include "../global.h"
+#include "../../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL
 
 #include "tHeatingCircleControl.h"
-#include "Common_code/sensors/tDS1820Sensor.h"
+#include "../../Common_code/sensors/tDS1820Sensor.h"
 
 
 int16_t tHeatingCircleControl::mPumpStopTempThold = 0;
