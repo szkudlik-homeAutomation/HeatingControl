@@ -101,11 +101,9 @@ tHttpServlet * ServletFactory(String *pRequestBuffer)
 tHeatingConrolSensorFactory SensorFactory;
 
 
-#include "SensorCallbacksPOC.h"
-
-tPt100SensorCallback Pt100SensorCallback(SENSOR_ID_PT100_HOTAIR);
-tDS1820SensorCallback DS1820SensorCallback;	// all DS1820
-tImpulseSensorCallback ImpulseSensorCallback(SENSOR_ID_IMPULSE_HEATPUMP);
+tPt100SensorLogger Pt100SensorLogger(SENSOR_ID_PT100_HOTAIR);
+tDS1820SensorLogger DS1820SensorLogger(0);	// all DS1820s
+tImpulseSensorLogger ImpulseSensorLogger(SENSOR_ID_IMPULSE_HEATPUMP);
 
 tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
 tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
