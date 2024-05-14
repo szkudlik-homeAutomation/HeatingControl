@@ -9,6 +9,7 @@
 
 #include "../global.h"
 #include "Common_code/sensors/tSensorFactory.h"
+#include "AppSpecific/HeatingCentral/tHeatingCircleStatusSensor.h"
 
 class tHeatingConrolSensorFactory : public tSensorFactory
 {
