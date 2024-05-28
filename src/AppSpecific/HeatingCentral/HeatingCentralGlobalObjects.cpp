@@ -9,6 +9,7 @@
 
 #include "../../Common_code/sensors/tSensor.h"
 #include "../../Common_code/sensors/tSensorFactory.h"
+#include "../../Common_code/sensors/tSensorHub.h"
 #include "../../Common_code/sensors/tDS1820Sensor.h"
 #include "../../Common_code/sensors/tImpulseSensor.h"
 #include "../../Common_code/sensors/tPt100AnalogSensor.h"
@@ -33,11 +34,6 @@ tDS1820Sensor::DeviceAddress HeatingStorageTempSensorSerial = { 0x28, 0x6D, 0xDB
 tHeatingCircleControl *pFloorTemperatureValveControl;
 tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 tImpulseSensor *pImpulseSensor = NULL;
-void Interrupt(void)
-{
-   if(pImpulseSensor) pImpulseSensor->Impulse();
-}
-
 
 void AppSetup()
 {
@@ -46,13 +42,15 @@ void AppSetup()
     tDS1820Sensor::tConfig DS1820config;
     tSimpleDigitalInputSensor::tConfig SimpleDigitalInputSensorConfig;
     tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
+    tHeatingCircleStatusSensor::tConfig HeatingCircleStatusSensorConfig;
+    tImpulseSensor::tConfig ImpulseSensorConfig;
 
     DS1820config.Avg = 0;
     DS1820config.Pin = 2;
     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP,"HeatingTemp",1,&DS1820config,sizeof(DS1820config),50,true);   // 5sec
 
     DS1820config.Avg = 0;
-    DS1820config.Pin = 2;
+    DS1820config.Pin = 3;
     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP,"AirHuwTemp", 1,&DS1820config,sizeof(DS1820config),50,true);   // 5sec
 
     DS1820config.Avg = 0;
@@ -103,11 +101,9 @@ void AppSetup()
     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, "DigitalInputAux",1,
             &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true);  // 1sec
 
-    tSensor *pSensor;
-    pSensor = tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, "HeatPumpEnergy",1,NULL,0,50,false);
-    pinMode(21, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(21), Interrupt, FALLING);
-    pSensor->Start();
+    ImpulseSensorConfig.Pin = 21;
+    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, "HeatPumpEnergy",1,&ImpulseSensorConfig,sizeof(ImpulseSensorConfig),50,true);
+
 
     Pt100AnalogSensorConfig.Pin = A14;
     Pt100AnalogSensorConfig.Correction = 8;
@@ -116,15 +112,13 @@ void AppSetup()
     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, "OutStates",1,NULL,0,50,true);
 
 
-    tHeatingCircleStatusSensor *pHeatingCircleStatusSensor = tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_RADIATORS_HEATING_STATE, "RadiatorsState");
-    pHeatingCircleStatusSensor->Config.pHeatingControl = pRadiatorsTemperatureValveControl;
-    pHeatingCircleStatusSensor->setConfig(50); // 5 sec
-    pHeatingCircleStatusSensor->Start();
+    HeatingCircleStatusSensorConfig.pHeatingControl = pRadiatorsTemperatureValveControl;
+    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_RADIATORS_HEATING_STATE,
+    									   "RadiatorsState", 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true);
 
-    pHeatingCircleStatusSensor = tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE, "FloorState");
-    pHeatingCircleStatusSensor->Config.pHeatingControl =  pFloorTemperatureValveControl;
-    pHeatingCircleStatusSensor->setConfig(50); // 5 sec
-    pHeatingCircleStatusSensor->Start();
+    HeatingCircleStatusSensorConfig.pHeatingControl = pFloorTemperatureValveControl;
+    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE,
+    									   "FloorState", 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true);
 }
 
 #endif APP_HeatingCentral

@@ -41,7 +41,6 @@ uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache 
 
    pStream->print(F(", \"TargetTemp\":"));
    pStream->print(pResult->TargetTemp);
-   pStream->print(F(","));
 
    return STATUS_SUCCESS;
 }

@@ -24,8 +24,7 @@ protected:
         case SENSOR_TYPE_HEATING_CIRCLE_STATE:
               switch (apiVersion)
               {
-              case 1:
-                  return HeatingCircleStatusSensorJsonFormat_api_1;
+              case 1: return HeatingCircleStatusSensorJsonFormat_api_1;
               }
               break;
 #endif // CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
