@@ -10,22 +10,7 @@
 #pragma once
 
 
-// #define CONFIG_TLE8457_serial_lib
-
-//#ifdef __AVR_ATmega2560__
-//#define CONFIG_CENTRAL_NODE 1
-//#elif __AVR_ATmega328P__
-//#define CONFIG_CENTRAL_NODE 0
-//#else
-//#error unknown board
-//#endif
-
 #define REMOTE_SENSORS_TEST 0
-
-
-#define CONFIG_CENTRAL_NODE 1
-
-#if CONFIG_CENTRAL_NODE
 
 #define COMM_SERIAL Serial1
 #define COMM_SERIAL_EVENT serialEvent1
@@ -38,11 +23,11 @@
 
 #define CONFIG_OUTPUT_PROCESS 1
 
-#define CONFIG_HEATING_CIRCLE_CONTROL 1
-#define CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR 1
 #define CONFIG_SENSORS 1
 #define CONFIG_EEPROM_SENSORS 1
 #define CONFIG_SENSOR_HUB 1
+#define CONFIG_SENSOR_HUB_GENERATE_EVENTS 0
+#define CONFIG_SENSOR_GENERATE_EVENTS 1
 #define CONFIG_SENSORS_JSON_OUTPUT 1
 #define CONFIG_SENSORS_OVER_SERIAL_COMM 1
 #define CONFIG_SENSOR_GENERATE_SERIAL_EVENTS 1
@@ -60,19 +45,31 @@
 #define CONFIG_SENSOR_STATE_SERVLET 1
 #define CONFIG_OUTPUT_CONTROL_SERVLET 1
 #define CONFIG_TELNET_SERVER 1
+
 #define CONFIG_WATCHDOG 1
+// restart if no connection for 5 minutes
+#define TCP_WATCHDOG_TIMEOUT 300
 
 #define CONFIG_WORKER_PROCESS 1
 #define CONFIG_NODE_SCAN_TASK 1
-#endif //CONFIG_CENTRAL_NODE
 
 #define CONFIG_TLE8457_COMM_LIB 1
+
+#if APP_HeatingCentral
+#include "appDefs\HeatingCental.h"
+#elif APP_generalTest
+#include "appDefs\generalTest.h"
+#elif APP_node
+#include "appDefs\node.h"
+#else
+#error no app defined
+#endif
 
 #include <Arduino.h>
 #include "src/Common_code/helpers.h"
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
-#include "GlobalDefs/outputPins.h"
 #include "GlobalDefs/CommDefs.h"
+#include "GlobalDefs/SensorId.h"
 #include "src/Common_code/debug.h"
 #include "src/Common_code/status.h"

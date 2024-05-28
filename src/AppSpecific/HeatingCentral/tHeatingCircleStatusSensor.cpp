@@ -5,11 +5,11 @@
  *      Author: szkud
  */
 
-#include "../../global.h"
+#include "../../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 #include "tHeatingCircleStatusSensor.h"
-#include "../tHeatingCircleControl.h"
+#include "tHeatingCircleControl.h"
 
 
 uint8_t tHeatingCircleStatusSensor::onSetConfig()
@@ -41,7 +41,6 @@ uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache 
 
    pStream->print(F(", \"TargetTemp\":"));
    pStream->print(pResult->TargetTemp);
-   pStream->print(F(","));
 
    return STATUS_SUCCESS;
 }

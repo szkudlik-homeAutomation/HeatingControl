@@ -1,6 +1,5 @@
 #pragma once
 
-
 #define NUM_OF_OUTPUTS 3
 
 #define OUT_PIN_TEST1 38

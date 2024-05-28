@@ -9,6 +9,7 @@
 
 #include "../global.h"
 #include "Common_code/sensors/tSensorFactory.h"
+#include "AppSpecific/HeatingCentral/tHeatingCircleStatusSensor.h"
 
 class tHeatingConrolSensorFactory : public tSensorFactory
 {
@@ -19,13 +20,16 @@ protected:
    {
         switch (SensorType)
         {
-           case SENSOR_TYPE_HEATING_CIRCLE_STATE:
+#if CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
+        case SENSOR_TYPE_HEATING_CIRCLE_STATE:
               switch (apiVersion)
               {
-              case 1:
-                  return HeatingCircleStatusSensorJsonFormat_api_1;
+              case 1: return HeatingCircleStatusSensorJsonFormat_api_1;
               }
               break;
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
+         default:
+              return NULL;
         }
 
         return NULL;
@@ -36,9 +40,13 @@ protected:
        tSensor *newSensor= NULL;
        switch (SensorType)
        {
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
            case SENSOR_TYPE_HEATING_CIRCLE_STATE:
                newSensor = new tHeatingCircleStatusSensor(SensorID);
                break;
+#endif /* CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR */
+           default:
+               newSensor = NULL;
        }
 
        return newSensor;
