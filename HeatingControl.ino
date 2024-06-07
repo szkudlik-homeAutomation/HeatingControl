@@ -24,11 +24,11 @@ void AppSetup();
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
 #include "src/Common_code/TLE8457_serial/TLE8457_serial_lib.h"
 #include "src/Common_code/TLE8457_serial/tIncomingFrameHanlder.h"
-#include "src/tHeatingControlSensorFactory.h"
 
 #if APP_HeatingCentral
     #include "src/AppSpecific/HeatingCentral/tOutputProcess_appSpecific.h"
     #include "src/AppSpecific/HeatingCentral/tHeatingControlServlet.h"
+    #include "src/AppSpecific/HeatingCentral/tHeatingControlSensorFactory.h"
 #elif APP_generalTest
     #include "src/AppSpecific/GeneralTest/tOutputProcess_appSpecific.h"
 #endif

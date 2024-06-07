@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "../global.h"
-#include "Common_code/sensors/tSensorFactory.h"
-#include "AppSpecific/HeatingCentral/tHeatingCircleStatusSensor.h"
+#include "../../../global.h"
+#include "../../Common_code/sensors/tSensorFactory.h"
+#include "tHeatingCircleStatusSensor.h"
 
 class tHeatingConrolSensorFactory : public tSensorFactory
 {

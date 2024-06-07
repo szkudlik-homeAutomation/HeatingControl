@@ -15,7 +15,7 @@
 #include "../../Common_code/sensors/tSimpleDigitalInputSensor.h"
 
 
-#if APP_generalTest
+#if APP_node
 
 
 void AppSetup()
@@ -23,4 +23,4 @@ void AppSetup()
     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,"SystemStatus",1,NULL,0,50,true);
 }
 
-#endif  APP_generalTest
+#endif  APP_node

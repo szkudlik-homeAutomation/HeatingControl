@@ -1,1 +1,9 @@
 #pragma once
+
+#define COMM_SERIAL Serial
+#define COMM_SERIAL_EVENT serialEvent
+
+#define CONFIG_DS1820_SENSOR 1
+#define CONFIG_SIMPLE_DIGITAL_INPUT_SENSOR 1
+
+#define CONFIG_SENSOR_GENERATE_SERIAL_EVENTS 1
