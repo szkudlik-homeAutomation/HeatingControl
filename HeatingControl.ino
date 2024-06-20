@@ -16,9 +16,9 @@ void AppSetup();
 #include "src/Common_code/WatchdogProcess.h"
 #include "src/Common_code/WorkerProcess.h"
 #include "src/Common_code/sensors/tSensor.h"
-#include "src/Common_code/sensors/tSensorControlFromRemote.h"
+#include "src/Common_code/sensors/tSensorHubMessageReciever.h"
 #include "src/Common_code/sensors/tSensorHub.h"
-#include "src/Common_code/sensors/tRemoteSensorHub.h"
+#include "src/Common_code/sensors/tSensorControlFromRemote.h"
 #include "src/Common_code/sensors/tOutputStateSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
@@ -46,19 +46,17 @@ Scheduler sched;
 
 #if CONFIG_SENSORS
     #if CONFIG_SENSOR_HUB
-    #if CONFIG_SENSORS_OVER_SERIAL_COMM
-        tRemoteSensorHub SensorHub;
-    #else //CONFIG_SENSORS_OVER_SERIAL_COMM
-        tSensorHub SensorHub;
-    #endif //CONFIG_SENSORS_OVER_SERIAL_COMM
-    #endif // CONFIG_SENSOR_HUB
+    	tSensorHub SensorHub;
+    	#if CONFIG_SENSORS_OVER_SERIAL_COMM
+        	tSensorHubMessageReciever SensorHubMessageReciever;	// sensor hub actions from remote
+		#endif //CONFIG_SENSORS_OVER_SERIAL_COMM
+	#endif // CONFIG_SENSOR_HUB
     
     #if CONFIG_SENSORS_OVER_SERIAL_COMM
     	tSensorControlFromRemote SensorControlFromRemote; // sensors actions and sensor management from remote
     #endif //CONFIG_SENSORS_OVER_SERIAL_COMM
     
     tSensorProcess SensorProcess(sched);       // all sensors actions
-    
     
     tHeatingConrolSensorFactory SensorFactory;
 #endif // CONFIG_SENSORS
