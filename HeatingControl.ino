@@ -119,7 +119,7 @@ void setup() {
     SetDefaultEEPromValues();
 
 #if CONFIG_TLE8457_COMM_LIB
-  COMM_SERIAL.begin(TRANSMISSION_SPEED);
+  COMM_SERIAL.begin(CONFIG_TRANSMISSION_SPEED);
   while (!COMM_SERIAL);
 
   CommSender.add();
