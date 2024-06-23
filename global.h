@@ -10,19 +10,17 @@
 #pragma once
 
 
-#define REMOTE_SENSORS_TEST 0
 
 #define COMM_SERIAL Serial1
 #define COMM_SERIAL_EVENT serialEvent1
 
 #define CONFIG_LOGGER 1
 
-#define DEBUG_3_ENABLE
-#define DEBUG_SERIAL Serial
-#define DEBUG_SERIAL_EVENT serialEvent
+#define CONFIG_LOGLEVEL_3
+#define CONFIG_LOGGER_SERIAL Serial
 
 #define CONFIG_OUTPUT_PROCESS 1
-
+#define CONFIG_TCP_WATCHDOG 1
 #define CONFIG_SENSORS 1
 #define CONFIG_EEPROM_SENSORS 1
 #define CONFIG_SENSOR_HUB 1
@@ -48,7 +46,7 @@
 
 #define CONFIG_WATCHDOG 1
 // restart if no connection for 5 minutes
-#define TCP_WATCHDOG_TIMEOUT 300
+#define CONFIG_TCP_WATCHDOG_TIMEOUT 300
 
 #define CONFIG_WORKER_PROCESS 1
 #define CONFIG_NODE_SCAN_TASK 1

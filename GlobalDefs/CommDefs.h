@@ -1,8 +1,5 @@
 #pragma once
 
-// maximum number of nodes, should not be mode than 32 because of bitmaps
-#define MAX_NUM_OF_NODES 32
-
 #define CONFIG_NUM_OF_RETRANSMISSIONS 1
 
 #define CONFIG_MAX_NUM_OF_RETRANSMISSIONS 5

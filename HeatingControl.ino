@@ -75,7 +75,7 @@ Scheduler sched;
 
 #if CONFIG_NETWORK
     tNetwork Network;
-    tTcpServerProcess TcpServerProcess(sched, TCP_WATCHDOG_TIMEOUT);
+    tTcpServerProcess TcpServerProcess(sched, CONFIG_TCP_WATCHDOG_TIMEOUT);
     #if CONFIG_HTTP_SERVER
         tHttpServer HttpServer;
         
@@ -108,11 +108,11 @@ tOutputProcess_appSpecific OutputProcess(sched);
 
 
 void setup() {
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.begin(115200);
-  while (!DEBUG_SERIAL);
-  DEBUG_SERIAL.print(F("START, v"));
-  DEBUG_SERIAL.println(FW_VERSION);
+#ifdef CONFIG_LOGGER_SERIAL
+  CONFIG_LOGGER_SERIAL.begin(115200);
+  while (!CONFIG_LOGGER_SERIAL);
+  CONFIG_LOGGER_SERIAL.print(F("START, v"));
+  CONFIG_LOGGER_SERIAL.println(FW_VERSION);
 #endif
 
   if (EEPROM.read(EEPROM_CANNARY_OFFSET) != EEPROM_CANNARY)
@@ -131,8 +131,8 @@ void setup() {
   TcpServerProcess.add(true);
 #endif // CONFIG_NETWORK
   
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.println(F("START Tcp "));
+#ifdef CONFIG_LOGGER_SERIAL
+  CONFIG_LOGGER_SERIAL.println(F("START Tcp "));
 #endif
 
 #if CONFIG_SENSORS
@@ -154,10 +154,10 @@ void setup() {
 
     AppSetup();
     
-#ifdef DEBUG_SERIAL
-  DEBUG_SERIAL.print(F("Free RAM: "));
-  DEBUG_SERIAL.println(getFreeRam());
-  DEBUG_SERIAL.println(F("SYSTEM INITIALIZED"));
+#ifdef CONFIG_LOGGER_SERIAL
+  CONFIG_LOGGER_SERIAL.print(F("Free RAM: "));
+  CONFIG_LOGGER_SERIAL.println(getFreeRam());
+  CONFIG_LOGGER_SERIAL.println(F("SYSTEM INITIALIZED"));
 #endif
 }
 
