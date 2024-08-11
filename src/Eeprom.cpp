@@ -1,7 +1,11 @@
 #include "../global.h"
 
-void SetDefaultEEPromValues()
+void SetDefaultEEPromValues(bool force)
 {
+
+  if ((EEPROM.read(EEPROM_CANNARY_OFFSET) == EEPROM_CANNARY) && !force)
+	  return;
+
   DEBUG_PRINTLN_3("!!!!!!!!!!!!!!!!!!!!!!!!! CLEAN EEPROM MEMORY - SETTING DEFAULTS !!!!!!!!!!!!!!!!!");
   EEPROM.write(EEPROM_CANNARY_OFFSET,EEPROM_CANNARY);
 
@@ -31,10 +35,4 @@ void SetDefaultEEPromValues()
   EEPROM.write(EEPROM_MAC+4,0x5B);
   EEPROM.write(EEPROM_MAC+5,0x15);
 #endif //CONFIG_NETWORK
-  eepromDeleteAllSensors();
-}
-
-void eepromDeleteAllSensors()
-{
-    EEPROM.write(EEPROM_NUM_OF_SENSORS, 0);
 }

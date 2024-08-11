@@ -1,0 +1,5 @@
+menu "Home Automation General empty application"
+
+rsource "src/Common_code/kconfig"
+
+endmenu
