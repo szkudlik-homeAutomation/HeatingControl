@@ -1,4 +1,29 @@
-menu "Home Automation General empty application"
+menu "Heating Control menu"
+
+
+config HEATING_CIRCLE_CONTROL
+    bool "Heating Control main application"
+    default n
+    help
+        Heating Control main application
+        
+config HEATING_CIRCLE_CONTROL_STATUS_SENSOR
+    bool "Heating Control Status Sensor"
+    default y
+    depends on HEATING_CIRCLE_CONTROL
+    select SENSORS
+    help
+        Heating Control Status Sensor
+        
+config HEATING_CIRCLE_CONTROL_SERVLET
+    bool "Heating Control Servlet"
+    default y
+    depends on HEATING_CIRCLE_CONTROL
+    select HTTP_SERVER
+    select NETWORK
+    help
+        HTTP servlet for external control of Heating Control
+      
 
 rsource "src/Common_code/kconfig"
 
