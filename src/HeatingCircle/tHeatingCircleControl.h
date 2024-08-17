@@ -11,11 +11,7 @@
 
 #if CONFIG_HEATING_CIRCLE_CONTROL
 
-#if !CONFIG_SENSOR_HUB
-#error CONFIG_SENSOR_HUB must be set for heating control
-#endif
-
-#include "../../Common_code/tOutputProcess.h"
+#include "../Common_code/tOutputProcess.h"
 
 
 // note that the events are triggered by a sensor thold
