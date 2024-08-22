@@ -12,8 +12,8 @@
 
 #define SENSOR_TYPE_HEATING_CIRCLE_STATE 128
 
-#include "../../Common_code/sensors/tSensor.h"
-#include "../../Common_code/sensors/tSensorCache.h"
+#include "../Common_code/sensors/tSensor.h"
+#include "../Common_code/sensors/tSensorCache.h"
 
 #if CONFIG_SENSORS_JSON_OUTPUT
 

@@ -3,7 +3,7 @@
 #include "../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
 
-#include "../../Common_code/Network/httpServer.h"
+#include "../Common_code/Network/httpServer.h"
 
 class tHeatingControlServlet :  public tHttpServlet
 {
