@@ -5,7 +5,7 @@
  *      Author: szkud
  */
 
-#include "../../../global.h"
+#include "../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 #include "tHeatingCircleStatusSensor.h"

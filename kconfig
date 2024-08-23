@@ -1,0 +1,8 @@
+menu "Heating Control menu"
+
+
+rsource "src/HeatingCircle/kconfig"      
+
+rsource "src/Common_code/kconfig"
+
+endmenu

@@ -7,16 +7,11 @@
 
 #pragma once
 
-#include "../../../global.h"
+#include "../../global.h"
 
 #if CONFIG_HEATING_CIRCLE_CONTROL
 
-#if !CONFIG_SENSOR_HUB
-#error CONFIG_SENSOR_HUB must be set for heating control
-#endif
-
-#include "../../Common_code/tMessageReciever.h"
-#include "../../Common_code/tOutputProcess.h"
+#include "../Common_code/tOutputProcess.h"
 
 
 // note that the events are triggered by a sensor thold
@@ -111,18 +106,18 @@ private:
    uint8_t mPumpOutId;
    uint8_t mSlowValveTime;       //< num of seconds the valve is opened in a single step when moving at slow speed
 
-   void StopValve()  { DEBUG_PRINTLN_3("==>STOP");
-      tOutputProcess::get()->SetOutput(mValveOpenOutId, 0);  tOutputProcess::get()->SetOutput(mValveCloseOutId, 0); }
-   void OpenValve()  { DEBUG_PRINTLN_3("==>OPEN");
-      tOutputProcess::get()->SetOutput(mValveCloseOutId, 0); tOutputProcess::get()->SetOutput(mValveOpenOutId, 1, MAX_VALVE_TIME); }
-   void CloseValve() { DEBUG_PRINTLN_3("==>CLOSE");
-      tOutputProcess::get()->SetOutput(mValveOpenOutId, 0);  tOutputProcess::get()->SetOutput(mValveCloseOutId,1, MAX_VALVE_TIME); }
-   void OpenValveSlow()  { DEBUG_PRINTLN_3("==>OPEN SLOW");
-      tOutputProcess::get()->SetOutput(mValveCloseOutId, 0); tOutputProcess::get()->SetOutput(mValveOpenOutId, 1,mSlowValveTime); }
-   void CloseValveSlow() { DEBUG_PRINTLN_3("==>CLOSE SLOW");
-      tOutputProcess::get()->SetOutput(mValveOpenOutId, 0);  tOutputProcess::get()->SetOutput(mValveCloseOutId, 1,mSlowValveTime); }
+   void StopValve()  { DEBUG_PRINTLN_2("==>STOP");
+      tOutputProcess::Instance->SetOutput(mValveOpenOutId, 0);  tOutputProcess::Instance->SetOutput(mValveCloseOutId, 0); }
+   void OpenValve()  { DEBUG_PRINTLN_2("==>OPEN");
+      tOutputProcess::Instance->SetOutput(mValveCloseOutId, 0); tOutputProcess::Instance->SetOutput(mValveOpenOutId, 1, MAX_VALVE_TIME); }
+   void CloseValve() { DEBUG_PRINTLN_2("==>CLOSE");
+      tOutputProcess::Instance->SetOutput(mValveOpenOutId, 0);  tOutputProcess::Instance->SetOutput(mValveCloseOutId,1, MAX_VALVE_TIME); }
+   void OpenValveSlow()  { DEBUG_PRINTLN_2("==>OPEN SLOW");
+      tOutputProcess::Instance->SetOutput(mValveCloseOutId, 0); tOutputProcess::Instance->SetOutput(mValveOpenOutId, 1,mSlowValveTime); }
+   void CloseValveSlow() { DEBUG_PRINTLN_2("==>CLOSE SLOW");
+      tOutputProcess::Instance->SetOutput(mValveOpenOutId, 0);  tOutputProcess::Instance->SetOutput(mValveCloseOutId, 1,mSlowValveTime); }
 
-   void PumpOn()  { DEBUG_PRINTLN_3("==>PUMP ON"); tOutputProcess::get()->SetOutput(mPumpOutId, 1, MAX_VALVE_TIME); }
-   void PumpOff() { DEBUG_PRINTLN_3("==>PUMP OFF"); tOutputProcess::get()->SetOutput(mPumpOutId, 0); }
+   void PumpOn()  { DEBUG_PRINTLN_2("==>PUMP ON"); tOutputProcess::Instance->SetOutput(mPumpOutId, 1, MAX_VALVE_TIME); }
+   void PumpOff() { DEBUG_PRINTLN_2("==>PUMP OFF"); tOutputProcess::Instance->SetOutput(mPumpOutId, 0); }
 };
 #endif //CONFIG_HEATING_CIRCLE_CONTROL

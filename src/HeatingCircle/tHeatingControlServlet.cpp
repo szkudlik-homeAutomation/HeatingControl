@@ -1,4 +1,4 @@
-#include "../../../global.h"
+#include "../../global.h"
 
 #if CONFIG_HEATING_CIRCLE_CONTROL_SERVLET
 
@@ -82,11 +82,11 @@ bool tHeatingControlServlet::ProcessAndResponse()
     // get max from target temps
    float MaxTemp = (FloorTemp > RadiatorsTemp) ? FloorTemp : RadiatorsTemp;
 
-   float PumpDisableTemp = MaxTemp + PUMP_DISABLE_THOLD_SHIFT;
-   PumpDisableTemp = (PumpDisableTemp < PUMP_DISABLE_MAX_TEMP) ? PumpDisableTemp : PUMP_DISABLE_MAX_TEMP;
+   float PumpDisableTemp = MaxTemp + CONFIG_HEATING_CIRCLE_PUMP_DISABLE_THOLD_SHIFT;
+   PumpDisableTemp = (PumpDisableTemp < CONFIG_HEATING_CIRCLE_PUMP_DISABLE_MAX_TEMP) ? PumpDisableTemp : CONFIG_HEATING_CIRCLE_PUMP_DISABLE_MAX_TEMP;
 
-   float PumpEnableTemp = MaxTemp + PUMP_ENABLE_THOLD_SHIFT;
-   PumpEnableTemp = (PumpEnableTemp < PUMP_FORCE_ENABLE_TEMP) ? PumpEnableTemp : PUMP_FORCE_ENABLE_TEMP;
+   float PumpEnableTemp = MaxTemp + CONFIG_HEATING_CIRCLE_PUMP_ENABLE_THOLD_SHIFT;
+   PumpEnableTemp = (PumpEnableTemp < CONFIG_HEATING_CIRCLE_PUMP_FORCE_ENABLE_TEMP) ? PumpEnableTemp : CONFIG_HEATING_CIRCLE_PUMP_FORCE_ENABLE_TEMP;
 
    tHeatingCircleControl::setPumpStopTemp(PumpDisableTemp);
    tHeatingCircleControl::setPumpStartTemp(PumpEnableTemp);
