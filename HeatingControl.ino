@@ -16,9 +16,12 @@
 
 
 #if APP_HeatingCentral
-tPt100SensorLogger Pt100SensorLogger(SENSOR_ID_PT100_HOTAIR);
-tDS1820SensorLogger DS1820SensorLogger(0);  // all DS1820s
-tImpulseSensorLogger ImpulseSensorLogger(SENSOR_ID_IMPULSE_HEATPUMP);
+
+#if CONFIG_LOGLEVEL_2
+	tPt100SensorLogger Pt100SensorLogger(SENSOR_ID_PT100_HOTAIR);
+	tDS1820SensorLogger DS1820SensorLogger(0);  // all DS1820s
+	tImpulseSensorLogger ImpulseSensorLogger(SENSOR_ID_IMPULSE_HEATPUMP);
+#endif // CONFIG_LOGLEVEL_2
 
 tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
 tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
@@ -29,6 +32,7 @@ tHeatingCircleControl *pFloorTemperatureValveControl;
 tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 tImpulseSensor *pImpulseSensor = NULL;
 
+#endif // APP_HeatingCentral
 
 /* sensor factory for application */
 
@@ -40,8 +44,10 @@ protected:
 	{
 	    switch (SensorType)
 	    {
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 	    case SENSOR_TYPE_HEATING_CIRCLE_STATE:
 	    	return new tHeatingCircleStatusSensor(SensorID);
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 	    default:
 	    	return NULL;
@@ -54,6 +60,7 @@ protected:
    {
 	    switch (SensorType)
 	    {
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 	    case SENSOR_TYPE_HEATING_CIRCLE_STATE:
         	switch (apiVersion)
         	{
@@ -61,6 +68,8 @@ protected:
         		return HeatingCircleStatusSensorJsonFormat_api_1;
         	}
         	break;
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
+
 	    default:
         	return NULL;
 	    }
@@ -69,7 +78,6 @@ protected:
 
 };
 
-#endif
 
 
 class tHttpServer_app : public tHttpServer {
