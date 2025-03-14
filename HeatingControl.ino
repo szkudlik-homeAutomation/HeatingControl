@@ -9,6 +9,7 @@
 #include "src/Common_code/sensors/tPt100AnalogSensor.h"
 #include "src/Common_code/sensors/tSimpleDigitalInputSensor.h"
 #include "src/Common_code/sensors/tSystemStatusSensor.h"
+#include "src/Common_code/Network/HttpServer.h"
 #include "src/HeatingCircle/tHeatingCircleStatusSensor.h"
 #include "src/HeatingCircle/tHeatingCircleControl.h"
 #include "src/HeatingCircle/tHeatingControlServlet.h"
