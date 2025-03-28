@@ -109,7 +109,7 @@ protected:
 
 	virtual void AppSetupAfter() {
 		/* common sensors */
-		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,"SystemStatus",1,NULL,0,50,true);
+		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,F("SystemStatus"),1,NULL,0,50,true, 0);
 
 		/* sensofactory for application Heating central*/
 #if APP_HeatingCentral
@@ -121,15 +121,15 @@ protected:
 
 	    DS1820config.Avg = 0;
 	    DS1820config.Pin = 2;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP,"HeatingTemp",1,&DS1820config,sizeof(DS1820config),50,true);   // 5sec
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP,F("HeatingTemp"),1,&DS1820config,sizeof(DS1820config),50,true,0);   // 5sec
 
 	    DS1820config.Avg = 0;
 	    DS1820config.Pin = 3;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP,"AirHuwTemp", 1,&DS1820config,sizeof(DS1820config),50,true);   // 5sec
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP,F("AirHuwTemp"), 1,&DS1820config,sizeof(DS1820config),50,true,0);   // 5sec
 
 	    DS1820config.Avg = 0;
 	    DS1820config.Pin = 7;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, "OutdoorTemp",1,&DS1820config,sizeof(DS1820config),50,true);  // 5sec
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, F("OutdoorTemp"),1,&DS1820config,sizeof(DS1820config),50,true,0);  // 5sec
 
 	    pFloorTemperatureValveControl = new tHeatingCircleControl(
 	          SENSOR_ID_1820_HEATING_TEMP,
@@ -162,37 +162,40 @@ protected:
 
 	    SimpleDigitalInputSensorConfig.ActiveState = 0;
 	    SimpleDigitalInputSensorConfig.Pin = A9;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST, "WaterHeaterRequest",1,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true);  // 1sec
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST, F("WaterHeaterRequest"),1,
+	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
 
 	    SimpleDigitalInputSensorConfig.ActiveState = 0;
 	    SimpleDigitalInputSensorConfig.Pin = A8;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, "PumpControl",1,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true);  // 1sec
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, F("PumpControl"),1,
+	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
 
 	    SimpleDigitalInputSensorConfig.ActiveState = 0;
 	    SimpleDigitalInputSensorConfig.Pin = A7;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, "DigitalInputAux",1,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true);  // 1sec
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, F("DigitalInputAux"),1,
+	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true,0);  // 1sec
 
 	    ImpulseSensorConfig.Pin = 21;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, "HeatPumpEnergy",1,&ImpulseSensorConfig,sizeof(ImpulseSensorConfig),50,true);
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, F("HeatPumpEnergy"),1,
+	    		&ImpulseSensorConfig,sizeof(ImpulseSensorConfig),50,true, 0);
 
 
 	    Pt100AnalogSensorConfig.Pin = A14;
 	    Pt100AnalogSensorConfig.Correction = 8;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_HOTAIR, "HotAir",1,&Pt100AnalogSensorConfig,sizeof(Pt100AnalogSensorConfig),50,true);
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_PT100_ANALOG, SENSOR_ID_PT100_HOTAIR, F("HotAir"),1,
+	    		&Pt100AnalogSensorConfig,sizeof(Pt100AnalogSensorConfig),50,true, 0);
 
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, "OutStates",1,NULL,0,50,true);
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, F("OutStates"),1,
+	    		NULL,0,50,true, 0);
 
 
 	    HeatingCircleStatusSensorConfig.pHeatingControl = pRadiatorsTemperatureValveControl;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_RADIATORS_HEATING_STATE,
-	    									   "RadiatorsState", 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true);
+	    									   F("RadiatorsState"), 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true, 0);
 
 	    HeatingCircleStatusSensorConfig.pHeatingControl = pFloorTemperatureValveControl;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE,
-	    									   "FloorState", 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true);
+	    									   F("FloorState"), 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true, 0);
 #endif
 	}
 };
