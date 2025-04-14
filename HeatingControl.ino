@@ -109,7 +109,7 @@ protected:
 
 	virtual void AppSetupAfter() {
 		/* common sensors */
-		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,"SystemStatus",1,NULL,0,50,true);
+		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,F("SystemStatus"),1,NULL,0,50,true, 0);
 
 		/* sensofactory for application Heating central*/
 #if APP_HeatingCentral
