@@ -15,7 +15,13 @@ void SetDefaultEEPromValues(bool force)
   EEPROM.write(EEPROM_IP+0,192);
   EEPROM.write(EEPROM_IP+1,168);
   EEPROM.write(EEPROM_IP+2,101);
+#if APP_HeatingCentral
+  EEPROM.write(EEPROM_IP+3,23);
+#elif APP_GeneralTest
   EEPROM.write(EEPROM_IP+3,24);
+#else
+#error "Unknown app."
+#endif
   EEPROM.write(EEPROM_IPMASK+0,255);
   EEPROM.write(EEPROM_IPMASK+1,255);
   EEPROM.write(EEPROM_IPMASK+2,255);
@@ -33,6 +39,12 @@ void SetDefaultEEPromValues(bool force)
   EEPROM.write(EEPROM_MAC+2,0x4D);
   EEPROM.write(EEPROM_MAC+3,0x5A);
   EEPROM.write(EEPROM_MAC+4,0x5B);
-  EEPROM.write(EEPROM_MAC+5,0x15);
+#if APP_HeatingCentral
+  EEPROM.write(EEPROM_MAC+5,0x23);
+#elif APP_GeneralTest
+  EEPROM.write(EEPROM_MAC+5,0x24);
+#else
+#error "Unknown app."
+#endif
 #endif //CONFIG_NETWORK
 }
