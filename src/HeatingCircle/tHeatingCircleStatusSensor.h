@@ -8,21 +8,23 @@
 #pragma once
 
 #include "../../global.h"
-#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
 #define SENSOR_TYPE_HEATING_CIRCLE_STATE 128
 
 #include "../Common_code/sensors/tSensor.h"
 #include "../Common_code/sensors/tSensorCache.h"
 
-#if CONFIG_SENSORS_JSON_OUTPUT
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 
 uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache *cache);
 
-#endif //CONFIG_SENSORS_JSON_OUTPUT
+#endif //CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
+
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR || CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 
 class tHeatingCircleControl;
-class tHeatingCircleStatusSensor : public tSensor {
+class tHeatingCircleStatusSensorTypes
+{
 public:
 
    typedef struct
@@ -36,6 +38,13 @@ public:
       tHeatingCircleControl *pHeatingControl;
    } tConfig_api_v1;
 
+};
+
+#endif
+
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
+class tHeatingCircleStatusSensor : public tSensor, tHeatingCircleStatusSensorTypes {
+public:
    static const uint8_t API_VERSION = 1;
    typedef tConfig_api_v1 tConfig;
    typedef tResult_api_v1 tResult;

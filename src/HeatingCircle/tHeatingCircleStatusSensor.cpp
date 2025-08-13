@@ -26,8 +26,9 @@ void tHeatingCircleStatusSensor::doTriggerMeasurement()
    mResult.isWorking = Config.pHeatingControl->isWorking();
    onMeasurementCompleted(true);
 }
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
 
-#if CONFIG_SENSORS_JSON_OUTPUT
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache *cache)
 {
    if (cache->getDataBlobSize() != sizeof(tHeatingCircleStatusSensor::tResult))
@@ -44,6 +45,5 @@ uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache 
 
    return STATUS_SUCCESS;
 }
-#endif //CONFIG_SENSORS_JSON_OUTPUT
+#endif //CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 
-#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR

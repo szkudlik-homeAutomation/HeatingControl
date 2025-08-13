@@ -56,12 +56,19 @@ protected:
 
 		return NULL;
 	}
+};
 
-   virtual doFormatJSON  appSpecificGetSJONFrormatFunction(uint8_t SensorType, uint8_t apiVersion)
-   {
+class tSensorJsonOutput_app : public tSensorJsonOutput 
+{
+public: 
+	tSensorJsonOutput_app() : tSensorJsonOutput() {}
+	
+protected:
+    virtual doFormatJSON  appSpecificGetSJONFrormatFunction(uint8_t SensorType, uint8_t apiVersion)
+    {
 	    switch (SensorType)
 	    {
-#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
+#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 	    case SENSOR_TYPE_HEATING_CIRCLE_STATE:
         	switch (apiVersion)
         	{
@@ -69,15 +76,15 @@ protected:
         		return HeatingCircleStatusSensorJsonFormat_api_1;
         	}
         	break;
-#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR
+#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 
 	    default:
         	return NULL;
 	    }
 	    return NULL;
-   }
-
+    }
 };
+
 
 
 
@@ -196,11 +203,12 @@ protected:
 	    HeatingCircleStatusSensorConfig.pHeatingControl = pFloorTemperatureValveControl;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE,
 	    									   F("FloorState"), 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true, 0);
-#endif
+#endif // APP_HeatingCentral
 	}
 };
 
 /* instances of global objects */
 tHomeAutomation HomeAutomation;
 tSensorFactory_app SensorFactory_app;
+tSensorJsonOutput_app SensorJsonOutput_app;
 tHttpServer_app HttpServer;

@@ -13,7 +13,12 @@ config HEATING_CIRCLE_CONTROL_STATUS_SENSOR
     select SENSORS
     help
         Heating Control Status Sensor
-        
+
+config HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
+    bool "Enable System Status Sensor JSON output"
+    depends on SENSORS_JSON_OUTPUT
+    default y if HEATING_CIRCLE_CONTROL_STATUS_SENSOR
+            
 config HEATING_CIRCLE_CONTROL_SERVLET
     bool "Heating Control Servlet"
     default y
