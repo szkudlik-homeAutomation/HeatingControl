@@ -13,10 +13,16 @@
 
 #include "../Common_code/sensors/tSensor.h"
 #include "../Common_code/sensors/tSensorCache.h"
+#include "../Common_code/sensors/tSensorJsonOutput.h"
 
 #if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 
-uint8_t HeatingCircleStatusSensorJsonFormat_api_1(Stream *pStream, tSensorCache *cache);
+class tHeatingCircleStatusSensorJsonFormat_api_1 : public tSensorJsonFormatter {
+public:
+    tHeatingCircleStatusSensorJsonFormat_api_1() : tSensorJsonFormatter() {}
+protected:
+    virtual uint8_t FormatJSON(Stream *pStream, tSensorCache *cache);
+};
 
 #endif //CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
 

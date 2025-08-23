@@ -58,30 +58,25 @@ protected:
 	}
 };
 
-class tSensorJsonOutput_app : public tSensorJsonOutput 
-{
-public: 
-	tSensorJsonOutput_app() : tSensorJsonOutput() {}
-	
+class tSensorJsonFormatterFactory_app  : public tSensorJsonFormatterFactory {
+public:
+    tSensorJsonFormatterFactory_app() : tSensorJsonFormatterFactory() {}
 protected:
-    virtual doFormatJSON  appSpecificGetSJONFrormatFunction(uint8_t SensorType, uint8_t apiVersion)
+    virtual tSensorJsonFormatter *appSpecificCreateJsonFormatter(uint8_t SensorType, uint8_t apiVersion)
     {
-	    switch (SensorType)
-	    {
-#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
-	    case SENSOR_TYPE_HEATING_CIRCLE_STATE:
-        	switch (apiVersion)
-        	{
-        	case 1:
-        		return HeatingCircleStatusSensorJsonFormat_api_1;
-        	}
-        	break;
-#endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
-
-	    default:
-        	return NULL;
-	    }
-	    return NULL;
+        switch (SensorType)
+        {
+		#if CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
+		case SENSOR_TYPE_HEATING_CIRCLE_STATE:
+            switch (apiVersion)
+            {
+            case 1:
+                return new tHeatingCircleStatusSensorJsonFormat_api_1;
+            }
+            break;
+       #endif // CONFIG_HEATING_CIRCLE_CONTROL_STATUS_SENSOR_JSON_OUTPUT
+       }
+       return NULL;
     }
 };
 
@@ -210,5 +205,8 @@ protected:
 /* instances of global objects */
 tHomeAutomation HomeAutomation;
 tSensorFactory_app SensorFactory_app;
-tSensorJsonOutput_app SensorJsonOutput_app;
+#if !CONFIG_SENSORS_JSON_OUTPUT_INSTANCE
+tSensorJsonFormatterFactory_app SensorJsonFormatterFactory;
+#endif //CONFIG_SENSORS_JSON_OUTPUT_INSTANCE
+//tSensorJsonOutput_app SensorJsonOutput_app;
 tHttpServer_app HttpServer;
