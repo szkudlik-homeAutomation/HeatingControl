@@ -26,6 +26,9 @@ protected:
 	}
 
 	virtual void AppSetupAfter() {
+		// system status, updated every 60s
+		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,
+					F("SystemStatus"),1,NULL,0,600,true, 1 << EV_TYPE_MEASUREMENT_COMPLETED);
 	}
 };
 

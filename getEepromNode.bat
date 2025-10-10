@@ -1,0 +1,1 @@
+..\tools\avrdude.exe -pm328p -cusbasp -Ueeprom:r:eeprom.hex:i -B 125kHz
