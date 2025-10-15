@@ -9,6 +9,7 @@
 
 #include "Common_code/sensors/tSystemStatusSensor.h"
 #include "Common_code/sensors/tSht3Sensor.h"
+#include "Common_code/sensors/tTgs2603AnalogSensor.h"
 
 
 class tHomeAutomation: public tApplication {
@@ -31,6 +32,11 @@ protected:
 		tSht3SensorConfig.I2C_Addr = SHT30_I2C_ADDR_44;
 		tSht3SensorConfig.Avg = 1;
 		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SHT3, 2,F("TempHum"),1,&tSht3SensorConfig,sizeof(tSht3SensorConfig),600,true,  1 << EV_TYPE_MEASUREMENT_COMPLETED);
+
+		tTgs2603AnalogSensor::tConfig tTgs2603AnalogSensorConfig;
+		tTgs2603AnalogSensorConfig.Pin = A0;
+		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_TGS2603, 3,F("Odour"),1,&tTgs2603AnalogSensorConfig,sizeof(tTgs2603AnalogSensorConfig),50,true, 1 << EV_TYPE_MEASUREMENT_COMPLETED);
+
 	}
 };
 
