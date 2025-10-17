@@ -1,5 +1,8 @@
 menu "Heating Control menu"
 
+config EEPROM_ENABLED_SENSORS
+    bool "Enable sensors based on bitmap in EEPROM"
+    default n
 
 rsource "src/HeatingCircle/kconfig"      
 

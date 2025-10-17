@@ -13,4 +13,3 @@
 
 #include "GlobalDefs/version.h"
 #include "GlobalDefs/Eeprom.h"
-#include "GlobalDefs/SensorId.h"
