@@ -10,10 +10,12 @@
 #include "Common_code/sensors/tSystemStatusSensor.h"
 #include "Common_code/sensors/tSht3Sensor.h"
 #include "Common_code/sensors/tTgs2603AnalogSensor.h"
+#include "Common_code/sensors/tDS1820Sensor.h"
 
 #define SENSOR_ID_SYSTEM_STATUS 1
 #define SENSOR_ID_SHT3 2
 #define SENSOR_ID_TGS_2603 3
+#define SENSOR_ID_DS1820 4
 
 #define is_sensor_enabled(_SensorsBitmap, _sensor_id) (_SensorsBitmap & (1 << ((_sensor_id)-1)))
 
@@ -76,6 +78,18 @@ protected:
 					true, 1 << EV_TYPE_MEASUREMENT_COMPLETED);
 		}
 
+		if (is_sensor_enabled(SensorsBitmap, SENSOR_ID_DS1820))
+		{
+		    tDS1820Sensor::tConfig DS1820config;
+		    DS1820config.Avg = 0;
+		    DS1820config.Pin = 10;	// D10 ==> PB2 ==> GPIO 6 on sensor board
+			tSensorFactory::Instance->CreateSensor(
+					SENSOR_TYPE_DS1820,
+					SENSOR_ID_DS1820,F("Temp"),1,
+					&DS1820config,sizeof(DS1820config),
+					610,	// 1 min 1 sec
+					true, 1 << EV_TYPE_MEASUREMENT_COMPLETED);
+		}
 	}
 };
 

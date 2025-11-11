@@ -33,6 +33,7 @@ echo where sensors are
 echo 01 - system status
 echo 02 - SHT3 temperature and humidity
 echo 04 - TGS_2603 odour sensors
+echo 08 - DS1820 sensors, GPIO6
 
 
 :end
