@@ -7,7 +7,7 @@
 
 #include "../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL
-
+#include <limits.h>
 #include "tHeatingCircleControl.h"
 #include "../Common_code/sensors/tDS1820Sensor.h"
 
@@ -23,6 +23,16 @@ void tHeatingCircleControl::onMessage(uint8_t type, uint16_t data, void *pData)
    if (data != mDatasourceSensorID)
 	   return;
    tSensorEvent *pSensorEvent = (tSensorEvent *)pData;
+   if (pSensorEvent->DeviceId != mDatasourceDeviceID)
+	{
+		return;
+	}
+   if (pSensorEvent->EventType != EV_TYPE_MEASUREMENT_COMPLETED)
+	{
+		DEBUG_PRINT_2("Heating circle control - measurement error");
+		return;
+	}
+
    tDS1820Sensor::tResult *pDS1820Result = (tDS1820Sensor::tResult *)pSensorEvent->pDataBlob;
 
    if (mState == STATE_DISABLED)
@@ -74,6 +84,14 @@ void tHeatingCircleControl::onMessage(uint8_t type, uint16_t data, void *pData)
 
 	int16_t CurrentTemperature = (pDS1820Result)->Dev[mValveTempSensorDevID].Temperature;
 	int16_t Delta = abs(CurrentTemperature - mTargetTemp);
+	int16_t HeatSourceTemperature = INT16_MAX;
+	int16_t HeatStorageTemperature = INT16_MAX;
+	if ((mHeatSourceSensorDevID != 255) && (mHeatStorageSensorDevID != 255))
+	{
+	   HeatSourceTemperature = (pDS1820Result)->Dev[mHeatSourceSensorDevID].Temperature;
+           HeatStorageTemperature = (pDS1820Result)->Dev[mHeatStorageSensorDevID].Temperature;
+	}
+
 	bool doOpen = (mTargetTemp > CurrentTemperature);
 
 	/*
@@ -91,14 +109,25 @@ void tHeatingCircleControl::onMessage(uint8_t type, uint16_t data, void *pData)
 	 *  	- set state to IDLE
 	 */
 
-	   ("-->Temp: ");
-	   DEBUG_2(print((float)(CurrentTemperature) / 10));
-	   DEBUG_PRINT_2(" Target: ");
-	   DEBUG_2(print(getTargetTemp()));
-	   DEBUG_PRINT_2(" Fast: ");
-	   DEBUG_2(print(getFastThold()));
-	   DEBUG_PRINT_2(" Tolerance: ");
-	   DEBUG_2(print(getTolerance()));
+	  DEBUG_PRINT_2("-->Temp on valve: ");
+	  DEBUG_2(print((float)(CurrentTemperature) / 10));
+
+	  if (HeatSourceTemperature != INT16_MAX) {
+		  DEBUG_PRINT_2(" TempUpperTank: ");
+		  DEBUG_2(print((float)(HeatSourceTemperature) / 10));
+	  }
+
+	  if (HeatStorageTemperature != INT16_MAX) 	  {
+		  DEBUG_PRINT_2(" TempLowerTank: ");
+		  DEBUG_2(print((float)(HeatStorageTemperature) / 10));
+	  }
+
+	  DEBUG_PRINT_2(" Target: ");
+	  DEBUG_2(print(getTargetTemp()));
+	  DEBUG_PRINT_2(" Fast: ");
+	  DEBUG_2(print(getFastThold()));
+	  DEBUG_PRINT_2(" Tolerance: ");
+	  DEBUG_2(print(getTolerance()));
       DEBUG_PRINT_2(" Histeresis: ");
       DEBUG_2(print(getHisteresis()));
       DEBUG_PRINT_2(" PumpStopTempThold: ");
@@ -115,12 +144,9 @@ void tHeatingCircleControl::onMessage(uint8_t type, uint16_t data, void *pData)
 	}
 
 
-	if ((mHeatSourceSensorDevID != 255) && (mHeatStorageSensorDevID != 255))
+	if (HeatSourceTemperature != INT16_MAX && HeatStorageTemperature != INT16_MAX)
 	{
 	   // shoud we pause the pump?
-	   int16_t HeatSourceTemperature = (pDS1820Result)->Dev[mHeatSourceSensorDevID].Temperature;
-      int16_t HeatStorageTemperature = (pDS1820Result)->Dev[mHeatStorageSensorDevID].Temperature;
-
       if ((HeatSourceTemperature < mPumpStopTempThold) && (mPausePreventionCycles == 0))
       {
          mState = STATE_PAUSED;

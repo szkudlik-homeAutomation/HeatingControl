@@ -26,6 +26,7 @@ public:
 
    tHeatingCircleControl(
 		    uint8_t DatasourceSensorID,
+			uint8_t DatasourceDeviceID,
             char* ValveTempSensorSerial,
             char* HeatSourceSensorSerial,
             char* HeatStorageSensorSerial,
@@ -34,6 +35,7 @@ public:
             uint8_t PumpOutId,
             uint16_t SlowValveTime)
       : mDatasourceSensorID(DatasourceSensorID),
+		mDatasourceDeviceID(DatasourceDeviceID),
     	mTargetTemp(0),
         mValveTempSensorDevID(255),
         mHeatSourceSensorDevID(255),
@@ -86,6 +88,7 @@ private:
    } tState;
 
    uint8_t mDatasourceSensorID;
+   uint8_t mDatasourceDeviceID;
    static int16_t mPumpStopTempThold;
    static int16_t mPumpStartTempThold;
    uint8_t mPausePreventionCycles;

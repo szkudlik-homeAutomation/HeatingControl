@@ -156,6 +156,7 @@ protected:
 
 	    pFloorTemperatureValveControl = new tHeatingCircleControl(
 	          SENSOR_ID_1820_HEATING_TEMP,
+		  0, //local sensor
 	          FloorTemperatureTempSensorSerial,
 	          HeatingSourceTempSensorSerial,
 	          HeatingStorageTempSensorSerial,
@@ -165,6 +166,7 @@ protected:
 	          2);
 	    pRadiatorsTemperatureValveControl = new tHeatingCircleControl(
 	          SENSOR_ID_1820_HEATING_TEMP,
+		  0, //local sensor
 	          RadiatorsTemperatureTempSensorSerial,
 	          HeatingSourceTempSensorSerial,
 	          HeatingStorageTempSensorSerial,
