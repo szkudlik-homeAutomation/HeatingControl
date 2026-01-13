@@ -82,7 +82,7 @@ protected:
 		{
 		    tDS1820Sensor::tConfig DS1820config;
 		    DS1820config.Avg = 0;
-		    DS1820config.Pin = 10;	// D10 ==> PB2 ==> GPIO 6 on sensor board
+		    DS1820config.Pin = CONFIG_DS1820_PIN;
 			tSensorFactory::Instance->CreateSensor(
 					SENSOR_TYPE_DS1820,
 					SENSOR_ID_DS1820,F("Temp"),1,

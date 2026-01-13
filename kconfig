@@ -4,6 +4,13 @@ config EEPROM_ENABLED_SENSORS
     bool "Enable sensors based on bitmap in EEPROM"
     default n
 
+config DS1820_PIN 
+    int "Physical pin for output DS1820 sensor"
+    depends on DS1820_SENSOR
+    default 10
+    help
+    	10 is D10 ==> PB2 ==> GPIO 6 on sensor board
+
 rsource "src/HeatingCircle/kconfig"      
 
 rsource "src/Common_code/kconfig"
