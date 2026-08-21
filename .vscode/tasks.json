@@ -1,0 +1,51 @@
+{
+"version": "2.0.0",
+"tasks": [
+    {
+    "label": "build_1",
+    "type": "shell",
+    "command": "${workspaceFolder}/build_heatingCentral.bat",
+    "args": [],
+    "problemMatcher": [],
+    "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+        }
+    },
+    {
+    "label": "build_2",
+    "type": "shell",
+    "command": "${workspaceFolder}/build_node.bat",
+    "args": [],
+    "problemMatcher": [],
+    "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+        }
+    },
+    {
+    "label": "upload_1",
+    "type": "shell",
+    "command": "${workspaceFolder}/upload-atmega.bat",
+    "args": [],
+    "problemMatcher": [],
+    "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+        }
+    },
+    {
+    "label": "upload_2",
+    "type": "shell",
+    "command": "${workspaceFolder}/updateNode.bat",
+    "args": [],
+    "problemMatcher": [],
+    "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+        }
+    }
+]
+}
+
+>
