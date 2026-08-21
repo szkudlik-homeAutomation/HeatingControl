@@ -4,12 +4,12 @@ config EEPROM_ENABLED_SENSORS
     bool "Enable sensors based on bitmap in EEPROM"
     default n
 
-config EEPROM_ENABLED_GPIO
-    bool "Enable GPIO based on bitmap in EEPROM"
+config EEPROM_ENABLED_GPIO_OUTPUTS
+    bool "Enable GPIO outputs based on bitmap in EEPROM"
     default n
    	    help
-   	            Enable GPIO pins based on a bitmap stored in EEPROM.
-   	            This allows dynamic configuration of GPIO pins without recompiling the firmware.
+   	            Enable GPIO outputs based on a bitmap stored in EEPROM.
+   	            This allows dynamic configuration of GPIO outputs without recompiling the firmware.
    	            there are 2 8bit EEPROM bytes:
    	            	Byte 1: GPIO 0-7 enable
    	            	Byte 2: GPIO 0-7 polarity, where 0 is active low

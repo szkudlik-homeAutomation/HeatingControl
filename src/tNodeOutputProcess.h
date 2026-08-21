@@ -3,7 +3,7 @@
 #include "../global.h"
 #include "Common_code/tOutputProcess.h"
 
-#if CONFIG_EEPROM_ENABLED_GPIO
+#if CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
 
 class tNodeOutputProcess: public tOutputProcess {
 public:
@@ -12,4 +12,4 @@ public:
 	virtual void setup() final;
 };
 
-#endif // CONFIG_EEPROM_ENABLED_GPIO
+#endif // CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS

@@ -8,7 +8,7 @@
 #include "tNodeOutputProcess.h"
 #include "../GlobalDefs/Eeprom.h"
 
-#if CONFIG_EEPROM_ENABLED_GPIO
+#if CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
 
 tNodeOutputProcess NodeOutputProcess;
 
@@ -69,4 +69,4 @@ void tNodeOutputProcess::setup()
 }
 
 
-#endif CONFIG_EEPROM_ENABLED_GPIO
+#endif // CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
