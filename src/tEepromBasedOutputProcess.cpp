@@ -1,21 +1,21 @@
 /*
- * tNodeOutputProcess.cpp
+ * tEepromBasedutputProcess.cpp
  *
  *  Created on: 14 lis 2025
  *      Author: szkud
  */
 
-#include "tNodeOutputProcess.h"
+#include "tEepromBasedOutputProcess.h"
 #include "../GlobalDefs/Eeprom.h"
 
 #if CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
 
-tNodeOutputProcess NodeOutputProcess;
+tEepromBasedutputProcess NodeOutputProcess;
 
 #define is_gpio_enabled(_Bitmap, _gpio) ((_Bitmap) & (1 << (_gpio)))
 
 
-void tNodeOutputProcess::setup()
+void tEepromBasedutputProcess::setup()
 {
 	// read output enable bitmap from eeprom
 	uint8_t OutputEnableBitmap = 0;
