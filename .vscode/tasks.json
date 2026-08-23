@@ -45,6 +45,17 @@
         "panel": "shared"
         }
     }
+    {
+    "label": "monitor_1",
+    "type": "shell",
+    "command": "${workspaceFolder}/monitor.bat",
+    "args": [],
+    "problemMatcher": [],
+    "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+        }
+    }
 ]
 }
 
