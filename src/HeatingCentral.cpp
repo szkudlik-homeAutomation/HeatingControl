@@ -185,20 +185,19 @@ protected:
 	    pRadiatorsTemperatureValveControl->setHisteresis(1);
 	    pRadiatorsTemperatureValveControl->setFastThold(2);
 
-	    SimpleDigitalInputSensorConfig.ActiveState = 0;
-	    SimpleDigitalInputSensorConfig.Pin = A9;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST, F("WaterHeaterRequest"),1,
+	    SimpleDigitalInputSensorConfig.NumOfInputs = 1;
+	    SimpleDigitalInputSensorConfig.ActiveStateBitmap = 0;
+	    SimpleDigitalInputSensorConfig.Pin[0] = A9;
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST, F("INPUTS"),2,
+	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
+;
+	    SimpleDigitalInputSensorConfig.Pin[0] = A8;
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, F("PumpControl"),2,
 	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
 
-	    SimpleDigitalInputSensorConfig.ActiveState = 0;
-	    SimpleDigitalInputSensorConfig.Pin = A8;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, F("PumpControl"),1,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
-
-	    SimpleDigitalInputSensorConfig.ActiveState = 0;
-	    SimpleDigitalInputSensorConfig.Pin = A7;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, F("DigitalInputAux"),1,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true,0);  // 1sec
+	    SimpleDigitalInputSensorConfig.Pin[0] = A7;
+	     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, F("DigitalInputAux"),2,
+	             &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true,0);  // 1sec
 
 	    ImpulseSensorConfig.Pin = 21;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, F("HeatPumpEnergy"),1,
