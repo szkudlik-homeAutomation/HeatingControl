@@ -3,7 +3,7 @@
 #include <EEPROM.h>
 
 
-#define EEPROM_CANNARY 0xA1     // change if update changes EEPROM structure
+#define EEPROM_CANNARY 0xA2     // change if update changes EEPROM structure
 
 typedef struct __tEeprom
 {
@@ -11,10 +11,17 @@ typedef struct __tEeprom
 #if CONFIG_EEPROM_ENABLED_SENSORS
   uint32_t Sensors_bitmap; // bitmap of enabled sensors, each bit represents sensor ID, if set - the sensor is enabled
 #endif
+
 #if CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
   uint8_t GPIO_EnableBitmap; // bitmap of enabled GPIO outputs, each bit represents output ID, if set - the output is enabled
   uint8_t GPIO_PolarityBitmap; // bitmap of GPIO outputs polarity, each bit represents output ID, if set - the output is active high, else active low
 #endif //CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
+
+#if CONFIG_EEPROM_ENABLED_GPIO_INPUTS
+  uint8_t GPIO_InputEnableBitmap; // bitmap of enabled GPIO inputs, each bit represents input ID, if set - the input is enabled
+  uint8_t GPIO_InputPolarityBitmap; // bitmap of GPIO inputs polarity, each bit represents input ID, if set - the input is active high, else active low
+#endif //CONFIG_EEPROM_ENABLED_GPIO_INPUTS
+
   uint8_t CANNARY;   // a cannary, if is not set to EEPROM_CANNARY the eeprom should be set to default
 #if CONFIG_NETWORK
   uint8_t IP[4];
@@ -36,6 +43,11 @@ typedef struct __tEeprom
 #define EEPROM_GPIO_ENABLE_BITMAP_OFFSET offsetof(__tEeprom,GPIO_EnableBitmap)
 #define EEPROM_GPIO_POLARITY_BITMAP_OFFSET offsetof(__tEeprom,GPIO_PolarityBitmap)
 #endif //CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
+
+#if CONFIG_EEPROM_ENABLED_GPIO_INPUTS
+#define EEPROM_GPIO_INPUT_ENABLE_BITMAP_OFFSET offsetof(__tEeprom,GPIO_InputEnableBitmap)
+#define EEPROM_GPIO_INPUT_POLARITY_BITMAP_OFFSET offsetof(__tEeprom,GPIO_InputPolarityBitmap)
+#endif //CONFIG_EEPROM_ENABLED_GPIO_INPUTS
 
 #if CONFIG_NETWORK
 #define EEPROM_IP offsetof(__tEeprom,IP[0])

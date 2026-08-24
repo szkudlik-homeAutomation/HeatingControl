@@ -14,6 +14,49 @@ config EEPROM_ENABLED_GPIO_OUTPUTS
    	            	Byte 1: GPIO 0-7 enable
    	            	Byte 2: GPIO 0-7 polarity, where 0 is active low
 
+config EEPROM_ENABLED_GPIO_INPUTS
+    bool "Enable GPIO inputs based on bitmap in EEPROM"
+    default n
+   	    help
+			Enable GPIO inputs based on a bitmap stored in EEPROM.
+			This allows dynamic configuration of GPIO inputs without recompiling the firmware
+			Inputs are available through GPIO input sensor
+			if sensor is disabled in EEPROM, the input will be ignored.
+			there are 2 8bit EEPROM bytes:
+				Byte 1: GPIO 0-7 enable
+				Byte 2: GPIO 0-7 polarity, where 0 is active low
+
+config EEPROM_ENABLED_GPIO_INPUTS_PIN0
+    int "Input Pin 0"
+    depends on EEPROM_ENABLED_GPIO_INPUTS
+    depends on SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS > 0
+    default 1
+
+config EEPROM_ENABLED_GPIO_INPUTS_PIN1
+    int "Input Pin 1"
+    depends on EEPROM_ENABLED_GPIO_INPUTS
+    depends on SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS > 1
+    default 2
+
+config EEPROM_ENABLED_GPIO_INPUTS_PIN2
+    int "Input Pin 2"
+    depends on EEPROM_ENABLED_GPIO_INPUTS
+    depends on SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS > 2
+    default 3
+
+config EEPROM_ENABLED_GPIO_INPUTS_PIN3
+    int "Input Pin 3"
+    depends on SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS > 3
+    depends on EEPROM_ENABLED_GPIO_INPUTS
+    default 4
+
+config EEPROM_ENABLED_GPIO_INPUTS_PIN4
+    int "Input Pin 4"
+    depends on SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS > 4
+    depends on EEPROM_ENABLED_GPIO_INPUTS
+    default 5
+
+
 config DS1820_PIN 
     int "Physical pin for output DS1820 sensor"
     depends on DS1820_SENSOR

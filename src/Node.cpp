@@ -11,11 +11,13 @@
 #include "Common_code/sensors/tSht3Sensor.h"
 #include "Common_code/sensors/tTgs2603AnalogSensor.h"
 #include "Common_code/sensors/tDS1820Sensor.h"
+#include "Common_code/sensors/tSimpleDigitalInputSensor.h"
 
 #define SENSOR_ID_SYSTEM_STATUS 1
 #define SENSOR_ID_SHT3 2
 #define SENSOR_ID_TGS_2603 3
 #define SENSOR_ID_DS1820 4
+#define SENSOR_ID_GPIO_INPUTS 5
 
 #define is_sensor_enabled(_SensorsBitmap, _sensor_id) (_SensorsBitmap & (1 << ((_sensor_id)-1)))
 
@@ -53,7 +55,7 @@ protected:
 					1 << EV_TYPE_MEASUREMENT_COMPLETED);
 		}
 
-
+		// Humidity and temperature sensor SHT3, updated every 62s, with averaging of all measurements since last reading
 		if (is_sensor_enabled(SensorsBitmap, SENSOR_ID_SHT3))
 		{
 			tSht3Sensor::tConfig tSht3SensorConfig;
@@ -66,6 +68,7 @@ protected:
 					1 << EV_TYPE_MEASUREMENT_COMPLETED);
 		}
 
+		// Odour sensor TGS2603, updated every 10s
 		if (is_sensor_enabled(SensorsBitmap, SENSOR_ID_TGS_2603))
 		{
 			tTgs2603AnalogSensor::tConfig tTgs2603AnalogSensorConfig;
@@ -78,6 +81,7 @@ protected:
 					true, 1 << EV_TYPE_MEASUREMENT_COMPLETED);
 		}
 
+		// Temperature sensor DS1820, updated every 61s
 		if (is_sensor_enabled(SensorsBitmap, SENSOR_ID_DS1820))
 		{
 		    tDS1820Sensor::tConfig DS1820config;
@@ -89,6 +93,51 @@ protected:
 					&DS1820config,sizeof(DS1820config),
 					610,	// 1 min 1 sec
 					true, 1 << EV_TYPE_MEASUREMENT_COMPLETED);
+		}
+
+		// GPIO inputs sensors, scheduled every 630s, any change will trigger async event message
+		if(is_sensor_enabled(SensorsBitmap, SENSOR_ID_GPIO_INPUTS))
+		{
+			tSimpleDigitalInputSensor::tConfig SimpleDigitalInputSensorConfig;
+			uint8_t InputEnableBitmap = 0;
+			uint8_t InputPolarityBitmap = 0;
+			EEPROM.get(EEPROM_GPIO_INPUT_ENABLE_BITMAP_OFFSET, InputEnableBitmap);
+			EEPROM.get(EEPROM_GPIO_INPUT_POLARITY_BITMAP_OFFSET, InputPolarityBitmap);
+
+			uint8_t NumOfInputs = MIN(CONFIG_SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS, 8); // max 8 inputs
+			SimpleDigitalInputSensorConfig.NumOfInputs = 0;
+			SimpleDigitalInputSensorConfig.ActiveStateBitmap = 0;
+			
+			for (uint8_t i=0; i<NumOfInputs; i++)
+			{
+				if (InputEnableBitmap & (1 << i))
+				{
+					switch (i)
+					{	
+						case 0: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN0; break;
+						case 1: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN1; break;
+						case 2: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN2; break;
+						case 3: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN3; break;
+						case 4: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN4; break;
+						case 5: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN5; break;
+					}
+
+					SimpleDigitalInputSensorConfig.ActiveStateBitmap |= 
+					 	(InputPolarityBitmap & (1 << i)) ? (1 << SimpleDigitalInputSensorConfig.NumOfInputs) : 0;
+				
+					SimpleDigitalInputSensorConfig.NumOfInputs++;
+				}
+			}
+
+			if (SimpleDigitalInputSensorConfig.NumOfInputs > 0)
+			{
+				tSensorFactory::Instance->CreateSensor(
+						SENSOR_TYPE_DIGITAL_INPUT,
+						SENSOR_ID_GPIO_INPUTS,F("GPIOin"),2,
+						&SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),
+						630,	// 1 min shedule, any change will trigger async event message
+						true, 1 << EV_TYPE_MEASUREMENT_COMPLETED || 1 << EV_TYPE_MEASUREMENT_CHANGE);
+			}
 		}
 	}
 };

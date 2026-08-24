@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-if "%4"==""  goto args_count_wrong
+if "%6"==""  goto args_count_wrong
 
 :: split 32bit word to bytes
 set /a "byte0=%2 & 0xFF"
@@ -16,7 +16,7 @@ set /a "byte3=(%2 >> 24) & 0xFF"
 ..\tools\avrdude.exe -pm328p -cusbasp -e -B 125kHz
 
 ::set chip ID and enabled sensors in flash: 4 bytes sensor mask, 8 bytes GPIO out enable, 8 bit GPIO out polarity
-..\tools\avrdude.exe -pm328p -cusbasp -Ueeprom:w:%1,%byte0%,%byte1%,%byte2%,%byte3%,%3,%4:m -B 125kHz
+..\tools\avrdude.exe -pm328p -cusbasp -Ueeprom:w:%1,%byte0%,%byte1%,%byte2%,%byte3%,%3,%4,%5,%6:m -B 125kHz
 
 ::enable eeprom safe
 ..\tools\avrdude.exe -pm328p -cusbasp -U lfuse:w:0xff:m -U hfuse:w:0xd7:m -U efuse:w:0x04:m -B 125kHz
@@ -27,14 +27,21 @@ set /a "byte3=(%2 >> 24) & 0xFF"
 goto end
 
 :args_count_wrong
-echo usage: format.bat id_of_node(0x for hex) bitmap_of_active_sensors bitmap_of_active_GPIOs polarity_of_GPIOs
+echo usage: format.bat id_of_node(0x for hex) bitmap_of_active_sensors bitmap_of_output_GPIOs polarity_of_output_GPIOs bimmap_of_input_GPIOs polarity_of_input_GPIOs
 echo where sensors are
-echo -  01 - system status
-echo -  02 - SHT3 temperature and humidity
-echo -  04 - TGS_2603 odour sensors
-echo -  08 - DS1820 sensors, GPIO6
-echo bitmap_of_active_GPIOs a bitmap 0-5 of GPIO outputs to be externally controlled. Note that some sensors may use some of GPIOs
-echo polarity_of_GPIOs bitmap of GPIOs polarity. 0 means active low
+echo -  0x01 - system status
+echo -  0x02 - SHT3 temperature and humidity
+echo -  0x04 - TGS_2603 odour sensors
+echo -  0x08 - DS1820 sensors, GPIO6
+echo -  0x10 - GPIO input sensor
+
+echo bitmap_of_output_GPIOs a bitmap 0-5 of GPIO outputs
+echo polarity_of_output_GPIOs bitmap of GPIOs polarity. 0 means active low
+
+echo bitmap_of_input_GPIOs a bitmap 0-5 of GPIO inputs, to be used by GPIO input sensors. 
+echo polarity_of_input_GPIOs bitmap of GPIOs polarity. 0 means active low
+
+echo NOTE! it is your responsibility to avoid setting the same GPIO as input/output/other sensor at the same time. 
 
 :end
 
