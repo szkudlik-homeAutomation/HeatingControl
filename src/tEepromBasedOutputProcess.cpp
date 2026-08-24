@@ -1,5 +1,5 @@
 /*
- * tEepromBasedutputProcess.cpp
+ * tEepromBasedOutputProcess.cpp
  *
  *  Created on: 14 lis 2025
  *      Author: szkud
@@ -10,14 +10,15 @@
 
 #if CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
 
-tEepromBasedutputProcess NodeOutputProcess;
+tEepromBasedOutputProcess NodeOutputProcess;
 
 #define is_gpio_enabled(_Bitmap, _gpio) ((_Bitmap) & (1 << (_gpio)))
 
 
-void tEepromBasedutputProcess::setup()
+void tEepromBasedOutputProcess::setup()
 {
 	// read output enable bitmap from eeprom
+	mNumOfOutputs = 0;
 	uint8_t OutputEnableBitmap = 0;
 	EEPROM.get(EEPROM_GPIO_ENABLE_BITMAP_OFFSET, OutputEnableBitmap);
 
@@ -25,47 +26,46 @@ void tEepromBasedutputProcess::setup()
 	// read output polarity bitmap from eeprom
 	EEPROM.get(EEPROM_GPIO_POLARITY_BITMAP_OFFSET,OutputPolarity);
 
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 0
-	   Output[0].SetPin(
-	     ((OutputEnableBitmap &  (1 << 0)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN0 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 0)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 1
-	   Output[1].SetPin(
-	     ((OutputEnableBitmap &  (1 << 1)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN1 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 1)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 2
-	   Output[2].SetPin(
-	     ((OutputEnableBitmap &  (1 << 2)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN2 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 2)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 3
-	   Output[3].SetPin(
-	     ((OutputEnableBitmap &  (1 << 3)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN3 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 3)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 4
-	   Output[4].SetPin(
-	     ((OutputEnableBitmap &  (1 << 4)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN4 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 4)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 5
-	   Output[5].SetPin(
-	     ((OutputEnableBitmap &  (1 << 5)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN5 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 5)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 6
-	   Output[6].SetPin(
-	     ((OutputEnableBitmap &  (1 << 6)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN6 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 6)) == 0) ? 0 : 1);
-	#endif
-	#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 7
-	   Output[7].SetPin(
-	     ((OutputEnableBitmap &  (1 << 7)) != 0) ? CONFIG_OUTPUT_PROCESS_PIN7 : tOutput::PIN_NOT_ASSIGNED,
-		 ((OutputPolarity &  (1 << 7)) == 0) ? 0 : 1);
-	#endif
+	for (uint8_t i = 0; i < CONFIG_OUTPUT_PROCESS_NUM_OF_PINS; i++)
+	{
+		if (((OutputEnableBitmap &  (1 << i)) != 0))
+		{
+			uint8_t pin;
+			switch (i)
+			{
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 0
+					case 0: pin = CONFIG_OUTPUT_PROCESS_PIN0; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 1
+					case 1: pin = CONFIG_OUTPUT_PROCESS_PIN1; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 2
+					case 2: pin = CONFIG_OUTPUT_PROCESS_PIN2; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 3
+					case 3: pin = CONFIG_OUTPUT_PROCESS_PIN3; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 4
+					case 4: pin = CONFIG_OUTPUT_PROCESS_PIN4; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 5
+					case 5: pin = CONFIG_OUTPUT_PROCESS_PIN5; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 6
+					case 6: pin = CONFIG_OUTPUT_PROCESS_PIN6; break;
+				#endif
+				#if CONFIG_OUTPUT_PROCESS_NUM_OF_PINS > 7
+					case 7: pin = CONFIG_OUTPUT_PROCESS_PIN7; break;
+				#endif
+				default:
+					pin = tOutput::PIN_NOT_ASSIGNED;
+					break;
+			}
+			Output[mNumOfOutputs].SetPin(pin, (OutputPolarity &  (1 << i)) == 0 ? 0 : 1);
 
+			mNumOfOutputs++;
+		}
+	}
 }
 
 

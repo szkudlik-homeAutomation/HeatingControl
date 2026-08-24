@@ -5,9 +5,9 @@
 
 #if CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS
 
-class tEepromBasedutputProcess: public tOutputProcess {
+class tEepromBasedOutputProcess: public tOutputProcess {
 public:
-	tEepromBasedutputProcess() {};
+	tEepromBasedOutputProcess() {};
 
 	virtual void setup() final;
 };
