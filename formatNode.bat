@@ -34,6 +34,7 @@ echo -  0x02 - SHT3 temperature and humidity
 echo -  0x04 - TGS_2603 odour sensors
 echo -  0x08 - DS1820 sensors, GPIO6
 echo -  0x10 - GPIO input sensor
+echo -  0x20 - GPIO output sensor
 
 echo bitmap_of_output_GPIOs a bitmap 0-5 of GPIO outputs
 echo polarity_of_output_GPIOs bitmap of GPIOs polarity. 0 means active low

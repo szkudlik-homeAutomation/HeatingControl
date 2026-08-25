@@ -18,6 +18,7 @@
 #define SENSOR_ID_TGS_2603 3
 #define SENSOR_ID_DS1820 4
 #define SENSOR_ID_GPIO_INPUTS 5
+#define SENSOR_ID_GPIO_OUTPUTS 6
 
 #define is_sensor_enabled(_SensorsBitmap, _sensor_id) (_SensorsBitmap & (1 << ((_sensor_id)-1)))
 
@@ -138,6 +139,14 @@ protected:
 						630,	// 1 min shedule, any change will trigger async event message
 						true, 1 << EV_TYPE_MEASUREMENT_COMPLETED || 1 << EV_TYPE_MEASUREMENT_CHANGE);
 			}
+		}
+
+		if (is_sensor_enabled(SensorsBitmap, SENSOR_ID_GPIO_OUTPUTS))
+		{
+			tSensorFactory::Instance->CreateSensor(
+					SENSOR_TYPE_OUTPUT_STATES,
+					SENSOR_ID_GPIO_OUTPUTS,F("GPIOout"),1,
+					NULL,0,640,true, 1 << EV_TYPE_MEASUREMENT_COMPLETED || 1 << EV_TYPE_MEASUREMENT_CHANGE);
 		}
 	}
 };
