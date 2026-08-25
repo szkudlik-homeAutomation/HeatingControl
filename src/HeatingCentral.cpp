@@ -108,7 +108,10 @@ tHttpServer_app HttpServer;
 
 
 
-// create sensors and application specific to my home setup -  yes I know it should not be this way :)
+/* ================================== MY HOME SPECIFIC BEGIN -======================
+ create sensors and application specific to my home setup -  yes I know it should not be in main  repo, but who cares.... if anybody wants to use this code and
+ this part became a problem, he can easily remove it and implement his own application specific code, just let me know
+*/
 
 tDS1820Sensor::DeviceAddress FloorTemperatureTempSensorSerial = { 0x28, 0x3C, 0x1F, 0x5F, 0xA1, 0x21, 0x01, 0xD9};
 tDS1820Sensor::DeviceAddress RadiatorsTemperatureTempSensorSerial = { 0x28, 0x44, 0x9B, 0x80, 0xA1, 0x21, 0x01, 0xAF};
@@ -118,6 +121,8 @@ tDS1820Sensor::DeviceAddress HeatingStorageTempSensorSerial = { 0x28, 0x6D, 0xDB
 tHeatingCircleControl *pFloorTemperatureValveControl;
 tHeatingCircleControl *pRadiatorsTemperatureValveControl;
 tImpulseSensor *pImpulseSensor = NULL;
+
+/* ================================== MY HOME SPECIFIC END -====================== */
 
 
 class tHomeAutomationHeatingCentral: public tApplication {
@@ -135,20 +140,14 @@ protected:
 		/* common sensors */
 		tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_SYSTEM_STATUS, SENSOR_ID_SYSTEM_STATUS,F("SystemStatus"),1,NULL,0,50,true, 0);
 
+		/* ================================== MY HOME SPECIFIC BEGIN -====================== */
+
 		/* sensofactory for application Heating central*/
 	    tDS1820Sensor::tConfig DS1820config;
 	    tSimpleDigitalInputSensor::tConfig SimpleDigitalInputSensorConfig;
 	    tPt100AnalogSensor::tConfig Pt100AnalogSensorConfig;
 	    tHeatingCircleStatusSensor::tConfig HeatingCircleStatusSensorConfig;
 	    tImpulseSensor::tConfig ImpulseSensorConfig;
-
-	    DS1820config.Avg = 0;
-	    DS1820config.Pin = 2;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP,F("HeatingTemp"),1,&DS1820config,sizeof(DS1820config),50,true,0);   // 5sec
-
-	    DS1820config.Avg = 0;
-	    DS1820config.Pin = 3;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_AIR_HUW_TEMP,F("AirHuwTemp"), 1,&DS1820config,sizeof(DS1820config),50,true,0);   // 5sec
 
 	    DS1820config.Avg = 0;
 	    DS1820config.Pin = 7;
@@ -185,24 +184,9 @@ protected:
 	    pRadiatorsTemperatureValveControl->setHisteresis(1);
 	    pRadiatorsTemperatureValveControl->setFastThold(2);
 
-	    SimpleDigitalInputSensorConfig.NumOfInputs = 1;
-	    SimpleDigitalInputSensorConfig.ActiveStateBitmap = 0;
-	    SimpleDigitalInputSensorConfig.Pin[0] = A9;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_WATER_HEATER_REQUEST, F("INPUTS"),2,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
-;
-	    SimpleDigitalInputSensorConfig.Pin[0] = A8;
-	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_RADIATORS_PUMP_CONTROL, F("PumpControl"),2,
-	            &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true, 0);  // 1sec
-
-	    SimpleDigitalInputSensorConfig.Pin[0] = A7;
-	     tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DIGITAL_INPUT, SENSOR_ID_DIGITAL_AUX, F("DigitalInputAux"),2,
-	             &SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),10,true,0);  // 1sec
-
 	    ImpulseSensorConfig.Pin = 21;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, F("HeatPumpEnergy"),1,
 	    		&ImpulseSensorConfig,sizeof(ImpulseSensorConfig),50,true, 0);
-
 
 	    Pt100AnalogSensorConfig.Pin = A14;
 	    Pt100AnalogSensorConfig.Correction = 8;
@@ -212,7 +196,6 @@ protected:
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_OUTPUT_STATES, SENSOR_ID_OUTPUT_STATES, F("OutStates"),1,
 	    		NULL,0,50,true, 0);
 
-
 	    HeatingCircleStatusSensorConfig.pHeatingControl = pRadiatorsTemperatureValveControl;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_RADIATORS_HEATING_STATE,
 	    									   F("RadiatorsState"), 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true, 0);
@@ -220,6 +203,9 @@ protected:
 	    HeatingCircleStatusSensorConfig.pHeatingControl = pFloorTemperatureValveControl;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_HEATING_CIRCLE_STATE, SENSOR_ID_FLOOR_HEATING_STATE,
 	    									   F("FloorState"), 1, &HeatingCircleStatusSensorConfig, sizeof(HeatingCircleStatusSensorConfig), 50, true, 0);
+
+		/* ================================== MY HOME SPECIFIC END -====================== */
+
 	}
 };
 
