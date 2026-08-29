@@ -7,9 +7,7 @@
 
 class tEepromBasedOutputProcess: public tOutputProcess {
 public:
-	tEepromBasedOutputProcess() {};
-
-	virtual void setup() final;
+	tEepromBasedOutputProcess();
 };
 
 #endif // CONFIG_EEPROM_ENABLED_GPIO_OUTPUTS

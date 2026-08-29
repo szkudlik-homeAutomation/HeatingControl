@@ -15,9 +15,11 @@ tEepromBasedOutputProcess NodeOutputProcess;
 #define is_gpio_enabled(_Bitmap, _gpio) ((_Bitmap) & (1 << (_gpio)))
 
 
-void tEepromBasedOutputProcess::setup()
+tEepromBasedOutputProcess::tEepromBasedOutputProcess()
 {
 	// read output enable bitmap from eeprom
+	// as number of outputs must be set before calling setup of tOutputStateSensor, we need to read the bitmap here
+	
 	mNumOfOutputs = 0;
 	uint8_t OutputEnableBitmap = 0;
 	EEPROM.get(EEPROM_GPIO_ENABLE_BITMAP_OFFSET, OutputEnableBitmap);
