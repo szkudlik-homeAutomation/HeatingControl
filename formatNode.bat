@@ -19,7 +19,7 @@ set /a "byte3=(%2 >> 24) & 0xFF"
 ..\tools\avrdude.exe -pm328p -cusbasp -Ueeprom:w:%1,%byte0%,%byte1%,%byte2%,%byte3%,%3,%4,%5,%6:m -B 125kHz
 
 ::enable eeprom safe
-..\tools\avrdude.exe -pm328p -cusbasp -U lfuse:w:0xff:m -U hfuse:w:0xd7:m -U efuse:w:0x04:m -B 125kHz
+..\tools\avrdude.exe -pm328p -cusbasp -U lfuse:w:0xff:m -U hfuse:w:0xc7:m -U efuse:w:0x04:m -B 125kHz
 
 ::upload flash
 ..\tools\avrdude.exe -pm328p -cusbasp -Uflash:w:build\Node\HeatingControl.ino.hex:i -B 125kHz
