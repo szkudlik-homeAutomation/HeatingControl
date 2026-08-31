@@ -8,6 +8,7 @@
 #include "../../global.h"
 #if CONFIG_HEATING_CIRCLE_CONTROL
 #include <limits.h>
+#include <string.h>
 #include "tHeatingCircleControl.h"
 #include "../Common_code/sensors/tDS1820Sensor.h"
 
@@ -58,17 +59,17 @@ void tHeatingCircleControl::onMessage(uint8_t type, uint16_t data, void *pData)
 	   // find the sensor
 	   for(uint8_t i = 0; i < pDS1820Result->NumOfDevices; i++)
 	   {
-	      if (strncmp(mValveTempSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
+	      if (memcmp(mValveTempSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
 	      {
 	         mValveTempSensorDevID = i;
 	      }
 	      if (mHeatSourceSensorSerial)
-            if (strncmp(mHeatSourceSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
+            if (memcmp(mHeatSourceSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
             {
                mHeatSourceSensorDevID = i;
             }
 	      if (mHeatStorageSensorSerial)
-            if (strncmp(mHeatStorageSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
+            if (memcmp(mHeatStorageSensorSerial,pDS1820Result->Dev[i].Addr,sizeof(tDS1820Sensor::DeviceAddress)) == 0)
             {
                mHeatStorageSensorDevID = i;
             }
