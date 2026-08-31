@@ -115,12 +115,12 @@ protected:
 				{
 					switch (i)
 					{	
-						case 0: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN0; break;
-						case 1: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN1; break;
-						case 2: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN2; break;
-						case 3: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN3; break;
-						case 4: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN4; break;
-						case 5: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_OUTPUT_PROCESS_PIN5; break;
+						case 0: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_EEPROM_ENABLED_GPIO_INPUTS_PIN0; break;
+						case 1: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_EEPROM_ENABLED_GPIO_INPUTS_PIN1; break;
+						case 2: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_EEPROM_ENABLED_GPIO_INPUTS_PIN2; break;
+						case 3: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_EEPROM_ENABLED_GPIO_INPUTS_PIN3; break;
+						case 4: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_EEPROM_ENABLED_GPIO_INPUTS_PIN4; break;
+						case 5: SimpleDigitalInputSensorConfig.Pin[SimpleDigitalInputSensorConfig.NumOfInputs] = CONFIG_EEPROM_ENABLED_GPIO_INPUTS_PIN5; break;
 					}
 
 					SimpleDigitalInputSensorConfig.ActiveStateBitmap |= 
@@ -137,7 +137,7 @@ protected:
 						SENSOR_ID_GPIO_INPUTS,F("GPIOin"),2,
 						&SimpleDigitalInputSensorConfig,sizeof(SimpleDigitalInputSensorConfig),
 						630,	// 1 min shedule, any change will trigger async event message
-						true, 1 << EV_TYPE_MEASUREMENT_COMPLETED || 1 << EV_TYPE_MEASUREMENT_CHANGE);
+						true, 1 << EV_TYPE_MEASUREMENT_COMPLETED | 1 << EV_TYPE_MEASUREMENT_CHANGE);
 			}
 		}
 
@@ -146,7 +146,7 @@ protected:
 			tSensorFactory::Instance->CreateSensor(
 					SENSOR_TYPE_OUTPUT_STATES,
 					SENSOR_ID_GPIO_OUTPUTS,F("GPIOout"),1,
-					NULL,0,640,true, 1 << EV_TYPE_MEASUREMENT_COMPLETED || 1 << EV_TYPE_MEASUREMENT_CHANGE);
+					NULL,0,640,true, 1 << EV_TYPE_MEASUREMENT_COMPLETED | 1 << EV_TYPE_MEASUREMENT_CHANGE);
 		}
 	}
 };

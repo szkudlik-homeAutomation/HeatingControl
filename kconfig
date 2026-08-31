@@ -56,6 +56,12 @@ config EEPROM_ENABLED_GPIO_INPUTS_PIN4
     depends on EEPROM_ENABLED_GPIO_INPUTS
     default 5
 
+config EEPROM_ENABLED_GPIO_INPUTS_PIN5
+    int "Input Pin 5"
+    depends on SIMPLE_DIGITAL_INPUT_SENSOR_NUM_OF_INPUTS > 5
+    depends on EEPROM_ENABLED_GPIO_INPUTS
+    default 6
+
 
 config DS1820_PIN 
     int "Physical pin for output DS1820 sensor"
