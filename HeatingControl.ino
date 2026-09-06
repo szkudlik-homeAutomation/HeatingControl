@@ -12,7 +12,7 @@
 
 
 
-#if CONFIG_LOGLEVEL_2
+#if DEBUG_LOGLEVELL2
 	tPt100SensorLogger Pt100SensorLogger(SENSOR_ID_PT100_HOTAIR);
 	tDS1820SensorLogger DS1820SensorLogger(0);  // all DS1820s
 	tImpulseSensorLogger ImpulseSensorLogger(SENSOR_ID_IMPULSE_HEATPUMP);
