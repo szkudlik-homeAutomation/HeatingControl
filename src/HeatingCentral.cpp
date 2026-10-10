@@ -150,6 +150,9 @@ protected:
 	    tImpulseSensor::tConfig ImpulseSensorConfig;
 
 	    DS1820config.Avg = 0;
+	    DS1820config.Pin = 2;
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_HEATING_TEMP,F("HeatingTemp"),1,&DS1820config,sizeof(DS1820config),50,true,0);   // 5sec
+
 	    DS1820config.Pin = 7;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_DS1820, SENSOR_ID_1820_OUTDOOR_TEMP, F("OutdoorTemp"),1,&DS1820config,sizeof(DS1820config),50,true,0);  // 5sec
 
@@ -183,7 +186,11 @@ protected:
 	    pRadiatorsTemperatureValveControl->setTolerance(0.7);
 	    pRadiatorsTemperatureValveControl->setHisteresis(1);
 	    pRadiatorsTemperatureValveControl->setFastThold(2);
-
+ 
+	    ImpulseSensorConfig.Pin = 20;
+	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, F("WaterHeatingEnergy"),1,
+	    		&ImpulseSensorConfig,sizeof(ImpulseSensorConfig),50,true, 0);
+	    		
 	    ImpulseSensorConfig.Pin = 21;
 	    tSensorFactory::Instance->CreateSensor(SENSOR_TYPE_IMPULSE, SENSOR_ID_IMPULSE_HEATPUMP, F("HeatPumpEnergy"),1,
 	    		&ImpulseSensorConfig,sizeof(ImpulseSensorConfig),50,true, 0);
